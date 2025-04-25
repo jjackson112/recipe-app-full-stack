@@ -23,12 +23,12 @@ class Recipe(db.Model):
         return f"Recipe(id={self.id}, title='{self.title}', description='{self.description}', servings={self.servings})"
 
 # connect SQL to web app
-with app.app_context():
-    db.create_all()
-    db.session.commit()
+# with app.app_context():
+#    db.create_all()
+#    db.session.commit()
 
-# fetch recipes
-@app.route('api/recipes', methods=['GET'])
+# fetch recipes API
+@app.route('/api/recipes', methods=['GET'])
 def get_all_recipes():
     recipes = Recipe.query.all()
     recipe_list = []
@@ -41,8 +41,23 @@ def get_all_recipes():
         'description': recipe.description,
         'image_url': recipe.image_url,
         'servings': recipe.servings
-        })
+    })
+
     return jsonify(recipe_list)
+# the data object sent over to POST endpoint via front end form - new recipe entry to be saved from the database
+@app.route('/api/recipes', methods=['POST'])
+def add_recipe():
+    data = request.get_json()
+    new_recipe = Recipe(
+        title=data ['title'],
+        ingredients=data ['ingredients'],
+        instructions=data ['instructions'],
+        servings=data ['servings'],
+        description=data ['description'],
+        image_url=data['image_url']
+    )
+    db.session.add(new_recipe)
+    db.session.commit()
 
 if __name__ == '__main__':
     app.run(debug=True)
