@@ -22,5 +22,10 @@ class Recipe(db.Model):
     def __repr__(self):
         return f"Recipe(id={self.id}, title='{self.title}', description='{self.description}', servings={self.servings})"
 
+# connect SQL to web app
+with app.app_context():
+    db.create_all()
+    db.session.commit()
+
 if __name__ == '__main__':
     app.run(debug=True)
