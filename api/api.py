@@ -61,16 +61,22 @@ def add_recipe():
 
 # present data in a dictionary so python can transform it back to JSON
 # serialization - new id attribute
-new_recipe_data = {
-    'id': new_recipe.id,
-    'title': new_recipe.title,
-    'ingredients': new_recipe.ingredients,
-    'instructions': new_recipe.instructions,
-    'servings': new_recipe.servings,
-    'description': new_recipe.description,
-    'image_url': new_recipe.image_url
-}
-return jsonify({'message': 'Recipe added successfully', 'recipe': new_recipe_data})
+    new_recipe_data = {
+        'id': new_recipe.id,
+        'title': new_recipe.title,
+        'ingredients': new_recipe.ingredients,
+        'instructions': new_recipe.instructions,
+        'servings': new_recipe.servings,
+        'description': new_recipe.description,
+        'image_url': new_recipe.image_url
+    }
+# still in add_recipe function, return a 400 status request if all required fields aren't completed
+    required_fields = ['title', 'ingredients', 'instructions', 'instructions', 'servings', 'description', 'image_url']
+    for field in required_fields:
+        if field not in data or data[field] == "":
+            return jsonify({'error':f"Missing required field: '{field}'"}), 400
+    
+    return jsonify({'message': 'Recipe added successfully', 'recipe': new_recipe_data})
 
 if __name__ == '__main__':
     app.run(debug=True)
