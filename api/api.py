@@ -44,6 +44,7 @@ def get_all_recipes():
     })
 
     return jsonify(recipe_list)
+
 # the data object sent over to POST endpoint via front end form - new recipe entry to be saved from the database
 @app.route('/api/recipes', methods=['POST'])
 def add_recipe():
@@ -90,6 +91,7 @@ def update_recipe(recipe_id):
     for field in required_fields:
         if field not in data or data[field] == "":
             return jsonify({'error': f"Missing required field:'{field}'"}), 400
+        
         recipe.title = data['title']
         recipe.ingredients = data['ingredients']
         recipe.instructions = data['instructions']
@@ -108,6 +110,16 @@ def update_recipe(recipe_id):
         'image_url': recipe.image_url
     }
     return jsonify({'message': 'Recipe updated successfully', 'recipe': updated_recipe})
+
+# DELETE ENDPOINT - you just need the id of the specific recipe
+@app.route('/api/recipes/<int:recipe_id>', methods=['DELETE'])
+def delete_recipe(recipe_id):
+    recipe = Recipe.query.get(recipe_id)
+    if not recipe:
+        return jsonify({'error': 'Recipe not found'}), 404
+    db.session.delete(recipe)
+    db.session.commit()
+    return jsonify({'message': 'Recipe deleted successfully!'})
 
 if __name__ == '__main__':
     app.run(debug=True)
