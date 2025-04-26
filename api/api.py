@@ -70,7 +70,7 @@ def add_recipe():
         'description': new_recipe.description,
         'image_url': new_recipe.image_url
     }
-# still in add_recipe function, return a 400 status request if all required fields aren't completed
+# while in add_recipe function, return a 400 status request if all required fields aren't completed
     required_fields = ['title', 'ingredients', 'instructions', 'instructions', 'servings', 'description', 'image_url']
     for field in required_fields:
         if field not in data or data[field] == "":
