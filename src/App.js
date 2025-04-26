@@ -28,7 +28,6 @@ function App() {
   return (
     <div className='recipe-app'>
       <Header />
-      <p>Your recipes here! </p>
       {JSON.stringify(recipes)}
     </div>
   );
