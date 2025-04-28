@@ -44,12 +44,16 @@ function App() {
   return (
     <div className='recipe-app'>
       <Header />
-      <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe}/>
+      {selectedRecipe && (
+        <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe}/>
+      )}
+      {selectedRecipe && (
       <div className="recipe-list">
         {recipes.map((recipe) => (
           <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} />
         ))}
       </div>
+      )}
     </div>
   );
 }
