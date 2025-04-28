@@ -1,6 +1,6 @@
 import React from "react";
 
-const NewRecipeForm = (newRecipe, hideRecipeForm) => {
+const NewRecipeForm = (newRecipe, hideRecipeForm, onUpdateForm) => {
     
     return (
        <div className="recipe-details">
@@ -9,40 +9,40 @@ const NewRecipeForm = (newRecipe, hideRecipeForm) => {
 
         <form>
             <label>Title</label>
-            <input type="text" name="title" value='' onChange='' required />
+            <input type="text" name="title" value={newRecipe.title} onChange={(e) => onUpdateForm(e)} required />
             <label>Ingredients</label>
             <textarea
                 name="ingredients"
-                value=''
-                onChange=''
+                value={newRecipe.ingredients}
+                onChange={(e) => onUpdateForm(e)}
                 required
                 placeholder='Add ingredients separated bu commas - i.e. Flour, sugar, almonds' />
             <label>Instructions</label>
             <textarea
                 name='instructions'
-                value=''
-                onChange=''
+                value={newRecipe.instructions}
+                onChange={(e) => onUpdateForm(e)}
             />
             <label>Descriptions</label>
             <textarea
                 name='description'
-                value=''
-                onChange=''
+                value={newRecipe.description}
+                onChange={(e) => onUpdateForm(e)}
             />
             <label>Image</label>
             <input
                 type=''
                 name='image_url'
-                value=''
-                onChange=''
+                value={newRecipe.image_url}
+                onChange={(e) => onUpdateForm(e)}
                 required
             />
             <label>Servings</label>
             <input
                 type='number'
                 name='servings'
-                value=''
-                onChange=''
+                value={newRecipe.servings}
+                onChange={(e) => onUpdateForm(e)}
                 required
             />
             <button type="submit">Save Recipe</button>

@@ -54,13 +54,23 @@ function App() {
   /* Show state of a new submitted recipe */
   /* Set selectedRecipe back to null so you can show the recipe form OR the selected recipe */
   const showRecipeForm = () => {
-    showNewRecipeForm(true)
-    selectedRecipe(null)
+    setShowNewRecipeForm(true)
+    setSelectedRecipe(null)
   }
 
   /* Hide state of a new submitted recipe */
   const hideRecipeForm = () => {
-    showNewRecipeForm(false)
+    setShowNewRecipeForm(false)
+  }
+
+  /* Update newRecipe state - USER INPUT */
+  /* name attribute is important - allows us to know which form attribute we're working with */
+  /* destructured name and value properties from e.target */
+  /* pass an object to setNewRecipe to updater function */
+  /* change [name] with input value - [] because it will accept a dynamic value (e.target.value) */
+  const onUpdateForm = (e) => {
+    const { name, value } = e.target;
+    setNewRecipe({...newRecipe, [name]: value })
   }
 
   /* replace {JSON.stringify(recipes)} with a map over all recipes in state*/
