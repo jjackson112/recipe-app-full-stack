@@ -14,7 +14,7 @@ function App() {
   useEffect( () => {
     const fetchAllRecipes = async () => {
       try {
-        const response = await fetch("/api/recipes")
+        const response = await fetch("/api/recipes");
         if (response.ok) {
           const data = await response.json();
           setRecipes(data);
@@ -28,10 +28,12 @@ function App() {
     };
     fetchAllRecipes();
   }, [])
+
   /* Update the status of the selectedRecipe state */
     const handleSelectRecipe = (recipe) => {
       setSelectedRecipe(recipe);
     }
+
   /* Allows you to unselect a recipe */
     const handleUnselectRecipe = () => {
       setSelectedRecipe(null);
@@ -42,9 +44,10 @@ function App() {
   return (
     <div className='recipe-app'>
       <Header />
+      <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe}/>
       <div className="recipe-list">
         {recipes.map((recipe) => (
-          <RecipeExcerpt key={recipe.id} recipe={recipe} />
+          <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} />
         ))}
       </div>
     </div>
