@@ -2,7 +2,7 @@ import React from "react";
 
 /* Check get recipe app route for properties*/
 
-const RecipeExcerpt = ({recipe}) => {
+const RecipeExcerpt = ({recipe, handleSelectRecipe}) => {
 
     return (
         <article className="recipe-card">
