@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import "./App.css";
-import RecipeExcerpt from "./components/RecipeExcerpt";"./components/RecipeExcerpt"
+import RecipeExcerpt from "./components/RecipeExcerpt.js";
 
 /* async request to /api/recipes endpoint to grab all recipes and update state, handle errors, and make sure response is ok*/
 
