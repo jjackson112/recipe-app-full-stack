@@ -22,7 +22,13 @@ const RecipeFull = ({selectedRecipe}) => {
 
                 <h3>Ingredients</h3>
 
-                <ul className="ingredient-list">{}</ul>
+                <ul className="ingredient-list">
+                    {selectedRecipe.ingredients.split(",").map((ingredient, index) => (
+                    <li key={index} className="ingredient">
+                    {ingredient}
+                    </li>
+                    ))}
+                </ul>
 
                 <h3>Instructions:</h3>
 
