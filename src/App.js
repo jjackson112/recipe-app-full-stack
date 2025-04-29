@@ -41,6 +41,46 @@ function App() {
     fetchAllRecipes();
   }, [])
 
+  /* accepts e and newRecipe as arguments */
+  /* e prevent default is used to submit the form */
+  /* send over newRecipe data as JSON to the API endpoint 
+  JSON > python dictionary - new database record
+  API sends back saved recipe as JSON to the front end with a new ID in database */
+  /* data.recipe is our recipe  */
+  const handleNewRecipe = async (e, newRecipe) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("/api/recipes", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(newRecipe)
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setRecipes = ([...recipes, data.recipe]);
+        console.log("Recipe added successfully!")
+        // this is happening once the user completes the form and saves it - with this the form goes away
+        setShowNewRecipeForm(false)
+        setNewRecipe({
+          title: "",
+          ingredients: "",
+          instructions: "",
+          servings: 1, // conservative default
+          description: "",
+          image_url: "https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" //default
+        })
+      } else {
+        console.log("Oops could not add recipe.")
+      }
+    } catch (e) {
+      console.log(`An error has occurred - this recipe cannot be added.`)
+    }
+    }
+  }
+
   /* Update the status of the selectedRecipe state */
     const handleSelectRecipe = (recipe) => {
       setSelectedRecipe(recipe);
@@ -72,6 +112,7 @@ function App() {
     const { name, value } = e.target;
     setNewRecipe({...newRecipe, [name]: value })
   }
+
 
   /* replace {JSON.stringify(recipes)} with a map over all recipes in state*/
   /* each recipe has an ID for the key and a prop for each recipe*/
