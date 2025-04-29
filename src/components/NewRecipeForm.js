@@ -1,12 +1,14 @@
 import React from "react";
 
+/* onSubmit to call handleNewRecipe */
+
 const NewRecipeForm = (newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe) => {
     
     return (
        <div className="recipe-details">
         <h2>New Recipe</h2>
         <button className="cancel-button" onClick={hideRecipeForm}>Cancel</button>
-        /* onSubmit to call handleNewRecipe */
+
         <form onSubmit={(e) => handleNewRecipe(e, newRecipe)}>
             <label>Title</label>
             <input type="text" name="title" value={newRecipe.title} onChange={(e) => onUpdateForm(e)} required />
@@ -16,7 +18,7 @@ const NewRecipeForm = (newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe)
                 value={newRecipe.ingredients}
                 onChange={(e) => onUpdateForm(e)}
                 required
-                placeholder='Add ingredients separated bu commas - i.e. Flour, sugar, almonds' />
+                placeholder='Add ingredients separated by commas - i.e. Flour, sugar, almonds' />
             <label>Instructions</label>
             <textarea
                 name='instructions'
