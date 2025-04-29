@@ -1,10 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
+import RecipeExcerpt from "./components/RecipeExcerpt";
+import RecipeFull from "./components/RecipeFull"
+import NewRecipeForm from "./components/NewRecipeForm";
 import "./App.css";
-import RecipeExcerpt from "./components/RecipeExcerpt.js";
-import RecipeFull from "./components/RecipeFull.js"
-import NewRecipeForm from "./components/NewRecipeForm.js";
 
 /* async request to /api/recipes endpoint to grab all recipes and update state, handle errors, and make sure response is ok*/
 
@@ -12,17 +12,16 @@ function App() {
   const [recipes, setRecipes] = useState([])
   const [selectedRecipe, setSelectedRecipe] = useState(null)
   const [showNewRecipeForm, setShowNewRecipeForm] = useState(false)
+  
   // there is no id attribute since the database assigns one by default for each form submission
-  const [newRecipe, setNewRecipe] = useState(
-    {
+  const [newRecipe, setNewRecipe] = useState({
       title: "",
       ingredients: "",
       instructions: "",
       servings: 1, // conservative default
       description: "",
       image_url: "https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" //default
-    }
-  )
+    })
 
   useEffect( () => {
     const fetchAllRecipes = async () => {
@@ -58,10 +57,14 @@ function App() {
         },
         body: JSON.stringify(newRecipe)
       });
+
       if (response.ok) {
         const data = await response.json();
+
         setRecipes = ([...recipes, data.recipe]);
+
         console.log("Recipe added successfully!")
+        
         // this is happening once the user completes the form and saves it - with this the form goes away
         setShowNewRecipeForm(false)
         setNewRecipe({
@@ -71,37 +74,36 @@ function App() {
           servings: 1, // conservative default
           description: "",
           image_url: "https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" //default
-        })
+        });
       } else {
         console.log("Oops could not add recipe.")
       }
     } catch (e) {
       console.log(`An error has occurred - this recipe cannot be added.`)
     }
-    }
-  }
+  };
 
   /* Update the status of the selectedRecipe state */
-    const handleSelectRecipe = (recipe) => {
-      setSelectedRecipe(recipe);
-    }
+  const handleSelectRecipe = (recipe) => {
+    setSelectedRecipe(recipe);
+  };
 
   /* Allows you to unselect a recipe */
-    const handleUnselectRecipe = () => {
-      setSelectedRecipe(null);
-    };
+  const handleUnselectRecipe = () => {
+    setSelectedRecipe(null);
+  };
 
   /* Show state of a new submitted recipe */
   /* Set selectedRecipe back to null so you can show the recipe form OR the selected recipe */
   const showRecipeForm = () => {
     setShowNewRecipeForm(true)
     setSelectedRecipe(null)
-  }
+  };
 
   /* Hide state of a new submitted recipe */
   const hideRecipeForm = () => {
     setShowNewRecipeForm(false)
-  }
+  };
 
   /* Update newRecipe state - USER INPUT */
   /* name attribute is important - allows us to know which form attribute we're working with */
@@ -111,8 +113,7 @@ function App() {
   const onUpdateForm = (e) => {
     const { name, value } = e.target;
     setNewRecipe({...newRecipe, [name]: value })
-  }
-
+  };
 
   /* replace {JSON.stringify(recipes)} with a map over all recipes in state*/
   /* each recipe has an ID for the key and a prop for each recipe*/
@@ -120,12 +121,12 @@ function App() {
     <div className='recipe-app'>
       <Header showRecipeForm={showRecipeForm}/>
       {showNewRecipeForm && (
-        <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm}/>
+        <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe}/>
       )}
       {selectedRecipe && (
         <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe}/>
       )}
-      {selectedRecipe && (
+      {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">
         {recipes.map((recipe) => (
           <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} />
