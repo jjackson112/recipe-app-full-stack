@@ -3,16 +3,16 @@ import { useState } from "react";
 import EditRecipeForm from "./EditRecipeForm";
 import { X } from "react-feather";
 
-const RecipeFull = ({selectedRecipe, handleUnselectRecipe, onUpdateForm}) => {
+const RecipeFull = ({selectedRecipe, handleUnselectRecipe, onUpdateForm, handleUpdateRecipe}) => {
     const [editing, setEditing] = useState(false)
 
     const handleCancel = () => {
         setEditing(false)
     }
-    
+
     return (
         <div className="recipe-details">
-            {editing ? (<EditRecipeForm selectedRecipe={selectedRecipe} handleCancel={handleCancel} onUpdateForm={onUpdateForm} />
+            {editing ? (<EditRecipeForm selectedRecipe={selectedRecipe} handleCancel={handleCancel} handleUpdateRecipe={handleUpdateRecipe} onUpdateForm={onUpdateForm}/>
             ) :
             <article>
                 <header>

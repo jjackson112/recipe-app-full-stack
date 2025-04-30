@@ -133,15 +133,30 @@ function App() {
     const {id} = selectedRecipe;
 
     try {
-      const response = await fetch("/api/recipes/${id}", {
+      const response = await fetch(`/api/recipes/${id}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json"
         },
-        body: JSON.stringify(selectedRecipe);
+        body: JSON.stringify(selectedRecipe)
       });
+      if (response.ok) {
+        const data = await data.json();
+  // setRecipes changes - you map over existing recipes in state
+  // if recipes have the same id as selectedRecipes, the recipe object inside the data received as a response from data.recipe is returned
+        setRecipes(
+          recipes.map ((recipe) => {
+            if (recipe.id === id) {
+              return data.recipe
+            } return recipe
+          }))
+        console.log("Recipe has been edited successfully!")
+      } else {
+        console.log("Oops! We cannot fetch the recipe!")
+      }
     } catch (e) {
-
+        selectedRecipe(null)
+        console.log("An error has errored - you cannot edit or update this recipe.")
     }
   }
 
@@ -154,7 +169,7 @@ function App() {
         <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe}/>
       )}
       {selectedRecipe && 
-        <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe} onUpdateForm={onUpdateForm} />
+        <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe} onUpdateForm={onUpdateForm} handleUpdateRecipe={handleUpdateRecipe}/>
       }
       {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">
