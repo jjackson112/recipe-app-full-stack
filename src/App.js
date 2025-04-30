@@ -76,12 +76,49 @@ function App() {
           image_url: "https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" //default
         });
       } else {
-        console.log("Oops could not add recipe.")
+        console.error("Oops could not add recipe.")
       }
     } catch (e) {
-      console.log(`An error has occurred - this recipe cannot be added.`)
+      console.error(`An error has occurred - this recipe cannot be added.`)
     }
   };
+
+  /* handleUpdateRecipe function is similar to handleNewRecipe */
+  /* except update an existing recipe */
+  const handleUpdateRecipe = async (e, selectedRecipe) => {
+    e.preventDefault();
+  // you need the id to make sure the PST request reaches the correct endpoint
+    const {id} = selectedRecipe;
+
+    try {
+      const response = await fetch(`/api/recipes/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(selectedRecipe)
+      });
+
+      if (response.ok) {
+      const data = await response.json();
+
+  // setRecipes changes - you map over existing recipes in state
+  // if recipes have the same id as selectedRecipes, the recipe object inside the data received as a response from data.recipe is returned
+        setRecipes(
+          recipes.map ((recipe) => {
+            if (recipe.id === id) {
+              return data.recipe
+            } return recipe
+          })
+        )
+        console.log("Recipe has been edited successfully!")
+      } else {
+        console.error("Oops! We cannot fetch the recipe!")
+      }
+    } catch (erroe) {
+        console.error("An error has errored - you cannot edit or update this recipe.")
+    }
+  }
 
   /* Update the status of the selectedRecipe state */
   const handleSelectRecipe = (recipe) => {
@@ -124,41 +161,6 @@ function App() {
         setNewRecipe({...newRecipe, [name]: value })
       }
   };
-
-  /* handleUpdateRecipe function is similar to handleNewRecipe */
-  /* except update an existing recipe */
-  const handleUpdateRecipe = async (e, selectedRecipe) => {
-    e.preventDefault();
-  // you need the id to make sure the PST request reaches the correct endpoint
-    const {id} = selectedRecipe;
-
-    try {
-      const response = await fetch(`/api/recipes/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-type": "application/json"
-        },
-        body: JSON.stringify(selectedRecipe)
-      });
-      if (response.ok) {
-        const data = await data.json();
-  // setRecipes changes - you map over existing recipes in state
-  // if recipes have the same id as selectedRecipes, the recipe object inside the data received as a response from data.recipe is returned
-        setRecipes(
-          recipes.map ((recipe) => {
-            if (recipe.id === id) {
-              return data.recipe
-            } return recipe
-          }))
-        console.log("Recipe has been edited successfully!")
-      } else {
-        console.log("Oops! We cannot fetch the recipe!")
-      }
-    } catch (e) {
-        selectedRecipe(null)
-        console.log("An error has errored - you cannot edit or update this recipe.")
-    }
-  }
 
   /* replace {JSON.stringify(recipes)} with a map over all recipes in state*/
   /* each recipe has an ID for the key and a prop for each recipe*/
