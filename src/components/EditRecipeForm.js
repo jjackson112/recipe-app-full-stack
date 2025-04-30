@@ -1,6 +1,5 @@
 import React from "react";
 
-/* update values to use update as the second argument */
 /* update onChange to use new as the second argument */
 
 const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm}) => {

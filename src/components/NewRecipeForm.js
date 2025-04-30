@@ -1,6 +1,7 @@
 import React from "react";
 
 /* onSubmit to call handleNewRecipe */
+/* update onChange to use new as the second argument */
 
 const NewRecipeForm = (newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe) => {
     
@@ -16,27 +17,27 @@ const NewRecipeForm = (newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe)
             <textarea
                 name="ingredients"
                 value={newRecipe.ingredients}
-                onChange={(e) => onUpdateForm(e)}
+                onChange={(e) => onUpdateForm(e, "new")}
                 required
                 placeholder='Add ingredients separated by commas - i.e. Flour, sugar, almonds' />
             <label>Instructions</label>
             <textarea
                 name='instructions'
                 value={newRecipe.instructions}
-                onChange={(e) => onUpdateForm(e)}
+                onChange={(e) => onUpdateForm(e, "new")}
             />
             <label>Descriptions</label>
             <textarea
                 name='description'
                 value={newRecipe.description}
-                onChange={(e) => onUpdateForm(e)}
+                onChange={(e) => onUpdateForm(e, "new")}
             />
             <label>Image</label>
             <input
                 type=''
                 name='image_url'
                 value={newRecipe.image_url}
-                onChange={(e) => onUpdateForm(e)}
+                onChange={(e) => onUpdateForm(e, "new")}
                 required
             />
             <label>Servings</label>
@@ -44,7 +45,7 @@ const NewRecipeForm = (newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe)
                 type='number'
                 name='servings'
                 value={newRecipe.servings}
-                onChange={(e) => onUpdateForm(e)}
+                onChange={(e) => onUpdateForm(e, "new")}
                 required
             />
             <button type="submit">Save Recipe</button>

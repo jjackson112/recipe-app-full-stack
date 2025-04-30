@@ -126,6 +126,24 @@ function App() {
   };
 
   /* handleUpdateRecipe function is similar to handleNewRecipe */
+  /* except update an existing recipe */
+  const handleUpdateRecipe = async (e, selectedRecipe) => {
+    e.preventDefault();
+  // you need the id to make sure the PST request reaches the correct endpoint
+    const {id} = selectedRecipe;
+
+    try {
+      const response = await fetch("/api/recipes/${id}", {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(selectedRecipe);
+      });
+    } catch (e) {
+
+    }
+  }
 
   /* replace {JSON.stringify(recipes)} with a map over all recipes in state*/
   /* each recipe has an ID for the key and a prop for each recipe*/
