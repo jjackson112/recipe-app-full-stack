@@ -3,7 +3,7 @@ import React from "react";
 /* update values to use update as the second argument */
 /* update onChange to use new as the second argument */
 
-const EditRecipeForm = (selectedRecipe, handleCancel, onUpdateForm) => {
+const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm}) => {
     
     return (
         <div className="recipe-form">
@@ -14,21 +14,21 @@ const EditRecipeForm = (selectedRecipe, handleCancel, onUpdateForm) => {
                 <input
                     type="text"
                     name="title"
-                    value={(e) => onUpdateForm(e, "update")}
+                    value={selectedRecipe.title}
                     onChange={(e) => onUpdateForm(e, "new")}
                     required
                 />
                 <label>Ingredients</label>
                 <textarea
                     name="ingredients"
-                    value={(e) => onUpdateForm(e, "update")}
+                    value={selectedRecipe.ingredients}
                     onChange={(e) => onUpdateForm(e, "new")}
                     required
                 />
                 <label>Instructions</label>
                 <textarea
                     name="descriptions"
-                    value={(e) => onUpdateForm(e, "update")}
+                    value={selectedRecipe.instructions}
                     onChange={(e) => onUpdateForm(e, "new")}
                     required
                 />
@@ -36,7 +36,7 @@ const EditRecipeForm = (selectedRecipe, handleCancel, onUpdateForm) => {
                 <textarea
                     type="text"
                     name="image_url"
-                    value={(e) => onUpdateForm(e, "update")}
+                    value={selectedRecipe.image_url}
                     onChange={(e) => onUpdateForm(e, "new")}
                     required
                 />
@@ -44,7 +44,7 @@ const EditRecipeForm = (selectedRecipe, handleCancel, onUpdateForm) => {
                 <textarea
                     type="number"
                     name="servings"
-                    value={(e) => onUpdateForm(e, "update")}
+                    value={selectedRecipe.servings}
                     onChange={(e) => onUpdateForm(e, "new")}
                     required
                 />
