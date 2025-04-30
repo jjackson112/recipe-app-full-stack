@@ -111,11 +111,18 @@ function App() {
   /* pass an object to setNewRecipe to updater function */
   /* change [name] with input value - [] because it will accept a dynamic value (e.target.value) */
   /* action="new" is the action parameter with the default value of new - in case the paramenter provided isn't provided to the parameter when it's called (can be update too) */
-  /* if the action is new, update the newRecipe*/
   /* if the action is update, update the selectedRecipe*/
+  /* if the action is new, update the newRecipe*/
+
   const onUpdateForm = (e, action="new") => {
     const { name, value } = e.target;
-    setNewRecipe({...newRecipe, [name]: value })
+      if (action === "update") {
+        //update recipe
+        setSelectedRecipe({...selectedRecipe, [name]: value})
+      } else if (action === "new") {
+        // update new recipe state - same line as before
+        setNewRecipe({...newRecipe, [name]: value })
+      }
   };
 
   /* handleUpdateRecipe function is similar to handleNewRecipe */

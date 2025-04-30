@@ -9,7 +9,7 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe, onUpdateForm}) => {
     const handleCancel = () => {
         setEditing(false)
     }
-
+    
     return (
         <div className="recipe-details">
             {editing ? (<EditRecipeForm selectedRecipe={selectedRecipe} handleCancel={handleCancel} onUpdateForm={onUpdateForm} />
