@@ -123,9 +123,9 @@ function App() {
       {showNewRecipeForm && (
         <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe}/>
       )}
-      {selectedRecipe && (
+      {selectedRecipe && 
         <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe}/>
-      )}
+      }
       {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">
         {recipes.map((recipe) => (

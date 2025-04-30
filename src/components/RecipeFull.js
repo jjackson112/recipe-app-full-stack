@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState }  from "react";
 import { X } from "react-feather";
 import EditRecipeForm from "./EditRecipeForm";
+
+const [editing, setEditing] = useState(false)
+
+const handleCancel = () => {
+    setEditing(false)
+}
 
 const RecipeFull = ({selectedRecipe, handleUnselectRecipe}) => {
 
     return(
         <div className="recipe-details">
+            {editing ? (<EditRecipeForm />
+            ) :
             <article>
                 <header>
                     <figure>
@@ -13,7 +21,7 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe}) => {
                     </figure>
                     <h2>{selectedRecipe.title}</h2>
                     <div className="button-container">
-                        <button className="edit-button">Edit</button>
+                        <button className="edit-button" onClick={() => setEditing(true)}>Edit</button>
                         <button className="cancel-button" onClick={handleUnselectRecipe}><X />Close</button>
                         <button className="delete-button">Delete</button>
                     </div>
@@ -38,6 +46,7 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe}) => {
 
                 <h3>Servings: {selectedRecipe.servings}</h3>
             </article>
+            }   
         </div>
     )
 }

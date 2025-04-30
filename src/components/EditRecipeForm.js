@@ -4,7 +4,7 @@ const EditRecipeForm = () => {
     
     return (
         <div className="recipe-form">
-            <h2>Edit "{}"</h2>
+            <h2>Edit "{selectedRecipe}"</h2>
             <button className="cancel-button">Cancel</button>
             <form>
                 <label>Title</label>
