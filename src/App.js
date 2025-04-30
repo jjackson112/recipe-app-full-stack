@@ -110,10 +110,15 @@ function App() {
   /* destructured name and value properties from e.target */
   /* pass an object to setNewRecipe to updater function */
   /* change [name] with input value - [] because it will accept a dynamic value (e.target.value) */
-  const onUpdateForm = (e) => {
+  /* action="new" is the action parameter with the default value of new - in case the paramenter provided isn't provided to the parameter when it's called (can be update too) */
+  /* if the action is new, update the newRecipe*/
+  /* if the action is update, update the selectedRecipe*/
+  const onUpdateForm = (e, action="new") => {
     const { name, value } = e.target;
     setNewRecipe({...newRecipe, [name]: value })
   };
+
+  /* handleUpdateRecipe function is similar to handleNewRecipe */
 
   /* replace {JSON.stringify(recipes)} with a map over all recipes in state*/
   /* each recipe has an ID for the key and a prop for each recipe*/
@@ -124,7 +129,7 @@ function App() {
         <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe}/>
       )}
       {selectedRecipe && 
-        <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe}/>
+        <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe} onUpdateForm={onUpdateForm} />
       }
       {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">

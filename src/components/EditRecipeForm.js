@@ -1,6 +1,9 @@
 import React from "react";
 
-const EditRecipeForm = (selectedRecipe, handleCancel) => {
+/* update values to use update as the second argument */
+/* update onChange to use new as the second argument */
+
+const EditRecipeForm = (selectedRecipe, handleCancel, onUpdateForm) => {
     
     return (
         <div className="recipe-form">
@@ -11,38 +14,38 @@ const EditRecipeForm = (selectedRecipe, handleCancel) => {
                 <input
                     type="text"
                     name="title"
-                    value=''
-                    onChange=''
+                    value={(e) => onUpdateForm(e, "update")}
+                    onChange={(e) => onUpdateForm(e, "new")}
                     required
                 />
                 <label>Ingredients</label>
                 <textarea
                     name="ingredients"
-                    value=''
-                    onChange=''
+                    value={(e) => onUpdateForm(e, "update")}
+                    onChange={(e) => onUpdateForm(e, "new")}
                     required
                 />
                 <label>Instructions</label>
                 <textarea
                     name="descriptions"
-                    value=''
-                    onChange=''
+                    value={(e) => onUpdateForm(e, "update")}
+                    onChange={(e) => onUpdateForm(e, "new")}
                     required
                 />
                 <label>Image</label>
                 <textarea
                     type="text"
                     name="image_url"
-                    value=''
-                    onChange=''
+                    value={(e) => onUpdateForm(e, "update")}
+                    onChange={(e) => onUpdateForm(e, "new")}
                     required
                 />
                 <label>Servings</label>
                 <textarea
                     type="number"
                     name="servings"
-                    value=''
-                    onChange=''
+                    value={(e) => onUpdateForm(e, "update")}
+                    onChange={(e) => onUpdateForm(e, "new")}
                     required
                 />
                 <button type="submit">Update Recipe</button>
