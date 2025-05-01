@@ -8,7 +8,7 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe}) => {
             <article>
                 <header>
                     <figure>
-                        <img src={selectedRecipe.title} alt={selectedRecipe.title}/>
+                        <img src={selectedRecipe.image_url} alt={selectedRecipe.title}/>
                     </figure>
                     <h2>{selectedRecipe.title}</h2>
                     <div className="button-container">
@@ -25,7 +25,7 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe}) => {
 
                 <ul className="ingredient-list">
                     {selectedRecipe.ingredients.split(",").map((ingredient, index) => (
-                    <li key={index} className="ingredient">
+                    <li className="ingredient" key={index}>
                     {ingredient}
                     </li>
                     ))}

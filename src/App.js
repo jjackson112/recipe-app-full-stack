@@ -76,10 +76,10 @@ function App() {
           image_url: "https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" //default
         });
       } else {
-        console.log("Oops could not add recipe.")
+        console.error("Oops could not add recipe.")
       }
     } catch (e) {
-      console.log(`An error has occurred - this recipe cannot be added.`)
+      console.error(`An error has occurred - this recipe cannot be added.`)
     }
   };
 
