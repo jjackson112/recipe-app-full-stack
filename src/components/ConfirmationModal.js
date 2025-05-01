@@ -1,6 +1,6 @@
 import React from "react";
 
-const ConfirmationModal = () => {    
+const ConfirmationModal = ({message, onCancel, onConfirm}) => {    
     return (
         <div className="confirm">
             <div className="confirm-content">

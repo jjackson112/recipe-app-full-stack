@@ -65,7 +65,6 @@ function App() {
         setRecipes = ([...recipes, data.recipe]);
 
         console.log("Recipe added successfully!")
-        selectedRecipe(null)
 
         // this is happening once the user completes the form and saves it - with this the form goes away
         setShowNewRecipeForm(false)
@@ -133,13 +132,13 @@ function App() {
       });
 
       if (response.ok) {
-        setRecipes(recipes.filter((recipe) => selectedRecipe.id !== recipeId))
+        setRecipes(recipes.filter((recipe) => recipe.id !== recipeId))
         setSelectedRecipe(null) // see recipe excerpts view once more
         console.log("Recipe successfully deleted!")
       } else {
-        console.log("Oops! This recipe cannot be deleted!")
+        console.error("Oops! This recipe cannot be deleted!")
       }
-    } catch (erorr) {
+    } catch (error) {
       console.error(`An error has occurred, this recipe cannot be deleted!`)
   }
 
