@@ -8,7 +8,7 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe}) => {
             <article>
                 <header>
                     <figure>
-                        <img src={selectedRecipe.image_url} alt={selectedRecipe.image_url}/>
+                        <img src={selectedRecipe.title} alt={selectedRecipe.title}/>
                     </figure>
                     <h2>{selectedRecipe.title}</h2>
                     <div className="button-container">
