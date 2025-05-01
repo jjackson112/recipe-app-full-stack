@@ -3,6 +3,7 @@ import React from "react";
 /* Check get recipe app route for properties*/
 
 const RecipeExcerpt = ({recipe, handleSelectRecipe}) => {
+    const recipe = displayedRecipes;
 
     return (
         <article className="recipe-card">
