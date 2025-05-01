@@ -12,7 +12,8 @@ function App() {
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [showNewRecipeForm, setShowNewRecipeForm] = useState(false);
-  
+  const [searchTerm, setSearchTerm] = useState("");
+
   // there is no id attribute since the database assigns one by default for each form submission
   const [newRecipe, setNewRecipe] = useState({
       title: "",
@@ -185,6 +186,25 @@ function App() {
         setNewRecipe({...newRecipe, [name]: value })
       }
   };
+
+  /* Query the database - search by terms */
+  const updateSearchTerm = (e) => {
+    setSearchTerm(e.target.value);
+  }
+
+  /* handleSearch accepts no parameters - 
+  where we filter the recipe results and return 
+  recipes with the searchTerm - no changes in state, just filtering*/
+  /* the some method used on valuesToSearch looks like the filter method -
+   it returns true if any item iterated over meets the criteria*/
+
+  const handleSearch = () => {
+    const searchResults = recipes.filter((recipe) => {
+      const valuesToSearch=[recipe.title, recipe.ingredients, recipe.description];
+      return valuesToSearch.some(value => value.toLowercase().includes(searchTerm.toLowerCase()))
+    })
+    return searchResults;
+  }
 
   /* replace {JSON.stringify(recipes)} with a map over all recipes in state*/
   /* each recipe has an ID for the key and a prop for each recipe*/
