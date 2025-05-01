@@ -9,9 +9,9 @@ import "./App.css";
 /* async request to /api/recipes endpoint to grab all recipes and update state, handle errors, and make sure response is ok*/
 
 function App() {
-  const [recipes, setRecipes] = useState([])
-  const [selectedRecipe, setSelectedRecipe] = useState(null)
-  const [showNewRecipeForm, setShowNewRecipeForm] = useState(false)
+  const [recipes, setRecipes] = useState([]);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [showNewRecipeForm, setShowNewRecipeForm] = useState(false);
   
   // there is no id attribute since the database assigns one by default for each form submission
   const [newRecipe, setNewRecipe] = useState({
@@ -21,9 +21,9 @@ function App() {
       servings: 1, // conservative default
       description: "",
       image_url: "https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" //default
-    })
+    });
 
-  useEffect( () => {
+  useEffect(() => {
     const fetchAllRecipes = async () => {
       try {
         const response = await fetch("/api/recipes");
@@ -34,12 +34,12 @@ function App() {
           console.log(`Cannot find that recipe!`);
         }
       } catch (e) {
-        console.error(`An error occurred during the request.`, e)
+        console.error(`An error occurred during the request.`, e);
+        console.log("An unexpected error has occurred. Please try again later.");
       }
     };
     fetchAllRecipes();
-  }, [])
-}
+  }, []);
 
   /* accepts e and newRecipe as arguments */
   /* e prevent default is used to submit the form */
@@ -62,12 +62,12 @@ function App() {
       if (response.ok) {
         const data = await response.json();
 
-        setRecipes = ([...recipes, data.recipe]);
+        setRecipes([...recipes, data.recipe]);
 
-        console.log("Recipe added successfully!")
+        console.log("Recipe added successfully!");
 
         // this is happening once the user completes the form and saves it - with this the form goes away
-        setShowNewRecipeForm(false)
+        setShowNewRecipeForm(false);
         setNewRecipe({
           title: "",
           ingredients: "",
@@ -77,10 +77,10 @@ function App() {
           image_url: "https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" //default
         });
       } else {
-        console.error("Oops could not add recipe.")
+        console.error("Oops could not add recipe.");
       }
     } catch (e) {
-      console.error(`An error has occurred - this recipe cannot be added.`)
+      console.error(`An error has occurred - this recipe cannot be added.`);
     }
   };
 
@@ -109,9 +109,9 @@ function App() {
         setRecipes(
           recipes.map ((recipe) => {
             if (recipe.id === id) {
-              return data.recipe
+              return data.recipe;
             } 
-            return recipe
+            return recipe;
           })
         )
         console.log("Recipe has been edited successfully!")
@@ -119,7 +119,7 @@ function App() {
         console.error("Oops! We cannot fetch the recipe!")
       }
     } catch (error) {
-        console.error("An error has errored - you cannot edit or update this recipe.", e)
+        console.error("An error has errored - you cannot edit or update this recipe.", error)
     }
     setSelectedRecipe(null);
   }
@@ -127,20 +127,22 @@ function App() {
   // Delete a recipe - no need for headers or body
   const handleDeleteRecipe = async (recipeId) => {
     try {
-      const response = await fetch(`/api/recipes/${selectedRecipe.id}`, {
+      const response = await fetch(`/api/recipes/${recipeId}`, {
         method: "DELETE"
       });
-
+  
       if (response.ok) {
-        setRecipes(recipes.filter((recipe) => recipe.id !== recipeId))
-        setSelectedRecipe(null) // see recipe excerpts view once more
-        console.log("Recipe successfully deleted!")
+        setRecipes(recipes.filter((recipe) => recipe.id !== recipeId));
+        setSelectedRecipe(null); // Return to the excerpts view
+        console.log("Recipe successfully deleted!");
       } else {
-        console.error("Oops! This recipe cannot be deleted!")
+        console.error("Oops! This recipe cannot be deleted!");
       }
     } catch (error) {
-      console.error(`An error has occurred, this recipe cannot be deleted!`)
-  }
+      console.error(`An error has occurred, this recipe cannot be deleted!`, error);
+    }
+  };
+  
 
   /* Update the status of the selectedRecipe state */
   const handleSelectRecipe = (recipe) => {
