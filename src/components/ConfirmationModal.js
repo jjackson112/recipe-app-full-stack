@@ -4,9 +4,9 @@ const ConfirmationModal = () => {
     return (
         <div className="confirm">
             <div className="confirm-content">
-                <p></p>
-                <button className="cancel-button">Cancel</button>
-                <button className="delete-button">Delete</button>
+                <p>{message}</p>
+                <button className="cancel-button" onClick={onCancel}>Cancel</button>
+                <button className="delete-button" onClick={onConfirm}>Delete</button>
             </div>
         </div>
     )

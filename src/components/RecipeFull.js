@@ -37,7 +37,7 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe, onUpdateForm, handleU
                     <div className="button-container">
                         <button className="edit-button" onClick={() => setEditing(true)}>Edit</button>
                         <button className="cancel-button" onClick={handleUnselectRecipe}><X />Close</button>
-                        <button className="delete-button">Delete</button>
+                        <button className="delete-button" onClick={() => setShowConfirmationModal(true)}>Delete</button>
                     </div>
                 </header>
 
