@@ -3,12 +3,10 @@ import React from "react";
 /* Check get recipe app route for properties*/
 
 const RecipeExcerpt = ({recipe, handleSelectRecipe}) => {
-    const recipe = displayedRecipes;
-
     return (
         <article className="recipe-card">
         <figure>
-            <img src={recipe.image_url} alt={recipe.title} />
+            <img src={recipe.image_url} alt={recipe.image_url} />
         </figure>
         <h2>{recipe.title}</h2>
         <p className="flex-spacing">{recipe.description}</p>

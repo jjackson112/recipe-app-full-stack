@@ -224,7 +224,7 @@ function App() {
       {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">
         {displayedRecipes.map((recipe) => (
-          <RecipeExcerpt key={recipe.id} recipes={recipe} handleSelectRecipe={handleSelectRecipe} />
+          <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} />
         ))}
       </div>
       )}
