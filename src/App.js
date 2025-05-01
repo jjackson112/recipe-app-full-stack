@@ -201,7 +201,7 @@ function App() {
   const handleSearch = () => {
     const searchResults = recipes.filter((recipe) => {
       const valuesToSearch=[recipe.title, recipe.ingredients, recipe.description];
-      return valuesToSearch.some(value => value.toLowercase().includes(searchTerm.toLowerCase()))
+      return valuesToSearch.some(value => value.toLowerCase().includes(searchTerm.toLowerCase()))
     })
     return searchResults;
   }
@@ -214,7 +214,7 @@ function App() {
   /* each recipe has an ID for the key and a prop for each recipe*/
   return (
     <div className='recipe-app'>
-      <Header showRecipeForm={showRecipeForm}/>
+      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm}/>
       {showNewRecipeForm && (
         <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe}/>
       )}
@@ -223,8 +223,8 @@ function App() {
       }
       {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">
-        {recipes.map((recipe) => (
-          <RecipeExcerpt key={recipe.id} displayedRecipes={recipe} handleSelectRecipe={handleSelectRecipe} />
+        {displayedRecipes.map((recipe) => (
+          <RecipeExcerpt key={recipe.id} recipes={recipe} handleSelectRecipe={handleSelectRecipe} />
         ))}
       </div>
       )}
