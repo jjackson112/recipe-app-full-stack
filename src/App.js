@@ -120,14 +120,13 @@ function App() {
         console.error("Oops! We cannot fetch the recipe!")
       }
     } catch (error) {
-        console.error("An error has errored - you cannot edit or update this recipe.")
+        console.error("An error has errored - you cannot edit or update this recipe.", e)
     }
     setSelectedRecipe(null);
   }
 
   // Delete a recipe - no need for headers or body
   const handleDeleteRecipe = async (recipeId) => {
-
     try {
       const response = await fetch(`/api/recipes/${selectedRecipe.id}`, {
         method: "DELETE"
