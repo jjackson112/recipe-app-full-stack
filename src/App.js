@@ -39,6 +39,7 @@ function App() {
     };
     fetchAllRecipes();
   }, [])
+}
 
   /* accepts e and newRecipe as arguments */
   /* e prevent default is used to submit the form */
@@ -64,7 +65,8 @@ function App() {
         setRecipes = ([...recipes, data.recipe]);
 
         console.log("Recipe added successfully!")
-        
+        selectedRecipe(null)
+
         // this is happening once the user completes the form and saves it - with this the form goes away
         setShowNewRecipeForm(false)
         setNewRecipe({
@@ -109,7 +111,8 @@ function App() {
           recipes.map ((recipe) => {
             if (recipe.id === id) {
               return data.recipe
-            } return recipe
+            } 
+            return recipe
           })
         )
         console.log("Recipe has been edited successfully!")
@@ -119,6 +122,26 @@ function App() {
     } catch (error) {
         console.error("An error has errored - you cannot edit or update this recipe.")
     }
+    setSelectedRecipe(null);
+  }
+
+  // Delete a recipe - no need for headers or body
+  const handleDeleteRecipe = async (recipeId) => {
+
+    try {
+      const response = await fetch(`/api/recipes/${selectedRecipe.id}`, {
+        method: "DELETE"
+      });
+
+      if (response.ok) {
+        setRecipes(recipes.filter((recipe) => selectedRecipe.id !== recipeId))
+        setSelectedRecipe(null) // see recipe excerpts view once more
+        console.log("Recipe successfully deleted!")
+      } else {
+        console.log("Oops! This recipe cannot be deleted!")
+      }
+    } catch (erorr) {
+      console.error(`An error has occurred, this recipe cannot be deleted!`)
   }
 
   /* Update the status of the selectedRecipe state */
@@ -172,7 +195,7 @@ function App() {
         <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe}/>
       )}
       {selectedRecipe && 
-        <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe} onUpdateForm={onUpdateForm} handleUpdateRecipe={handleUpdateRecipe}/>
+        <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe} onUpdateForm={onUpdateForm} handleUpdateRecipe={handleUpdateRecipe} handleDeleteRecipe={handleDeleteRecipe}/>
       }
       {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">
