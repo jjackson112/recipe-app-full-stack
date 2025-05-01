@@ -85,6 +85,7 @@ function App() {
 
   /* handleUpdateRecipe function is similar to handleNewRecipe */
   /* except update an existing recipe */
+
   const handleUpdateRecipe = async (e, selectedRecipe) => {
     e.preventDefault();
   // you need the id to make sure the PST request reaches the correct endpoint
@@ -115,7 +116,7 @@ function App() {
       } else {
         console.error("Oops! We cannot fetch the recipe!")
       }
-    } catch (erroe) {
+    } catch (error) {
         console.error("An error has errored - you cannot edit or update this recipe.")
     }
   }

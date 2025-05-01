@@ -3,7 +3,7 @@ import React from "react";
 /* onSubmit to call handleNewRecipe */
 /* update onChange to use new as the second argument */
 
-const NewRecipeForm = (newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe) => {
+const NewRecipeForm = ({newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe}) => {
     
     return (
        <div className="recipe-details">
