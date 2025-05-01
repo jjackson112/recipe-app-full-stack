@@ -206,6 +206,10 @@ function App() {
     return searchResults;
   }
 
+  /* How to display recipes on search results page - is there a search term? */
+  const displayedRecipes = searchTerm ? handleSearch() : recipes;
+
+
   /* replace {JSON.stringify(recipes)} with a map over all recipes in state*/
   /* each recipe has an ID for the key and a prop for each recipe*/
   return (
@@ -220,7 +224,7 @@ function App() {
       {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">
         {recipes.map((recipe) => (
-          <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} />
+          <RecipeExcerpt key={recipe.id} displayedRecipes={recipe} handleSelectRecipe={handleSelectRecipe} />
         ))}
       </div>
       )}
