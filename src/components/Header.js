@@ -4,7 +4,7 @@ import { ReactComponent as Logo } from "../images/utensils.svg";
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
-const Header = ({showRecipeForm, searchTerm, updateSearchTerm}) => {
+const Header = ({ showRecipeForm, searchTerm, updateSearchTerm }) => {
   return (
     <header>
       <div className='logo-search'>
@@ -13,12 +13,20 @@ const Header = ({showRecipeForm, searchTerm, updateSearchTerm}) => {
           <label className='visually-hidden' htmlFor='search'>
             Search
           </label>
-          <input type='text' placeholder='Search' id='search' value={searchTerm} onChange={(e) => updateSearchTerm(e.target.value)} />
+          <input
+            type='text'
+            placeholder='Search'
+            id='search'
+            value={searchTerm}
+            onChange={updateSearchTerm}
+          />
           <Search />
         </div>
       </div>
       <h1>My Favorite Recipes</h1>
-      <button className="new-recipe" onClick={showRecipeForm}>Add New Recipe</button>
+      <button className='new-recipe' onClick={showRecipeForm}>
+        Add New Recipe
+      </button>
     </header>
   );
 };

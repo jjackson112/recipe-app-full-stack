@@ -26,7 +26,7 @@ const NewRecipeForm = ({newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe
                 value={newRecipe.instructions}
                 onChange={(e) => onUpdateForm(e, "new")}
             />
-            <label>Descriptions</label>
+            <label>Description</label>
             <textarea
                 name='description'
                 value={newRecipe.description}
