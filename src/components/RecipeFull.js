@@ -40,7 +40,8 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe, onUpdateForm, handleU
                         <button className="delete-button" onClick={() => setShowConfirmationModal(true)}>Delete</button>
                     </div>
                 </header>
-
+                <h3>Servings: {selectedRecipe.servings}</h3>
+                
                 <h3>Description:</h3>
                 <p>{selectedRecipe.description}</p>
 
@@ -58,7 +59,6 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe, onUpdateForm, handleU
 
                 <pre className="formatted-text">{selectedRecipe.instructions}</pre>
 
-                <h3>Servings: {selectedRecipe.servings}</h3>
             </article>
             }   
         </div>
