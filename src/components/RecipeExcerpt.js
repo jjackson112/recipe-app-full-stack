@@ -1,6 +1,8 @@
 import React from "react";
+import truncateText from "../helpers/utils";
 
 /* Check get recipe app route for properties*/
+/* Wrap recipe.description with truncateText - call the default value as a second argument  */
 
 const RecipeExcerpt = ({recipe, handleSelectRecipe}) => {
     return (
@@ -9,7 +11,7 @@ const RecipeExcerpt = ({recipe, handleSelectRecipe}) => {
             <img src={recipe.image_url} alt={recipe.image_url} />
         </figure>
         <h2>{recipe.title}</h2>
-        <p className="flex-spacing">{recipe.description}</p>
+        <p className="flex-spacing">{truncateText(recipe.description, 150)}</p>
         <button onClick={() => handleSelectRecipe(recipe)}>View</button>
     </article>
     )
