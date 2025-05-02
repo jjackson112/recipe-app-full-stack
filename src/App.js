@@ -188,8 +188,10 @@ function App() {
   };
 
   /* Query the database - search by terms */
-  const updateSearchTerm = (e) => {
-    setSearchTerm(e.target.value);
+  /* updateSearchTerm will accept a string or a value */
+  const updateSearchTerm = (e0rValue) => {
+    const value = typeof e0rValue === "string" ? e0rValue : e0rValue.target.value;
+    setSearchTerm(value);
   }
 
   /* handleSearch accepts no parameters - 
@@ -203,24 +205,31 @@ function App() {
       const valuesToSearch=[recipe.title, recipe.ingredients, recipe.description];
       return valuesToSearch.some(value => value.toLowerCase().includes(searchTerm.toLowerCase()));
     });
-    
+
     return searchResults;
   }
 
+    /* make the logo clickable - clear the search results,
+   newRecipeForm cannot show and no recipes can be selected */
+   const displayAllRecipes = () => {
+    hideRecipeForm();
+    handleUnselectRecipe();
+    updateSearchTerm("");
+   }
+
   /* How to display recipes on search results page - is there a search term? */
   const displayedRecipes = searchTerm ? handleSearch() : recipes;
-
 
   /* replace {JSON.stringify(recipes)} with a map over all recipes in state*/
   /* each recipe has an ID for the key and a prop for each recipe*/
   return (
     <div className='recipe-app'>
-      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm}/>
+      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} />
       {showNewRecipeForm && (
         <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe}/>
       )}
       {selectedRecipe && 
-        <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe} onUpdateForm={onUpdateForm} handleUpdateRecipe={handleUpdateRecipe} handleDeleteRecipe={handleDeleteRecipe}/>
+        <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe} onUpdateForm={onUpdateForm} handleUpdateRecipe={handleUpdateRecipe} handleDeleteRecipe={handleDeleteRecipe} />
       }
       {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">
