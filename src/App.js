@@ -218,7 +218,12 @@ function App() {
    }
 
   /* How to display recipes on search results page - is there a search term? */
-  const displayedRecipes = searchTerm ? handleSearch() : recipes;
+  /* Alphabetize recipes - Use slice to copy arrays so recipes state isn't mutated 
+  and sort to reorder elements - localeCompare handles case sensitivity and non English characters */
+  
+  const displayedRecipes = (searchTerm ? handleSearch() : recipes)
+    .slice()
+    .sort((a,b) => a.title.localeCompare(b.title));
 
   /* replace {JSON.stringify(recipes)} with a map over all recipes in state*/
   /* each recipe has an ID for the key and a prop for each recipe*/
