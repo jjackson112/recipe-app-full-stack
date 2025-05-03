@@ -14,3 +14,5 @@ const displayToast = (message, type="success") => {
         return toast.error(message, options)
     }
 }
+
+export default displayToast;
