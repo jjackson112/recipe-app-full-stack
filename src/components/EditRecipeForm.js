@@ -17,6 +17,14 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                     onChange={(e) => onUpdateForm(e, "update")}
                     required
                 />
+                <label>Cooking Time</label>
+                <input
+                    type="text"
+                    name="cooking_time"
+                    value={selectedRecipe.cooking_time}
+                    onChange={(e) => onUpdateForm(e, "update")}
+                    required
+                />
                 <label>Ingredients</label>
                 <textarea
                     name="ingredients"
