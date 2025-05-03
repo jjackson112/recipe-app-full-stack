@@ -12,6 +12,7 @@ db = SQLAlchemy(app)
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
+    cooking_time = db.Column(db.Text, nullable=True, default='5 mins')
     ingredients = db.Column(db.String(500), nullable=False)
     instructions = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=True, default='Delicious. You need to try it!')
@@ -34,6 +35,7 @@ def get_all_recipes():
     for recipe in recipes:
         recipe_list.append({
         'id': recipe.id,
+        'cooking_time': recipe.cooking_time,
         'title': recipe.title,
         'ingredients': recipe.ingredients,
         'instructions': recipe.instructions,
@@ -50,6 +52,7 @@ def add_recipe():
     data = request.get_json()
     new_recipe = Recipe(
         title=data ['title'],
+        cooking_time=data['cooking_time'],
         ingredients=data ['ingredients'],
         instructions=data ['instructions'],
         servings=data ['servings'],
@@ -63,6 +66,7 @@ def add_recipe():
 # serialization - new id attribute
     new_recipe_data = {
         'id': new_recipe.id,
+        'cooking_time': new_recipe.cooking_time,
         'title': new_recipe.title,
         'ingredients': new_recipe.ingredients,
         'instructions': new_recipe.instructions,
@@ -71,7 +75,7 @@ def add_recipe():
         'image_url': new_recipe.image_url
     }
 # while in add_recipe function, return a 400 status request if all required fields aren't completed
-    required_fields = ['title', 'ingredients', 'instructions', 'instructions', 'servings', 'description', 'image_url']
+    required_fields = ['title', 'cooking_time', 'ingredients', 'instructions', 'instructions', 'servings', 'description', 'image_url']
     for field in required_fields:
         if field not in data or data[field] == "":
             return jsonify({'error':f"Missing required field: '{field}'"}), 400
@@ -86,7 +90,7 @@ def update_recipe(recipe_id):
         return jsonify({'error': 'Recipe not found'}), 404
     data = request.get_json()
 # validate the incoming JSON data for required fields
-    required_fields = ['title', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
+    required_fields = ['title', 'cooking_time', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
     for field in required_fields:
         if field not in data or data[field] == "":
             return jsonify({'error': f"Missing required field:'{field}'"}), 400
