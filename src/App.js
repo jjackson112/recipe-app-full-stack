@@ -37,11 +37,10 @@ function App() {
           const data = await response.json();
           setRecipes(data);
         } else {
-          console.log(`Cannot find that recipe!`);
+          displayToast(`Cannot find that recipe!`, "error");
         }
       } catch (e) {
-        console.error(`An error occurred during the request.`, e);
-        console.log("An unexpected error has occurred. Please try again later.");
+        displayToast("An unexpected error has occurred. Please try again later.", "error");
       }
     };
     fetchAllRecipes();
@@ -87,7 +86,7 @@ function App() {
 
         setRecipes([...recipes, data.recipe]);
 
-        console.log("Recipe added successfully!");
+        displayToast("Recipe added successfully!", "success");
 
         // this is happening once the user completes the form and saves it - with this the form goes away
         setShowNewRecipeForm(false);
@@ -101,10 +100,10 @@ function App() {
           image_url: "https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" //default
         });
       } else {
-        console.error("Oops could not add recipe.");
+        displayToast("Oops could not add recipe.", "error");
       }
     } catch (e) {
-      console.error(`An error has occurred - this recipe cannot be added.`);
+      displayToast(`An error has occurred - this recipe cannot be added.`, "error");
     }
   };
 
@@ -138,12 +137,12 @@ function App() {
             return recipe;
           })
         )
-        console.log("Recipe has been edited successfully!")
+        displayToast("Recipe has been edited successfully!", "success")
       } else {
-        console.error("Oops! We cannot fetch the recipe!")
+        displayToast("Oops! We cannot fetch the recipe!", "error")
       }
     } catch (error) {
-        console.error("An error has errored - you cannot edit or update this recipe.", error)
+        displayToast("An error has errored - you cannot edit or update this recipe.", "error")
     }
     setSelectedRecipe(null);
   }
@@ -158,12 +157,12 @@ function App() {
       if (response.ok) {
         setRecipes(recipes.filter((recipe) => recipe.id !== recipeId));
         setSelectedRecipe(null); // Return to the excerpts view
-        console.log("Recipe successfully deleted!");
+        displayToast("Recipe successfully deleted!", "success");
       } else {
-        console.error("Oops! This recipe cannot be deleted!");
+        displayToast("Oops! This recipe cannot be deleted!", "error");
       }
     } catch (error) {
-      console.error(`An error has occurred, this recipe cannot be deleted!`, error);
+      displayToast(`An error has occurred, this recipe cannot be deleted!`, "error");
     }
   };
   
