@@ -92,6 +92,7 @@ def update_recipe(recipe_id):
             return jsonify({'error': f"Missing required field:'{field}'"}), 400
         
         recipe.title = data['title']
+        recipe.cooking_time = data['cooking_time']
         recipe.ingredients = data['ingredients']
         recipe.instructions = data['instructions']
         recipe.servings = data['servings']
@@ -101,6 +102,7 @@ def update_recipe(recipe_id):
     
     updated_recipe = {
         'id': recipe.id,
+        'cooking_time': recipe.cooking_time,
         'title': recipe.title,
         'ingredients': recipe.ingredients,
         'instructions': recipe.instructions,

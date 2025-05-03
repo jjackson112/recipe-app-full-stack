@@ -13,6 +13,8 @@ const NewRecipeForm = ({newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe
         <form onSubmit={(e) => handleNewRecipe(e, newRecipe)}>
             <label>Title</label>
             <input type="text" name="title" value={newRecipe.title} onChange={(e) => onUpdateForm(e, "new")} required />
+            <label>Cooking Time</label>
+            <input type="text" name="cooking_time" id="cooking_time" value={newRecipe.cooking_time} onChange={(e) => onUpdateForm(e, "new")} />
             <label>Ingredients</label>
             <textarea
                 name="ingredients"

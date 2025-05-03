@@ -18,6 +18,7 @@ function App() {
   // there is no id attribute since the database assigns one by default for each form submission
   const [newRecipe, setNewRecipe] = useState({
       title: "",
+      cooking_time: "",
       ingredients: "",
       instructions: "",
       servings: 1, // conservative default
@@ -89,6 +90,7 @@ function App() {
         setShowNewRecipeForm(false);
         setNewRecipe({
           title: "",
+          cooking_time: "",
           ingredients: "",
           instructions: "",
           servings: 1, // conservative default
