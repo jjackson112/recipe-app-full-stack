@@ -220,6 +220,12 @@ header .new-recipe:hover {
   box-shadow: var(--box-shadow);
 }
 
+.recipe-card img {
+  height: 300px;
+  width: 100%;
+  object-fit: cover;
+}
+
 .recipe-card h2 {
   font-size: 1.875rem;
   margin-bottom: 10px;
