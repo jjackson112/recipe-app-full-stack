@@ -223,12 +223,17 @@ function App() {
    it returns true if any item iterated over meets the criteria*/
 
   const handleSearch = () => {
-    const searchResults = recipes.filter((recipe) => {
-      const valuesToSearch=[recipe.title, recipe.ingredients, recipe.description];
+    // title matches first
+    const titleSearch = searchTerm.toLowerCase();
+    const titleMatches = recipes.filter((recipe) => 
+      recipe.title.toLowerCase().includes(titleSearch))
+    if (titleMatches.length > 0) return titleMatches
+
+    // if no title matches then search other fields
+      return recipes.filter((recipe) => {
+      const valuesToSearch=[recipe.ingredients, recipe.description];
       return valuesToSearch.some(value => value.toLowerCase().includes(searchTerm.toLowerCase()));
     });
-
-    return searchResults;
   }
 
     /* make the logo clickable - clear the search results,
