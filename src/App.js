@@ -13,6 +13,7 @@ function App() {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [showNewRecipeForm, setShowNewRecipeForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   // there is no id attribute since the database assigns one by default for each form submission
   const [newRecipe, setNewRecipe] = useState({
@@ -41,6 +42,23 @@ function App() {
     };
     fetchAllRecipes();
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+  
+    window.addEventListener("scroll", handleScroll);
+  
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  
 
   /* accepts e and newRecipe as arguments */
   /* e prevent default is used to submit the form */
@@ -241,6 +259,13 @@ function App() {
         {displayedRecipes.map((recipe) => (
           <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} />
         ))}
+      {showScrollTop && !selectedRecipe && !showNewRecipeForm && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="back-to-top" aria-label="Scroll to top">
+          ↑
+          </button>
+      )}
       </div>
       )}
     </div>
