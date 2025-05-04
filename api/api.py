@@ -23,9 +23,9 @@ class Recipe(db.Model):
         return f"Recipe(id={self.id}, title='{self.title}', description='{self.description}', servings={self.servings})"
 
 # connect SQL to web app
-# with app.app_context():
-#    db.create_all()
-#    db.session.commit()
+with app.app_context():
+    db.create_all()
+    db.session.commit()
 
 # fetch recipes API
 @app.route('/api/recipes', methods=['GET'])
@@ -75,7 +75,7 @@ def add_recipe():
         'image_url': new_recipe.image_url
     }
 # while in add_recipe function, return a 400 status request if all required fields aren't completed
-    required_fields = ['title', 'cooking_time', 'ingredients', 'instructions', 'instructions', 'servings', 'description', 'image_url']
+    required_fields = ['title', 'cooking_time', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
     for field in required_fields:
         if field not in data or data[field] == "":
             return jsonify({'error':f"Missing required field: '{field}'"}), 400

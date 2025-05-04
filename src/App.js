@@ -228,6 +228,7 @@ function App() {
     const titleMatches = recipes.filter((recipe => {
       recipe.title.toLowerCase().includes(titleSearch)
     }))
+    if (titleMatches.length > 0) return titleMatches;
 
     // if no title matches search for other fields
     return recipes.filter((recipe) => {
