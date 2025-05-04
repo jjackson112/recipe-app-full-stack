@@ -42,7 +42,7 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                 />
                 <label>Instructions</label>
                 <textarea
-                    name="instructons"
+                    name="instructions"
                     value={selectedRecipe.instructions}
                     onChange={(e) => onUpdateForm(e, "update")}
                     required
