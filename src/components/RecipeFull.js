@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EditRecipeForm from "./EditRecipeForm";
 import ConfirmationModal from "./ConfirmationModal";
 import { X } from "react-feather";
@@ -8,6 +8,10 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe, onUpdateForm, handleU
     const [editing, setEditing] = useState(false)
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
+      
     const handleCancel = () => {
         setEditing(false)
     }
