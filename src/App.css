@@ -308,6 +308,30 @@ header .new-recipe:hover {
   gap: 10px;
 }
 
+/* Scale button Styles */
+
+.scale-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  width: 300px;
+}
+
+.scale-buttons button {
+  padding: 5px 10px;
+  border: 1px solid var(--light-gray);
+  background-color: var(--secondary-color);
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.scale-buttons button:hover {
+  background-color: var(--secondary-color-hover);
+}
+
+/* end scale buttons styles */
+
 .recipe-details button {
   display: flex;
   justify-content: center;

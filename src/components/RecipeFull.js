@@ -7,7 +7,9 @@ import { X } from "react-feather";
 const RecipeFull = ({selectedRecipe, handleUnselectRecipe, onUpdateForm, handleUpdateRecipe, handleDeleteRecipe}) => {
     const [editing, setEditing] = useState(false)
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+    const [multiplier, setMultiplier] = useState(1);
 
+// make sure recipe opens to the top when full recipw view is clicked
     useEffect(() => {
         window.scrollTo(0, 0);
       }, []);
@@ -51,13 +53,25 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe, onUpdateForm, handleU
                 <p>{selectedRecipe.description}</p>
 
                 <h3>Ingredients</h3>
+                <h4>If you'd like to double or triple the recipe, click the appropriate button.</h4>
 
+                <div class="scale-buttons">
+                    <button onClick={() => setMultiplier(1)}>1x</button>
+                    <button onClick={() => setMultiplier(2)}>2x</button>
+                    <button onClick={() => setMultiplier(3)}>3x</button>
+                </div>
+                
                 <ul className="ingredient-list">
-                    {selectedRecipe.ingredients.split(",").map((ingredient, index) => (
-                    <li key={index} className="ingredient">
-                    {ingredient}
-                    </li>
-                    ))}
+                    {selectedRecipe.ingredients.split(",").map((ingredient, index) => {
+                        const updatedIngredient = ingredient.replace(/(\d+(\.\d+)?)/g, (match) => {
+                            return (parseFloat(match) * multiplier).toFixed(2).replace(/\.00$/, '');
+                        })
+                        return (
+                            <li key={index} className="ingredient">
+                            {updatedIngredient}
+                            </li>
+                        )
+                    })}
                 </ul>
 
                 <h3>Instructions:</h3>
