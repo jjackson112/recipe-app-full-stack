@@ -330,6 +330,11 @@ header .new-recipe:hover {
   background-color: var(--secondary-color-hover);
 }
 
+.scale-buttons button.active {
+  background-color: #333;
+  color: #ffffff;
+}
+
 /* end scale buttons styles */
 
 .recipe-details button {

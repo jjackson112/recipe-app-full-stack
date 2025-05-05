@@ -115,19 +115,22 @@ const handleMultiplierClick = (value) => {
                         <button className="delete-button" onClick={() => setShowConfirmationModal(true)}>Delete</button>
                     </div>
                 </header>
-                <h3>Servings: {selectedRecipe.servings * multiplier}</h3>
-                <h3>Cooking Time: {selectedRecipe.cooking_time}</h3>
-                
                 <h3>Description:</h3>
                 <p>{selectedRecipe.description}</p>
 
+                <h3>Cooking Time: {selectedRecipe.cooking_time}</h3>
+                <h3>Servings: {selectedRecipe.servings * multiplier}</h3>
+                
                 <h3>Ingredients</h3>
                 <h4>If you'd like to double or triple the recipe, click the appropriate button.</h4>
 
                 <div class="scale-buttons">
-                    <button onClick={() => handleMultiplierClick(1)}>1x</button>
-                    <button onClick={() => handleMultiplierClick(2)}>2x</button>
-                    <button onClick={() => handleMultiplierClick(3)}>3x</button>
+                    <button onClick={() => handleMultiplierClick(1)} className={multiplier === 1 ? "active" : ""}
+                    >1x</button>
+                    <button onClick={() => handleMultiplierClick(2)} className={multiplier === 2 ? "active" : ""}
+                    >2x</button>
+                    <button onClick={() => handleMultiplierClick(3)} className={multiplier === 3 ? "active" : ""}
+                    >3x</button>
                 </div>
 
          
