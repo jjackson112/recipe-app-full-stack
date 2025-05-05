@@ -257,10 +257,29 @@ header .new-recipe:hover {
   width: 100%;
   max-width: 878px;
   margin: 2rem auto;
+  padding: 30px;
   background-color: #fff;
   border: 1px solid var(--border-color);
   border-radius: 5px;
   box-shadow: var(--box-shadow);
+}
+
+.recipe-details form {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 30px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--box-shadow);
+}
+
+.recipe-details textarea {
+  min-height: 150px;
 }
 
 .recipe-details header {
@@ -300,6 +319,7 @@ header .new-recipe:hover {
   background-color: var(--secondary-color);
   color: var(--primary-color);
   border-radius: 0;
+  margin: 20px 0px;
 }
 
 .recipe-details button:hover {

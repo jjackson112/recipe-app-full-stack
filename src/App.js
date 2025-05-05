@@ -226,7 +226,7 @@ function App() {
     // search for titles first
     const titleSearch = searchTerm.toLowerCase();
     const titleMatches = recipes.filter((recipe => {
-      recipe.title.toLowerCase().includes(titleSearch)
+      return recipe.title.toLowerCase().includes(titleSearch)
     }))
     if (titleMatches.length > 0) return titleMatches;
 

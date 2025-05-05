@@ -47,7 +47,7 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                     onChange={(e) => onUpdateForm(e, "update")}
                     required
                 />
-                <label>Image</label>
+                <label>Image URL</label>
                 <textarea
                     type="text"
                     name="image_url"
@@ -63,7 +63,7 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                     onChange={(e) => onUpdateForm(e, "update")}
                     required
                 />
-                <button type="submit">Update Recipe</button>
+                <button id ="edit-cancel-button" type="submit">Update Recipe</button>
             </form>
         </div>
     );
