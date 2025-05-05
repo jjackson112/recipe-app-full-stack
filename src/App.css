@@ -256,11 +256,26 @@ header .new-recipe:hover {
 .recipe-details {
   width: 100%;
   max-width: 878px;
+  padding: 30px;
   margin: 2rem auto;
   background-color: #fff;
   border: 1px solid var(--border-color);
   border-radius: 5px;
   box-shadow: var(--box-shadow);
+}
+
+.recipe-details form {
+  width: 100%;
+  max-width: 600px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+
+.recipe-details textarea {
+  min-height: 150px;
 }
 
 .recipe-details header {
@@ -293,7 +308,7 @@ header .new-recipe:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1 1 100px;
+  flex: 1 1 50px;
   height: 30px;
   font-weight: 700;
   font-size: 0.875rem;
