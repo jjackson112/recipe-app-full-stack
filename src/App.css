@@ -316,13 +316,13 @@ header .new-recipe:hover {
   gap: 0.5rem;
   margin-bottom: 1rem;
   width: 300px;
+  cursor: pointer;
 }
 
 .scale-buttons button {
   padding: 5px 10px;
   border: 1px solid var(--light-gray);
   background-color: var(--secondary-color);
-  cursor: pointer;
   border-radius: 4px;
 }
 
@@ -336,6 +336,39 @@ header .new-recipe:hover {
 }
 
 /* end scale buttons styles */
+
+/* Cook mode toggle styles */
+
+.cook-mode-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.toggle-button {
+  height: 40px;
+  width: 80px;
+  background-color: gray;
+  border-radius: 30px;
+  padding: 5px;
+  margin: 0px 10px;
+  cursor: pointer;
+}
+
+.inner-circle {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transition: all 250ms;
+}
+
+.toggle-button.toggled > .inner-circle {
+  transform: translateX(30px);
+  background-color: #9fdfd1;
+}
+
+/* end cook mode styles */
 
 .recipe-details button {
   display: flex;

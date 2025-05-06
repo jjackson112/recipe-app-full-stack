@@ -65,7 +65,8 @@ const unicodeFractions = {
 const RecipeFull = ({selectedRecipe, handleUnselectRecipe, onUpdateForm, handleUpdateRecipe, handleDeleteRecipe}) => {
     const [editing, setEditing] = useState(false)
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
-    const [multiplier, setMultiplier] = useState(1);
+    const [multiplier, setMultiplier] = useState(1)
+    const [cookMode, setCookMode] = useState(false)
 
 // handle multiplier for servings
 const handleMultiplierClick = (value) => {
@@ -115,6 +116,13 @@ const handleMultiplierClick = (value) => {
                         <button className="delete-button" onClick={() => setShowConfirmationModal(true)}>Delete</button>
                     </div>
                 </header>
+                <div classMode="cook-mode-container">
+                    <h3>Cook Mode</h3>
+                    <div id="toggle-button" className={`toggle-button ${cookMode ? 'toggled' : ''}`} onClick={() => setCookMode(prev => !prev)}>
+                        <div className="inner-circle"></div>
+                    </div>
+                </div>
+
                 <h3>Description:</h3>
                 <p>{selectedRecipe.description}</p>
 
