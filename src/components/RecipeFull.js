@@ -67,8 +67,48 @@ const RecipeFull = ({selectedRecipe, handleUnselectRecipe, onUpdateForm, handleU
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
     const [multiplier, setMultiplier] = useState(1)
     const [cookMode, setCookMode] = useState(false)
+    const [wakeLock, setWakeLock] = useState(null)
 
-// handle multiplier for servings
+    useEffect(() => {
+        const enableWakeLock = async () => {
+          try {
+            if ('wakeLock' in navigator) {
+              const lock = await navigator.wakeLock.request('screen');
+              setWakeLock(lock);
+      
+              // Re-acquire the wake lock if it's released (e.g., screen dims)
+              lock.addEventListener('release', () => {
+                console.log('Wake Lock was released');
+              });
+      
+              console.log('Wake Lock is active');
+            }
+          } catch (err) {
+            console.error(`Failed to get Wake Lock: ${err.name}, ${err.message}`);
+          }
+        };
+      
+        const disableWakeLock = async () => {
+          if (wakeLock) {
+            await wakeLock.release();
+            setWakeLock(null);
+          }
+        };
+      
+        if (cookMode) {
+          enableWakeLock();
+        } else {
+          disableWakeLock();
+        }
+      
+        // Clean up on component unmount
+        return () => {
+          disableWakeLock();
+        };
+      }, [cookMode]);      
+
+/* handle multiplier for servings
+
 const handleMultiplierClick = (value) => {
     if (value === 1) {
       setMultiplier(1);
@@ -77,7 +117,9 @@ const handleMultiplierClick = (value) => {
     } else if (value === 3) {
       setMultiplier(3);
     }
-  };  
+  };  */
+
+  const handleMultiplierClick = (value) => setMultiplier(value)
 
 // make sure recipe opens to the top when full recipw view is clicked
     useEffect(() => {
@@ -116,21 +158,24 @@ const handleMultiplierClick = (value) => {
                         <button className="delete-button" onClick={() => setShowConfirmationModal(true)}>Delete</button>
                     </div>
                 </header>
-                <div classMode="cook-mode-container">
+
+                <div className="cook-mode-container">
                     <h3>Cook Mode</h3>
                     <div id="toggle-button" className={`toggle-button ${cookMode ? 'toggled' : ''}`} onClick={() => setCookMode(prev => !prev)}>
                         <div className="inner-circle"></div>
                     </div>
+                    <h4 id="cook-mode-description">Keep screen awake!</h4>
                 </div>
 
                 <h3>Description:</h3>
                 <p>{selectedRecipe.description}</p>
 
                 <h3>Cooking Time: {selectedRecipe.cooking_time}</h3>
-                <h3>Servings: {selectedRecipe.servings * multiplier}</h3>
                 
                 <h3>Ingredients</h3>
                 <h4>If you'd like to double or triple the recipe, click the appropriate button.</h4>
+
+                <h3>Servings: {selectedRecipe.servings * multiplier}</h3>
 
                 <div class="scale-buttons">
                     <button onClick={() => handleMultiplierClick(1)} className={multiplier === 1 ? "active" : ""}

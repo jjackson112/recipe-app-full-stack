@@ -18,6 +18,12 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showScrollTop, setShowScrollTop] = useState(false);
 
+  // create state for categories
+  const categories = ["breakfast", "lunch", "dinner", "snack", "appetizer", "drink"];
+
+  // how to favorite quotes
+  const maxFaves = 6;
+
   // there is no id attribute since the database assigns one by default for each form submission
   const [newRecipe, setNewRecipe] = useState({
       title: "",

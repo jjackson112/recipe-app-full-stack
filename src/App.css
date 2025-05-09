@@ -348,11 +348,16 @@ header .new-recipe:hover {
 .toggle-button {
   height: 40px;
   width: 80px;
-  background-color: gray;
+  background-color: #333;
   border-radius: 30px;
   padding: 5px;
   margin: 0px 10px;
   cursor: pointer;
+  margin-top: 2rem;
+}
+
+#cook-mode-description {
+  margin-top: 3rem;
 }
 
 .inner-circle {
@@ -363,9 +368,12 @@ header .new-recipe:hover {
   transition: all 250ms;
 }
 
+.toggle-button.toggled {
+  background-color:#9fdfd1;
+}
+
 .toggle-button.toggled > .inner-circle {
   transform: translateX(30px);
-  background-color: #9fdfd1;
 }
 
 /* end cook mode styles */
