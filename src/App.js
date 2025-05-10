@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Header from "./components/Header";
 import RecipeExcerpt from "./components/RecipeExcerpt";
 import RecipeFull from "./components/RecipeFull"
@@ -17,12 +17,52 @@ function App() {
   const [showNewRecipeForm, setShowNewRecipeForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [favoriteRecipe, setFavoriteRecipe] = useState([])
 
   // create state for categories
-  const categories = ["breakfast", "lunch", "dinner", "snack", "appetizer", "drink"];
+  //const categories = ["breakfast", "lunch", "dinner", "snack", "appetizer", "drink"];
 
-  // how to favorite quotes
-  const maxFaves = 6;
+  // store array of favorited recipes
+  // prev.includes(recipeId) checks if it's already favorited
+  // prev.filter(id => id !== recipeId) removes it from favorites
+  // use spread operator [...prev, recipeId] and add recipe id to end of array if not previously favorited
+  
+  const recipeFaves = useCallback((recipeId) => {
+    const maxFaves = 5;
+
+    setFavoriteRecipe(prev => {
+      if (prev.includes(recipeId)) {
+        return prev.filter(id => id !== recipeId)
+      } else if (prev.length < maxFaves) {
+        return [...prev, recipeId] 
+      } else {
+        displayToast(`Favorite list is full!`)
+      }
+    })
+  }, [])
+
+  // load favorite recipes from local storage so when you refresh they stay favorited
+    useEffect(() => {
+      try {
+        const savedRecipes = JSON.parse(localStorage.getItem("favoriteRecipe"));
+        if (savedRecipes) {
+          setFavoriteRecipe(savedRecipes);
+      }
+      } catch (error) {
+        console.error("Error loading recipes", error);
+        localStorage.removeItem("favoriteRecipe")
+      }
+    }, []);
+
+    // save favorites to localStorage whenever they change
+    useEffect(() => {
+      localStorage.setItem("favoriteRecipe", JSON.stringify(favoriteRecipe));
+    }, [favoriteRecipe]);
+    
+    // delete a favorite recipe - pass it a recipe.id to know the specific one to delete
+    const removefromFavorites = (recipeId) => {
+      const newFavorites = favoriteRecipe.filter((recipe) => recipe.id !== recipeId)
+    }
 
   // there is no id attribute since the database assigns one by default for each form submission
   const [newRecipe, setNewRecipe] = useState({
@@ -118,7 +158,7 @@ function App() {
 
   const handleUpdateRecipe = async (e, selectedRecipe) => {
     e.preventDefault();
-  // you need the id to make sure the PST request reaches the correct endpoint
+  // you need the id to make sure the POST request reaches the correct endpoint
     const {id} = selectedRecipe;
 
     try {
@@ -263,7 +303,7 @@ function App() {
   /* each recipe has an ID for the key and a prop for each recipe*/
   return (
     <div className='recipe-app'>
-      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} />
+      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} recipeFaves={favoriteRecipe}/>
       {showNewRecipeForm && (
         <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe}/>
       )}
@@ -273,7 +313,7 @@ function App() {
       {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">
         {displayedRecipes.map((recipe) => (
-          <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} />
+          <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} favoriteRecipe={favoriteRecipe} setFavoriteRecipe={setFavoriteRecipe} recipeFaves={recipeFaves} removefromFavorites={removefromFavorites} />
         ))}
       {showScrollTop && !selectedRecipe && !showNewRecipeForm && (
         <button

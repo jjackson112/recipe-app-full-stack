@@ -226,6 +226,10 @@ header .new-recipe:hover {
   object-fit: cover;
 }
 
+.add-favorite {
+  margin-top: 10px;
+}
+
 .recipe-card h2 {
   font-size: 1.875rem;
   margin-bottom: 10px;

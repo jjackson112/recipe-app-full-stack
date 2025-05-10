@@ -1,10 +1,11 @@
 import React from "react";
 import { Search } from "react-feather";
 import { ReactComponent as Logo } from "../images/utensils.svg";
+import FavoriteRecipeExcerpt from "./FavoriteRecipeExcerpt";
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
-const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes }) => {
+const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves }) => {
   return (
     <header>
       <div className='logo-search'>
@@ -27,6 +28,13 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
       <button className='new-recipe' onClick={showRecipeForm}>
         Add New Recipe
       </button>
+      <div className="favorite-recipes">
+        <h2>5 most liked recipes</h2>
+          {recipeFaves && recipeFaves.length > 0 ? (
+            <ul>
+              {recipeFaves.map((recipe) => <FavoriteRecipeExcerpt key={recipe.id} recipe={recipe} />)}
+            </ul>) :  "No favorites?"}
+      </div>
     </header>
   );
 };
