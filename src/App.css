@@ -230,6 +230,10 @@ header .new-recipe:hover {
   margin-top: 10px;
 }
 
+.close-recipe-card {
+  cursor: pointer;
+}
+
 .recipe-card h2 {
   font-size: 1.875rem;
   margin-bottom: 10px;

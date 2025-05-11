@@ -26,7 +26,9 @@ function App() {
   // prev.includes(recipeId) checks if it's already favorited
   // prev.filter(id => id !== recipeId) removes it from favorites
   // use spread operator [...prev, recipeId] and add recipe id to end of array if not previously favorited
-  
+  // to show recipe details for favorite recipe cards, map the favoriteRecipe (array of ids) to their full recipe objects
+  // cannot pass favoriteRecipe directly to the FavoriteRecipeExcerpt without full recipe objects
+
   const recipeFaves = useCallback((recipeId) => {
     const maxFaves = 5;
 
@@ -60,8 +62,10 @@ function App() {
     }, [favoriteRecipe]);
     
     // delete a favorite recipe - pass it a recipe.id to know the specific one to delete
+    // remember favorieRecipe is an array of ids, not objects so recipe.id is undefined
     const removefromFavorites = (recipeId) => {
-      const newFavorites = favoriteRecipe.filter((recipe) => recipe.id !== recipeId)
+      const newFavorites = favoriteRecipe.filter((id) => id !== recipeId)
+      setFavoriteRecipe(newFavorites)
     }
 
   // there is no id attribute since the database assigns one by default for each form submission
@@ -303,7 +307,7 @@ function App() {
   /* each recipe has an ID for the key and a prop for each recipe*/
   return (
     <div className='recipe-app'>
-      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} recipeFaves={favoriteRecipe}/>
+      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} recipes={recipes} recipeFaves={favoriteRecipe} handleSelectRecipe={handleSelectRecipe} removeFromFavorites={removefromFavorites}/>
       {showNewRecipeForm && (
         <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe}/>
       )}

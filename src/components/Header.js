@@ -5,7 +5,7 @@ import FavoriteRecipeExcerpt from "./FavoriteRecipeExcerpt";
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
-const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves }) => {
+const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves, recipes, handleSelectRecipe, removeFromFavorites }) => {
   return (
     <header>
       <div className='logo-search'>
@@ -30,10 +30,18 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
       </button>
       <div className="favorite-recipes">
         <h2>5 most liked recipes</h2>
-          {recipeFaves && recipeFaves.length > 0 ? (
-            <ul>
-              {recipeFaves.map((recipe) => <FavoriteRecipeExcerpt key={recipe.id} recipe={recipe} />)}
-            </ul>) :  "No favorites?"}
+          <div className="favorite-recipes-list">
+          {recipeFaves.length === 0 ? (
+            <p>No favorites yet?</p>
+          ) : (
+            recipeFaves
+              .map(id => recipes.find(r => r.id === id))
+              .filter(Boolean)
+              .map(recipe => (
+                <FavoriteRecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} removeFromFavorites={removeFromFavorites} />
+              ))
+          )}
+          </div>
       </div>
     </header>
   );
