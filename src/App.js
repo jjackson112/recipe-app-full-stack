@@ -65,9 +65,8 @@ function App() {
     
     // delete a favorite recipe - pass it a recipe.id to know the specific one to delete
     // remember favoriteRecipe is an array of ids, not objects so recipe.id is undefined
-    const removefromFavorites = (recipeId) => {
-      const newFavorites = favoriteRecipe.filter(recipe => recipe.id !== recipeId)
-      setFavoriteRecipe(newFavorites)
+    const removefromFavorites = (recipeToRemove) => {
+      setFavoriteRecipe(prev => prev.filter(r => r.id !== recipeToRemove.id))
     }
 
   // there is no id attribute since the database assigns one by default for each form submission
