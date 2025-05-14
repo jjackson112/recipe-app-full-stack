@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useState, useEffect} from "react";
 import truncateText from "../helpers/utils";
 import { Heart } from "react-feather";
-import { useState } from "react";
 
 /* Check get recipe app route for properties*/
 /* Wrap recipe.description with truncateText - call the default value as a second argument  */
 
-const RecipeExcerpt = ({recipe, handleSelectRecipe, recipeFaves }) => {
+const RecipeExcerpt = ({recipe, handleSelectRecipe, recipeFaves, favoriteRecipe }) => {
     const [isFilled, setIsFilled] = useState(false)
+
+    // check is the current recipe id exists in favoriteRecipe array
+    useEffect (() => {
+        const isCurrentlyFavorite = favoriteRecipe.some(favRecipe => favRecipe.id === recipe.id)
+        setIsFilled(isCurrentlyFavorite)
+    }, [favoriteRecipe, recipe.id]) // Run this effect when favoriteRecipe or recipe.id changes
+
     // recipeFaves expects a recipeId so it is called with recipe.id not recipe
     const handleIcon = () => {
-        recipeFaves(recipe.id)
-        setIsFilled(!isFilled) // or (prev => ! prev meaning that it takes the previous state value and returns its opposite - it can flip)
+        recipeFaves(recipe.id) // updates the favoriteRecipe state
+        // setIsFilled(!isFilled) no longer needed, since useEffect is global
+        // or (prev => ! prev meaning that it takes the previous state value and returns its opposite - it can flip)
     }
 
     return (
@@ -23,6 +30,7 @@ const RecipeExcerpt = ({recipe, handleSelectRecipe, recipeFaves }) => {
                 <Heart 
                     onClick = {handleIcon}
                     fill= {isFilled ? "#ff6347" : "none"}
+                    stroke="#ff6347"
                     cursor="pointer"
                 />
             </span>

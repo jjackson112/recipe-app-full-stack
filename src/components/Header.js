@@ -28,20 +28,19 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
       <button className='new-recipe' onClick={showRecipeForm}>
         Add New Recipe
       </button>
-      <div className="favorite-recipes">
-        <h2>5 most liked recipes</h2>
-          <div className="favorite-recipes-list">
-          {recipeFaves.length === 0 ? (
-            <p>No favorites yet?</p>
-          ) : (
-            recipeFaves
-              .map(id => recipes.find(r => r.id === id))
-              .filter(Boolean)
-              .map(recipe => (
-                <FavoriteRecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} removeFromFavorites={removeFromFavorites} />
-              ))
-          )}
-          </div>
+      <div className="favorite-recipes-list">
+        {recipeFaves.length === 0 ? (
+          <p>No favorites yet?</p>
+        ) : (
+        recipeFaves.map(recipe => (
+          <FavoriteRecipeExcerpt
+            key={recipe.id}
+            recipe={recipe}
+            handleSelectRecipe={handleSelectRecipe}
+            removeFromFavorites={removeFromFavorites}
+          />
+          ))
+        )}
       </div>
     </header>
   );

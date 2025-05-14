@@ -62,9 +62,9 @@ function App() {
     }, [favoriteRecipe]);
     
     // delete a favorite recipe - pass it a recipe.id to know the specific one to delete
-    // remember favorieRecipe is an array of ids, not objects so recipe.id is undefined
+    // remember favoriteRecipe is an array of ids, not objects so recipe.id is undefined
     const removefromFavorites = (recipeId) => {
-      const newFavorites = favoriteRecipe.filter((id) => id !== recipeId)
+      const newFavorites = favoriteRecipe.filter(recipe => recipe.id !== recipeId)
       setFavoriteRecipe(newFavorites)
     }
 
@@ -150,7 +150,7 @@ function App() {
           image_url: "https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" //default
         });
       } else {
-        displayToast("Oops could not add recipe.", "error");
+        displayToast("Oops could not add recipe. Check to see if you're missing any information.", "error");
       }
     } catch (e) {
       displayToast(`An error has occurred - this recipe cannot be added.`, "error");
