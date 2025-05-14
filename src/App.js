@@ -29,14 +29,16 @@ function App() {
   // to show recipe details for favorite recipe cards, map the favoriteRecipe (array of ids) to their full recipe objects
   // cannot pass favoriteRecipe directly to the FavoriteRecipeExcerpt without full recipe objects
 
-  const recipeFaves = useCallback((recipeId) => {
+  const recipeFaves = useCallback((recipe) => {
     const maxFaves = 5;
 
     setFavoriteRecipe(prev => {
-      if (prev.includes(recipeId)) {
-        return prev.filter(id => id !== recipeId)
+      const isAlreadyFavorite = prev.some(fav => fav.id === recipe.id)
+
+      if (isAlreadyFavorite) {
+        return prev.filter(id => id !== recipe.id)
       } else if (prev.length < maxFaves) {
-        return [...prev, recipeId] 
+        return [...prev, recipe] 
       } else {
         displayToast(`Favorite list is full!`)
       }
