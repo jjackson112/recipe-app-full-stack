@@ -30,7 +30,7 @@ function App() {
   // cannot pass favoriteRecipe directly to the FavoriteRecipeExcerpt without full recipe objects
 
   const recipeFaves = useCallback((recipe) => {
-    const maxFaves = 5;
+    const maxFaves = 6;
 
     setFavoriteRecipe(prev => {
       const isAlreadyFavorite = prev.some(fav => fav.id === recipe.id)

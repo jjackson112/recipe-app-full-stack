@@ -10,13 +10,13 @@ const RecipeExcerpt = ({recipe, handleSelectRecipe, recipeFaves, favoriteRecipe 
 
     // check is the current recipe id exists in favoriteRecipe array
     useEffect (() => {
-        const isCurrentlyFavorite = favoriteRecipe.some(favRecipe => favRecipe.id === recipe.id)
+        const isCurrentlyFavorite = favoriteRecipe.some(fav => fav.id === recipe.id)
         setIsFilled(isCurrentlyFavorite)
     }, [favoriteRecipe, recipe.id]) // Run this effect when favoriteRecipe or recipe.id changes
 
     // recipeFaves expects a recipeId so it is called with recipe.id not recipe
     const handleIcon = () => {
-        recipeFaves(recipe.id) // updates the favoriteRecipe state
+        recipeFaves(recipe) // updates the favoriteRecipe state
         // setIsFilled(!isFilled) no longer needed, since useEffect is global
         // or (prev => ! prev meaning that it takes the previous state value and returns its opposite - it can flip)
     }

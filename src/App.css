@@ -167,6 +167,7 @@ header .logo-search .search svg {
 header .new-recipe {
   width: 260px;
   padding: 1rem 0;
+  margin-bottom: 20px;
   background-color: var(--primary-color);
   color: #fff;
   border-radius: 57px;
@@ -176,6 +177,14 @@ header .new-recipe {
 
 header .new-recipe:hover {
   background-color: var(--dark-gray);
+}
+
+.favorite-recipes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: center;
+  margin: 2rem auto;
 }
 
 .back-to-top {

@@ -9,7 +9,7 @@ const FavoriteRecipeExcerpt = ({recipe, handleSelectRecipe, removeFromFavorites 
 
     return (
         <article className="recipe-card">
-            <span className="close-recipe-card" onClick={() => removeFromFavorites(recipe)}><strong>X</strong></span>
+            <span className="close-recipe-card" onClick={() => removeFromFavorites(recipe)}><strong>X Remove from Favorites</strong></span>
             <figure>
                 <img src={recipe.image_url} alt={recipe.title} />
             </figure>
