@@ -12,13 +12,14 @@ db = SQLAlchemy(app)
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
+    category = db.Column(db.String(75), nullable=False, default='Uncategorized')
     cooking_time = db.Column(db.Text, nullable=True, default='5 mins')
     ingredients = db.Column(db.String(500), nullable=False)
     instructions = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=True, default='Delicious. You need to try it!')
     image_url = db.Column(db.String(500), nullable=True, default="https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
     servings = db.Column(db.Integer, nullable=False)
-    
+
     def __repr__(self):
         return f"Recipe(id={self.id}, title='{self.title}', description='{self.description}', servings={self.servings})"
 
@@ -37,6 +38,7 @@ def get_all_recipes():
         'id': recipe.id,
         'cooking_time': recipe.cooking_time,
         'title': recipe.title,
+        'category': recipe.category,
         'ingredients': recipe.ingredients,
         'instructions': recipe.instructions,
         'description': recipe.description,
@@ -52,6 +54,7 @@ def add_recipe():
     data = request.get_json()
     new_recipe = Recipe(
         title=data ['title'],
+        category=data['category'],
         cooking_time=data['cooking_time'],
         ingredients=data ['ingredients'],
         instructions=data ['instructions'],
@@ -66,6 +69,7 @@ def add_recipe():
 # serialization - new id attribute
     new_recipe_data = {
         'id': new_recipe.id,
+        'category': new_recipe.category,
         'cooking_time': new_recipe.cooking_time,
         'title': new_recipe.title,
         'ingredients': new_recipe.ingredients,
@@ -75,7 +79,7 @@ def add_recipe():
         'image_url': new_recipe.image_url
     }
 # while in add_recipe function, return a 400 status request if all required fields aren't completed
-    required_fields = ['title', 'cooking_time', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
+    required_fields = ['title', 'category', 'cooking_time', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
     for field in required_fields:
         if field not in data or data[field] == "":
             return jsonify({'error':f"Missing required field: '{field}'"}), 400
@@ -90,12 +94,13 @@ def update_recipe(recipe_id):
         return jsonify({'error': 'Recipe not found'}), 404
     data = request.get_json()
 # validate the incoming JSON data for required fields
-    required_fields = ['title', 'cooking_time', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
+    required_fields = ['title', 'cooking_time', 'category', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
     for field in required_fields:
         if field not in data or data[field] == "":
             return jsonify({'error': f"Missing required field:'{field}'"}), 400
         
         recipe.title = data['title']
+        recipe.category = data['category']
         recipe.cooking_time = data['cooking_time']
         recipe.ingredients = data['ingredients']
         recipe.instructions = data['instructions']
@@ -106,6 +111,7 @@ def update_recipe(recipe_id):
     
     updated_recipe = {
         'id': recipe.id,
+        'category': recipe.category,
         'cooking_time': recipe.cooking_time,
         'title': recipe.title,
         'ingredients': recipe.ingredients,

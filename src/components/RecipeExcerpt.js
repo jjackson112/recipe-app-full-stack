@@ -15,6 +15,7 @@ const RecipeExcerpt = ({recipe, handleSelectRecipe, recipeFaves, favoriteRecipe 
     }, [favoriteRecipe, recipe.id]) // Run this effect when favoriteRecipe or recipe.id changes
 
     // recipeFaves expects a recipeId so it is called with recipe.id not recipe
+    // this has been updated to just recipe to return the full object recipe
     const handleIcon = () => {
         recipeFaves(recipe) // updates the favoriteRecipe state
         // setIsFilled(!isFilled) no longer needed, since useEffect is global

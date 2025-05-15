@@ -2,7 +2,7 @@ import React from "react";
 
 /* update onChange to use new as the second argument */
 
-const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdateRecipe}) => {
+const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdateRecipe, categories }) => {
     
     return (
         <div className="recipe-form">
@@ -17,6 +17,13 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                     onChange={(e) => onUpdateForm(e, "update")}
                     required
                 />
+                <label>Select a category</label>
+                    <select name="category" value={selectedRecipe.category} onChange={(e) => onUpdateForm(e, "update")} required>
+                        <option value="">-- Select a category --</option>
+                        {categories.map((cat) => (
+                        <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                    </select>
                 <label>Description</label>
                 <input 
                     type="text"
@@ -48,7 +55,7 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                     required
                 />
                 <label>Image URL</label>
-                <textarea
+                <input
                     type="text"
                     name="image_url"
                     value={selectedRecipe.image_url}

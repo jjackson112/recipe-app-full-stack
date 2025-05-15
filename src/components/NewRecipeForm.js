@@ -3,7 +3,7 @@ import React from "react";
 /* onSubmit to call handleNewRecipe */
 /* update onChange to use new as the second argument */
 
-const NewRecipeForm = ({newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe}) => {
+const NewRecipeForm = ({newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe, categories }) => {
     
     return (
        <div className="recipe-details">
@@ -13,6 +13,13 @@ const NewRecipeForm = ({newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe
         <form onSubmit={(e) => handleNewRecipe(e, newRecipe)}>
             <label>Title</label>
             <input type="text" name="title" value={newRecipe.title} onChange={(e) => onUpdateForm(e, "new")} required />
+            <label>Select a category</label>
+            <select name="category" value={newRecipe.category} onChange={(e) => onUpdateForm(e, "new")} required>
+                <option value="">-- Select a category --</option>
+                {categories.map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                ))}
+            </select>
             <label>Cooking Time</label>
             <input type="text" name="cooking_time" id="cooking_time" value={newRecipe.cooking_time} onChange={(e) => onUpdateForm(e, "new")} />
             <label>Ingredients</label>

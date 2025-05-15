@@ -18,9 +18,17 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [favoriteRecipe, setFavoriteRecipe] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState("All")
 
-  // create state for categories
-  //const categories = ["breakfast", "lunch", "dinner", "snack", "appetizer", "drink"];
+  // categories - update state
+  const categories = ["All", "Appetizer", "Breakfast", "Dessert","Dinner", "Drinks", "Lunch"]
+  const filteredRecipes = selectedCategory !== "All" 
+    ? recipes.filter(recipe => recipe.category === selectedCategory)
+    : recipes;
+  
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category)
+  }
 
   // store array of favorited recipes
   // prev.includes(recipeId) checks if it's already favorited
@@ -39,8 +47,10 @@ function App() {
         return prev.filter(id => id !== recipe.id)
       } else if (prev.length < maxFaves) {
         return [...prev, recipe] 
-      } else {
+      } else if (prev.length > maxFaves) {
         displayToast(`Favorite list is full!`)
+      } else {
+        return prev
       }
     })
   }, [])
@@ -73,6 +83,7 @@ function App() {
   const [newRecipe, setNewRecipe] = useState({
       title: "",
       cooking_time: "",
+      category: "",
       ingredients: "",
       instructions: "",
       servings: 1, // conservative default
@@ -112,7 +123,6 @@ function App() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  
 
   /* accepts e and newRecipe as arguments */
   /* e prevent default is used to submit the form */
@@ -143,6 +153,7 @@ function App() {
         setShowNewRecipeForm(false);
         setNewRecipe({
           title: "",
+          category: "",
           cooking_time: "",
           ingredients: "",
           instructions: "",
@@ -157,6 +168,14 @@ function App() {
       displayToast(`An error has occurred - this recipe cannot be added.`, "error");
     }
   };
+
+  /* Duplicated recipes */
+
+  const isDuplicate = recipes.some(r => r.title.toLowerCase() === newRecipe.title.toLowerCase())
+    if (isDuplicate) {
+      displayToast("That recipe already exists!")
+      return
+    }
 
   /* handleUpdateRecipe function is similar to handleNewRecipe */
   /* except update an existing recipe */
@@ -308,9 +327,9 @@ function App() {
   /* each recipe has an ID for the key and a prop for each recipe*/
   return (
     <div className='recipe-app'>
-      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} recipes={recipes} recipeFaves={favoriteRecipe} handleSelectRecipe={handleSelectRecipe} removeFromFavorites={removefromFavorites}/>
+      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} recipes={recipes} recipeFaves={favoriteRecipe} handleSelectRecipe={handleSelectRecipe} removefromFavorites={removefromFavorites}/>
       {showNewRecipeForm && (
-        <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe}/>
+        <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe} categories={categories}/>
       )}
       {selectedRecipe && 
         <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe} onUpdateForm={onUpdateForm} handleUpdateRecipe={handleUpdateRecipe} handleDeleteRecipe={handleDeleteRecipe} />
@@ -318,7 +337,7 @@ function App() {
       {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">
         {displayedRecipes.map((recipe) => (
-          <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} favoriteRecipe={favoriteRecipe} setFavoriteRecipe={setFavoriteRecipe} recipeFaves={recipeFaves} removefromFavorites={removefromFavorites} />
+          <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} favoriteRecipe={favoriteRecipe} setFavoriteRecipe={setFavoriteRecipe} recipeFaves={recipeFaves} removedromFavorites={removefromFavorites} />
         ))}
       {showScrollTop && !selectedRecipe && !showNewRecipeForm && (
         <button
