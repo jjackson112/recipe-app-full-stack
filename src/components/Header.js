@@ -5,7 +5,7 @@ import FavoriteRecipeExcerpt from "./FavoriteRecipeExcerpt";
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
-const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves, recipes, handleSelectRecipe, removeFromFavorites }) => {
+const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves, recipes, handleSelectRecipe, removefromFavorites, categories, selectedCategory, handleCategoryChange }) => {
   return (
     <header>
       <div className='logo-search'>
@@ -37,10 +37,18 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
             key={recipe.id}
             recipe={recipe}
             handleSelectRecipe={handleSelectRecipe}
-            removeFromFavorites={removeFromFavorites}
+            removefromFavorites={removefromFavorites}
           />
           ))
         )}
+      </div>
+      <div className="category-filter">
+        <label htmlFor="category"><strong>Filter by category </strong></label>
+        <select id="category" value={selectedCategory} onChange={(e) => handleCategoryChange(e.target.value)}>
+          {categories.map((cat) => (
+            <option id="category-options" key={cat} value={cat}>{cat}</option>
+          ))}
+        </select>
       </div>
     </header>
   );

@@ -15,7 +15,7 @@ const NewRecipeForm = ({newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe
             <input type="text" name="title" value={newRecipe.title} onChange={(e) => onUpdateForm(e, "new")} required />
             <label>Select a category</label>
             <select name="category" value={newRecipe.category} onChange={(e) => onUpdateForm(e, "new")} required>
-                <option value="">-- Select a category --</option>
+                <option value="">--</option>
                 {categories.map((cat) => (
                     <option key={cat} value={cat}>{cat}</option>
                 ))}

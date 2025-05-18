@@ -187,6 +187,18 @@ header .new-recipe:hover {
   margin: 2rem auto;
 }
 
+.category-filter #category {
+  border-radius: 25px;
+  height: 40px;
+  outline: none;
+  width: 150px;
+  margin-left: 25px;
+}
+
+#category-options {
+  text-align: center;
+}
+
 .back-to-top {
   position: fixed;
   bottom: 30px;

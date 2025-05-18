@@ -5,11 +5,11 @@ import RecipeFull from "./RecipeFull";
 /* Check get recipe app route for properties*/
 /* Wrap recipe.description with truncateText - call the default value as a second argument  */
 
-const FavoriteRecipeExcerpt = ({recipe, handleSelectRecipe, removeFromFavorites }) => {
+const FavoriteRecipeExcerpt = ({recipe, handleSelectRecipe, removefromFavorites }) => {
 
     return (
         <article className="recipe-card">
-            <span className="close-recipe-card" onClick={() => removeFromFavorites(recipe)}><strong>X Remove from Favorites</strong></span>
+            <span className="close-recipe-card" onClick={() => removefromFavorites(recipe)}><strong>X Remove from Favorites</strong></span>
             <figure>
                 <img src={recipe.image_url} alt={recipe.title} />
             </figure>

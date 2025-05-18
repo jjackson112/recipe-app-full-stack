@@ -19,10 +19,15 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                 />
                 <label>Select a category</label>
                     <select name="category" value={selectedRecipe.category} onChange={(e) => onUpdateForm(e, "update")} required>
-                        <option value="">-- Select a category --</option>
-                        {categories.map((cat) => (
-                        <option key={cat} value={cat}>{cat}</option>
-                        ))}
+                        <option value="All">All</option>
+                        <option value="Appetizer">Appetizer</option>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Dessert">Dessert</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Drinks">Drinks</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Sauces">Sauces</option>
+                        <option value="Uncategorized">Uncategorized</option>
                     </select>
                 <label>Description</label>
                 <input 
@@ -63,7 +68,7 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                     required
                 />
                 <label>Servings</label>
-                <textarea
+                <input
                     type="number"
                     name="servings"
                     value={selectedRecipe.servings}

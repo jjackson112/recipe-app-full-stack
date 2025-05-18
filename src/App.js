@@ -21,7 +21,7 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState("All")
 
   // categories - update state
-  const categories = ["All", "Appetizer", "Breakfast", "Dessert","Dinner", "Drinks", "Lunch"]
+  const categories = ["All", "Appetizer", "Breakfast", "Dessert","Dinner", "Drinks", "Lunch", "Sauces", "Uncategorized"]
   const filteredRecipes = selectedCategory !== "All" 
     ? recipes.filter(recipe => recipe.category === selectedCategory)
     : recipes;
@@ -47,7 +47,7 @@ function App() {
         return prev.filter(id => id !== recipe.id)
       } else if (prev.length < maxFaves) {
         return [...prev, recipe] 
-      } else if (prev.length > maxFaves) {
+      } else if (prev.length === maxFaves) {
         displayToast(`Favorite list is full!`)
       } else {
         return prev
@@ -169,19 +169,18 @@ function App() {
     }
   };
 
-  /* Duplicated recipes */
-
-  const isDuplicate = recipes.some(r => r.title.toLowerCase() === newRecipe.title.toLowerCase())
-    if (isDuplicate) {
-      displayToast("That recipe already exists!")
-      return
-    }
-
   /* handleUpdateRecipe function is similar to handleNewRecipe */
   /* except update an existing recipe */
 
   const handleUpdateRecipe = async (e, selectedRecipe) => {
     e.preventDefault();
+
+  /* Duplicated recipes */
+    const isDuplicate = recipes.some(r => r.title.toLowerCase() === newRecipe.title.toLowerCase())
+    if (isDuplicate) {
+      displayToast("That recipe already exists!")
+      return
+    }
   // you need the id to make sure the POST request reaches the correct endpoint
     const {id} = selectedRecipe;
 
@@ -313,13 +312,14 @@ function App() {
     hideRecipeForm();
     handleUnselectRecipe();
     updateSearchTerm("");
+    setSelectedCategory("All");
    }
 
   /* How to display recipes on search results page - is there a search term? */
   /* Alphabetize recipes - Use slice to copy arrays so recipes state isn't mutated 
   and sort to reorder elements - localeCompare handles case sensitivity and non English characters */
   
-  const displayedRecipes = (searchTerm ? handleSearch() : recipes)
+  const displayedRecipes = (searchTerm ? handleSearch() : filteredRecipes)
     .slice()
     .sort((a,b) => a.title.localeCompare(b.title));
 
@@ -327,7 +327,7 @@ function App() {
   /* each recipe has an ID for the key and a prop for each recipe*/
   return (
     <div className='recipe-app'>
-      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} recipes={recipes} recipeFaves={favoriteRecipe} handleSelectRecipe={handleSelectRecipe} removefromFavorites={removefromFavorites}/>
+      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} recipes={recipes} recipeFaves={favoriteRecipe} handleSelectRecipe={handleSelectRecipe} removefromFavorites={removefromFavorites} categories={categories} selectedCategory={selectedCategory} handleCategoryChange={handleCategoryChange}/>
       {showNewRecipeForm && (
         <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe} categories={categories}/>
       )}
@@ -337,7 +337,7 @@ function App() {
       {!selectedRecipe && !showNewRecipeForm && (
       <div className="recipe-list">
         {displayedRecipes.map((recipe) => (
-          <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} favoriteRecipe={favoriteRecipe} setFavoriteRecipe={setFavoriteRecipe} recipeFaves={recipeFaves} removedromFavorites={removefromFavorites} />
+          <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} favoriteRecipe={favoriteRecipe} setFavoriteRecipe={setFavoriteRecipe} recipeFaves={recipeFaves} removedfromFavorites={removefromFavorites} />
         ))}
       {showScrollTop && !selectedRecipe && !showNewRecipeForm && (
         <button
