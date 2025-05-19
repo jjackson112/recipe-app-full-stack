@@ -48,10 +48,9 @@ function App() {
         return prev.filter(id => id !== recipe.id)
       } else if (prev.length < maxFaves) {
         return [...prev, recipe] 
-      } else if (prev.length === maxFaves) {
-        displayToast(`Favorite list is full!`)
       } else {
-        return prev
+          displayToast(`Favorite list is full!`)
+          return prev
       }
     })
   }, [])
