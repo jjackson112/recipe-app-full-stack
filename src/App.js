@@ -22,7 +22,7 @@ function App() {
   const scrollRef = useRef(0); // create a modifiable reference that persists across renders - save scroll position
 
   // categories - update state
-  const categories = ["All", "Appetizer", "Breakfast", "Dessert","Dinner", "Dips/Sauces", "Drinks", "Fried", "Lunch", "Soups/Stews", "Uncategorized", "Vegetarian"]
+  const categories = ["All", "Appetizer", "Bread", "Breakfast", "Dessert","Dinner", "Dips/Sauces", "Drinks", "Fried", "Lunch", "Sides", "Soups/Stews", "Vegetarian"]
   const filteredRecipes = selectedCategory !== "All" 
     ? recipes.filter(recipe => recipe.category === selectedCategory)
     : recipes;
@@ -243,7 +243,7 @@ function App() {
     scrollRef.current = window.scrollY; // stores scroll position after adding recipe
     setSelectedRecipe(recipe);
   };
-  
+
   useEffect (() => {
     if (!selectedRecipe) {
       window.scrollTo({ top: scrollRef.current, behavior: "smooth" });

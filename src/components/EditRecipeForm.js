@@ -21,6 +21,7 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                     <select name="category" value={selectedRecipe.category} onChange={(e) => onUpdateForm(e, "update")} required>
                         <option value="All">All</option>
                         <option value="Appetizer">Appetizer</option>
+                        <option value="Bread">Bread</option>
                         <option value="Breakfast">Breakfast</option>
                         <option value="Dessert">Dessert</option>
                         <option value="Dinner">Dinner</option>
@@ -28,8 +29,8 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                         <option value="Drinks">Drinks</option>
                         <option value="Fried">Fried</option>
                         <option value="Lunch">Lunch</option>
+                        <option value="Sides">Sides</option>
                         <option value="Soups and Stews">Soups/Stews</option>
-                        <option value="Uncategorized">Uncategorized</option>
                         <option value="Vegetarian">Vegetarian</option>
                     </select>
                 <label>Description</label>
