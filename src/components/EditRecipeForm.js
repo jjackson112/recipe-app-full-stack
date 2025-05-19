@@ -24,12 +24,13 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                         <option value="Breakfast">Breakfast</option>
                         <option value="Dessert">Dessert</option>
                         <option value="Dinner">Dinner</option>
-                        <option value="Dips-Sauces">Dips/Sauces</option>
+                        <option value="Dips and Sauces">Dips/Sauces</option>
                         <option value="Drinks">Drinks</option>
                         <option value="Fried">Fried</option>
                         <option value="Lunch">Lunch</option>
-                        <option value="Soups-Stews">Soups/Stews</option>
+                        <option value="Soups and Stews">Soups/Stews</option>
                         <option value="Uncategorized">Uncategorized</option>
+                        <option value="Vegetarian">Vegetarian</option>
                     </select>
                 <label>Description</label>
                 <input 

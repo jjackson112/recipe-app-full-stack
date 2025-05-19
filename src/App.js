@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Header from "./components/Header";
 import RecipeExcerpt from "./components/RecipeExcerpt";
 import RecipeFull from "./components/RecipeFull"
@@ -17,11 +17,12 @@ function App() {
   const [showNewRecipeForm, setShowNewRecipeForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [favoriteRecipe, setFavoriteRecipe] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState("All")
+  const [favoriteRecipe, setFavoriteRecipe] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const scrollRef = useRef(0); // create a modifiable reference that persists across renders - save scroll position
 
   // categories - update state
-  const categories = ["All", "Appetizer", "Breakfast", "Dessert","Dinner", "Dips/Sauces", "Drinks", "Fried", "Lunch", "Soups/Stews", "Uncategorized"]
+  const categories = ["All", "Appetizer", "Breakfast", "Dessert","Dinner", "Dips/Sauces", "Drinks", "Fried", "Lunch", "Soups/Stews", "Uncategorized", "Vegetarian"]
   const filteredRecipes = selectedCategory !== "All" 
     ? recipes.filter(recipe => recipe.category === selectedCategory)
     : recipes;
@@ -181,7 +182,7 @@ function App() {
 
   const handleUpdateRecipe = async (e, selectedRecipe) => {
     e.preventDefault();
-
+  
   // you need the id to make sure the POST request reaches the correct endpoint
     const {id} = selectedRecipe;
 
@@ -214,7 +215,7 @@ function App() {
     } catch (error) {
         displayToast("An error has errored - you cannot edit or update this recipe.", "error")
     }
-    setSelectedRecipe(null);
+    setSelectedRecipe(null); // Return to the excerpts view
   }
 
   // Delete a recipe - no need for headers or body
@@ -239,8 +240,15 @@ function App() {
 
   /* Update the status of the selectedRecipe state */
   const handleSelectRecipe = (recipe) => {
+    scrollRef.current = window.scrollY; // stores scroll position after adding recipe
     setSelectedRecipe(recipe);
   };
+  
+  useEffect (() => {
+    if (!selectedRecipe) {
+      window.scrollTo({ top: scrollRef.current, behavior: "smooth" });
+    }
+  }, [selectedRecipe])
 
   /* Allows you to unselect a recipe */
   const handleUnselectRecipe = () => {
