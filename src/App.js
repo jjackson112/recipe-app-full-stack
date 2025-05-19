@@ -21,7 +21,7 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState("All")
 
   // categories - update state
-  const categories = ["All", "Appetizer", "Breakfast", "Dessert","Dinner", "Drinks", "Lunch", "Sauces", "Uncategorized"]
+  const categories = ["All", "Appetizer", "Breakfast", "Dessert","Dinner", "Dips/Sauces", "Drinks", "Fried", "Lunch", "Soups/Stews", "Uncategorized"]
   const filteredRecipes = selectedCategory !== "All" 
     ? recipes.filter(recipe => recipe.category === selectedCategory)
     : recipes;
@@ -133,6 +133,13 @@ function App() {
   const handleNewRecipe = async (e, newRecipe) => {
     e.preventDefault();
 
+  /* Duplicated recipes */
+    const isDuplicate = recipes.some(r => r.title.toLowerCase() === newRecipe.title.toLowerCase())
+    if (isDuplicate) {
+      displayToast("That recipe already exists!")
+      return
+    }
+
     try {
       const response = await fetch("/api/recipes", {
         method: "POST",
@@ -175,12 +182,6 @@ function App() {
   const handleUpdateRecipe = async (e, selectedRecipe) => {
     e.preventDefault();
 
-  /* Duplicated recipes */
-    const isDuplicate = recipes.some(r => r.title.toLowerCase() === newRecipe.title.toLowerCase())
-    if (isDuplicate) {
-      displayToast("That recipe already exists!")
-      return
-    }
   // you need the id to make sure the POST request reaches the correct endpoint
     const {id} = selectedRecipe;
 
@@ -305,6 +306,8 @@ function App() {
       return valuesToSearch.some(value => value.toLowerCase().includes(searchTerm.toLowerCase()));
     });
   }
+
+  
 
     /* make the logo clickable - clear the search results,
    newRecipeForm cannot show and no recipes can be selected */

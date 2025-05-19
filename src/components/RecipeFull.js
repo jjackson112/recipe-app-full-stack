@@ -166,7 +166,8 @@ const handleMultiplierClick = (value) => {
                     </div>
                     <h4 id="cook-mode-description">Keep screen awake!</h4>
                 </div>
-
+                
+                <h3>Category: {selectedRecipe.category}</h3>
                 <h3>Description:</h3>
                 <p>{selectedRecipe.description}</p>
 
