@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask("recipe-app")
+app = Flask(__name__)
 
 # set up SQL database - location configured to store the database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
