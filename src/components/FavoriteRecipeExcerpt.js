@@ -1,6 +1,5 @@
 import React from "react";
 import truncateText from "../helpers/utils";
-import RecipeFull from "./RecipeFull";
 
 /* Check get recipe app route for properties*/
 /* Wrap recipe.description with truncateText - call the default value as a second argument  */
