@@ -12,8 +12,10 @@ load_dotenv()
 app = Flask(__name__)
 
 # have frontend and backend communicate
-CORS(app, origins=["https://recipe-app-frontend-gr6b.onrender.com"], supports_credentials=True,  methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type", "Authorization"])
+CORS(app, resources={r"/api/*": {"origins": "https://recipe-app-frontend-gr6b.onrender.com"}}, 
+     supports_credentials=True,
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     allow_headers=["Content-Type"])
 
 # set up SQL database - location configured to store the database
 # connect to PostgreSQL
