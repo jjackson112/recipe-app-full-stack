@@ -94,7 +94,7 @@ function App() {
   useEffect(() => {
     const fetchAllRecipes = async () => {
       try {
-        const response = await fetch("/api/recipes");
+        const response = await fetch("https://recipe-app-full-stack.onrender.com/api/recipes");
         if (response.ok) {
           const data = await response.json();
           setRecipes(data);
@@ -141,7 +141,7 @@ function App() {
     }
 
     try {
-      const response = await fetch("/api/recipes", {
+      const response = await fetch("https://recipe-app-full-stack.onrender.com/api/recipes", {
         method: "POST",
         headers: {
           "Content-type": "application/json"
@@ -186,7 +186,7 @@ function App() {
     const {id} = selectedRecipe;
 
     try {
-      const response = await fetch(`/api/recipes/${id}`, {
+      const response = await fetch(`https://recipe-app-full-stack.onrender.com/api/recipes/${id}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json"
@@ -220,7 +220,7 @@ function App() {
   // Delete a recipe - no need for headers or body
   const handleDeleteRecipe = async (recipeId) => {
     try {
-      const response = await fetch(`/api/recipes/${recipeId}`, {
+      const response = await fetch(`https://recipe-app-full-stack.onrender.com/api/recipes/${recipeId}`, {
         method: "DELETE"
       });
   
