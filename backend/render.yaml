@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: recipe-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn api:app
+    envVars:
+      - key: SQLALCHEMY_DATABASE_URI
+        fromDotEnv: true
+      - key: FLASK_ENV
+        value: production
