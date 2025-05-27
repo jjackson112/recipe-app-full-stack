@@ -3,12 +3,16 @@ from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
 from extensions import db 
+from flask_cors import CORS 
 from models import Recipe  # Now importing db and Recipe from models.py
 
 load_dotenv()
 
 # create database object by calling SQL Alchemy class
 app = Flask(__name__)
+
+# have frontend and backend communicate
+CORS(app)
 
 # set up SQL database - location configured to store the database
 # connect to PostgreSQL
