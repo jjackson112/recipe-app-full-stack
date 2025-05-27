@@ -96,7 +96,7 @@ def add_recipe():
     for field in required_fields:
         if field not in data or data[field] == "":
             return jsonify({'error':f"Missing required field: '{field}'"}), 400
-    
+
     return jsonify({'message': 'Recipe added successfully', 'recipe': new_recipe_data})
 
 # create a PUT endpoint - <int:recipe_id> is a placeholder for variable value, the id of the specific recipe you want to update
@@ -111,17 +111,17 @@ def update_recipe(recipe_id):
     for field in required_fields:
         if field not in data or data[field] == "":
             return jsonify({'error': f"Missing required field:'{field}'"}), 400
-        
-        recipe.title = data['title']
-        recipe.category = data['category']
-        recipe.cooking_time = data['cooking_time']
-        recipe.ingredients = data['ingredients']
-        recipe.instructions = data['instructions']
-        recipe.servings = data['servings']
-        recipe.description = data['description']
-        recipe.image_url = data['image_url']
-        db.session.commit()
-    
+
+    recipe.title = data['title']
+    recipe.category = data['category']
+    recipe.cooking_time = data['cooking_time']
+    recipe.ingredients = data['ingredients']
+    recipe.instructions = data['instructions']
+    recipe.servings = data['servings']
+    recipe.description = data['description']
+    recipe.image_url = data['image_url']
+    db.session.commit()
+
     updated_recipe = {
         'id': recipe.id,
         'category': recipe.category,
