@@ -1,14 +1,23 @@
 import json
+import os
 import psycopg2
 from psycopg2.extras import execute_values
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# PostgreSQL connection string
+postgres_url = os.environ.get("SQLALCHEMY_DATABASE_URI")
+if not postgres_url:
+    raise EnvironmentError("Missing SQLALCHEMY_DATABASE_URI environment variable.")
 
 # Load your recipes.json file
 with open("recipes.json", "r") as f:
     recipes = json.load(f)
 
 # Connect to your Render PostgreSQL database
-conn = psycopg2.connect(
-    "postgresql://recipe_db_v96b_user:Dt12GhvYwKigS5U3Fz3WiKR0RHyNn9LB@dpg-d0q6p33e5dus73efjno0-a.ohio-postgres.render.com/recipe_db_v96b")  # replace with your Render DB URL
+conn = psycopg2.connect(postgres_url)
 cur = conn.cursor()
 
 # Create a table if it doesn't exist

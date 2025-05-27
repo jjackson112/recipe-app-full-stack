@@ -1,8 +1,8 @@
 from flask import Flask
+import os
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
 from models import db, Recipe  # use your real Python filename here
-import os
 
 # === Create Flask app BEFORE using it ===
 app = Flask(__name__)
@@ -23,12 +23,12 @@ sqlite_session = SQLiteSession()
 
 # Connect to PostgreSQL (your Render DB URL or local PG if testing)
 # Example format: 'postgresql://username:password@host:port/databasename'
-postgres_url = 'postgresql://recipe_db_v96b_user:Dt12GhvYwKigS5U3Fz3WiKR0RHyNn9LB@dpg-d0q6p33e5dus73efjno0-a.ohio-postgres.render.com/recipe_db_v96b'
+postgres_url = os.environ.get('SQLALCHEMY_DATABASE_URI')
 postgres_engine = create_engine(postgres_url)
 PostgresSession = sessionmaker(bind=postgres_engine)
 postgres_session = PostgresSession()
 
-# ❗ Must run everything within Flask's application context
+# ❗Must run everything within Flask's application context
 with app.app_context():
     # Confirm SQLite DB file exists
     if not os.path.exists(db_path):
@@ -39,7 +39,7 @@ with app.app_context():
     tables = inspector.get_table_names()
     print("SQLite tables found:", tables)
     if 'recipe' not in tables:
-        raise Exception("❌ Table 'recipe' not found in SQLite. Did you run init_sqlite.py?")
+        raise Exception("Table 'recipe' not found in SQLite. Did you run init_sqlite.py?")
 
     # Create tables in PostgreSQL (if not already created)
     db.metadata.create_all(bind=postgres_engine)
