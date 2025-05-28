@@ -5,6 +5,7 @@ import os
 from extensions import db 
 from flask_cors import CORS 
 from models import Recipe  # Now importing db and Recipe from models.py
+from flask_migrate import Migrate
 
 load_dotenv()
 
@@ -12,7 +13,7 @@ load_dotenv()
 app = Flask(__name__)
 
 # have frontend and backend communicate
-CORS(app, resources={r"/api/*": {"origins": "https://recipe-app-frontend-gr6b.onrender.com"}}, 
+CORS(app, resources={r"/api/*": {"origins": ["https://recipe-app-frontend-gr6b.onrender.com", "http://localhost:3000"]}}, 
      supports_credentials=True,
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
      allow_headers=["Content-Type"])
@@ -22,6 +23,7 @@ CORS(app, resources={r"/api/*": {"origins": "https://recipe-app-frontend-gr6b.on
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+migrate = Migrate(app, db)
 #db = SQLAlchemy()
 
 # create a db model to organize database
@@ -30,7 +32,7 @@ db.init_app(app)
    # title = db.Column(db.String(100), nullable=False)
    # category = db.Column(db.String(75), nullable=False, default='Uncategorized')
    # cooking_time = db.Column(db.Text, nullable=True, default='5 mins')
-   # ingredients = db.Column(db.String(1000), nullable=False)
+   # ingredients = db.Column(db.Text, nullable=False)
    # instructions = db.Column(db.Text, nullable=False)
    # description = db.Column(db.Text, nullable=True, default='Delicious. You need to try it!')
    # image_url = db.Column(db.String(1000), nullable=True, default="https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
