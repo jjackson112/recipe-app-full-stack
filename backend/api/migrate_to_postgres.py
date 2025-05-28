@@ -23,7 +23,7 @@ sqlite_session = SQLiteSession()
 
 # Connect to PostgreSQL (your Render DB URL or local PG if testing)
 # Example format: 'postgresql://username:password@host:port/databasename'
-postgres_url = os.environ.get('SQLALCHEMY_DATABASE_URI')
+postgres_url = 'postgresql://recipe_db_v96b_user:Dt12GhvYwKigS5U3Fz3WiKR0RHyNn9LB@dpg-d0q6p33e5dus73efjno0-a.ohio-postgres.render.com/recipe_db_v96b'
 postgres_engine = create_engine(postgres_url)
 PostgresSession = sessionmaker(bind=postgres_engine)
 postgres_session = PostgresSession()
