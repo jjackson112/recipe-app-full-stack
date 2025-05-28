@@ -344,7 +344,8 @@ header .new-recipe:hover {
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  width: 300px;
+  height: 30px;
+  width: 250px;
   cursor: pointer;
 }
 
@@ -376,7 +377,7 @@ header .new-recipe:hover {
 
 .toggle-button {
   height: 40px;
-  width: 80px;
+  width: 100px;
   background-color: #333;
   border-radius: 30px;
   padding: 5px;
@@ -566,6 +567,36 @@ header .new-recipe:hover {
 .Toastify__progress-bar--error {
   background: var(--accent-color-hover);
 }
+
+/* Mobile edits for a full recipe */
+@media (max-width: 350px) {
+  .cook-mode-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .toggle-button {
+  margin-top: 5px;
+  }
+
+  .scale-buttons {
+    flex-direction: column;
+    align-items: stretch; /* Optional: makes buttons fill container width */
+    width: 100%; /* Optional: use full width on small screens */
+    margin-bottom: 1rem;
+  }
+
+  .scale-buttons button {
+    height: auto;       /* Ensure height is not stretched */
+    width: 100%; /* Optional: buttons take full width */
+    margin-bottom: 0.5rem;
+  }
+
+  .scale-buttons button:last-child {
+    margin-bottom: 0; /* Avoid extra space after the last button */
+  }
+}
+
 
 /* Media queries for larger viewports */
 
