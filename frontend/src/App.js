@@ -21,11 +21,8 @@ function App() {
   const [favoriteRecipe, setFavoriteRecipe] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const scrollRef = useRef(0); // create a modifiable reference that persists across renders - save scroll position
-  const [socketMessage, setSocketMessage] = useState('');
-  const [socketMessageReceived, setSocketMessageReceived] = useState('');
-  const socketRef = useRef(null)
 
-  // websockets
+  // websockets event listeners
   useEffect(() => {
     socketRef.current = io('http://localhost:5000') // connect websocket server to mount
 
@@ -384,16 +381,6 @@ function App() {
       )}
       </div>
       )}
-        <div>
-          <label htmlFor="socketInput">Send socket message:</label>
-          <input 
-            type="text" 
-            value={socketMessage} 
-            onChange={handleSocketChange} 
-            placeholder="Type to sync via socket" 
-          />
-          <p>Last message received: {socketMessageReceived}</p>
-        </div>
       < ToastContainer />
     </div>
   );
