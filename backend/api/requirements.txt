@@ -1,9 +1,11 @@
 alembic==1.11.3
 blinker==1.6.2
 click==8.1.7
+eventlet
 Flask==2.3.3
 flask-cors
 flask_migrate
+Flask-SocketIO
 Flask-SQLAlchemy==3.0.5
 greenlet==2.0.2
 gunicorn==21.2.0
