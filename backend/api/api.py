@@ -7,14 +7,16 @@ from flask_cors import CORS
 from models import Recipe  # Now importing db and Recipe from models.py
 from flask_migrate import Migrate
 from flask_socketio import SocketIO, emit
+import eventlet # websocket - socketio expects a prod ready server - Werkzeug is the default Flask server and this allows for websocket use even in dev
 
+eventlet.monkey_patch()
 load_dotenv()
 
 # create database object by calling SQL Alchemy class
 app = Flask(__name__)
 # websockets for real time sync
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins="*") # allow frontend from anywhere during dev
+socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000") # allow frontend from anywhere during dev
 
 @socketio.on('connect')
 def handle_connect():
@@ -168,4 +170,4 @@ def delete_recipe(recipe_id):
     return jsonify({'message': 'Recipe deleted successfully!'})
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, host='localhost', port=5000, debug=True, allow_unsafe_werkzeug=True)

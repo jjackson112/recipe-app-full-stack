@@ -5,7 +5,7 @@ import FavoriteRecipeExcerpt from "./FavoriteRecipeExcerpt";
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
-const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves, recipes, handleSelectRecipe, removefromFavorites, categories, selectedCategory, handleCategoryChange }) => {
+const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves, recipes, handleSelectRecipe, removefromFavorites, categories, selectedCategory, handleCategoryChange, socketMessage, socketMessageReceived, handleSocketChange }) => {
   return (
     <header>
       <div className='logo-search'>

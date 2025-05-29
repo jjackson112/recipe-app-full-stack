@@ -384,6 +384,16 @@ function App() {
       )}
       </div>
       )}
+        <div>
+          <label htmlFor="socketInput">Send socket message:</label>
+          <input 
+            type="text" 
+            value={socketMessage} 
+            onChange={handleSocketChange} 
+            placeholder="Type to sync via socket" 
+          />
+          <p>Last message received: {socketMessageReceived}</p>
+        </div>
       < ToastContainer />
     </div>
   );
