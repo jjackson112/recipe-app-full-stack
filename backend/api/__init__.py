@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from .user_auth_model import User
 from dotenv import load_dotenv
 import os
 

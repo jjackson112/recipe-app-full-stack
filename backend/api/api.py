@@ -8,13 +8,19 @@ import os
 from extensions import db 
 from flask_cors import CORS 
 from models import Recipe  # Now importing db and Recipe from models.py
+from user_auth_model import User
 from flask_migrate import Migrate
 from flask_socketio import SocketIO, emit
+from flask_jwt_extended import JWTManager
 
 load_dotenv()
 
 # create database object by calling SQL Alchemy class
 app = Flask(__name__)
+
+# user authentication 
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'super-secret-key')  # set in .env
+jwt = JWTManager(app)
 
 # websockets for real time sync
 app.config['SECRET_KEY'] = 'secret!'
