@@ -12,6 +12,9 @@ from user_auth_model import User
 from flask_migrate import Migrate
 from flask_socketio import SocketIO, emit
 from flask_jwt_extended import JWTManager
+from werkzeug.security import generate_password_hash, check_password_hash
+import jwt
+import datetime
 
 load_dotenv()
 
@@ -195,6 +198,27 @@ def delete_recipe(recipe_id):
 
     return jsonify({'message': 'Recipe deleted successfully!'})
 
+# REGISTRATION ENDPOINT
+@app.route('/api/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify({'error': 'Username and password are required'}), 400
+    
+    existing_user = User.query.filter_by(username=username).first()
+    if existing_user:
+        return jsonify({'error', 'Username has already been taken'}), 400
+
+    new_user = User(username=username)
+    new_user.set_password(password)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'User registered successfully'})
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), allow_unsafe_werkzeug=True)
