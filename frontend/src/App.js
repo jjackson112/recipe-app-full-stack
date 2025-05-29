@@ -7,6 +7,7 @@ import NewRecipeForm from "./components/NewRecipeForm";
 import displayToast from "./helpers/toastHelper";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { io } from 'socket.io-client';
 import "./App.css";
 
 /* async request to /api/recipes endpoint to grab all recipes and update state, handle errors, and make sure response is ok*/
@@ -20,6 +21,31 @@ function App() {
   const [favoriteRecipe, setFavoriteRecipe] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const scrollRef = useRef(0); // create a modifiable reference that persists across renders - save scroll position
+  const [socketMessage, setSocketMessage] = useState('');
+  const [socketMessageReceived, setSocketMessageReceived] = useState('');
+  const socketRef = useRef(null)
+
+  // websockets
+  useEffect(() => {
+    socketRef.current = io('http://localhost:5000') // connect websocket server to mount
+
+    socketRef.current.on('connect', () => {
+      console.log('connected to websocket server')
+    })
+
+    socketRef.current.on('sync_event', (data) => {
+      setSocketMessageReceived(data.data) // update the state and listening the sync event
+    })
+
+    return () => {
+      socketRef.current.disconnect() // disconnect the socket when component unmounts
+    }
+  }, [])
+
+  const handleSocketChange = (e) => {
+    setSocketMessage(e.target.value)
+    socketRef.current.emit('sync_event', { data: e.target.value })
+  }
 
   // categories - update state
   const categories = ["All", "Appetizer", "Bread", "Breakfast", "Dessert","Dinner", "Dips and Sauces", "Drinks", "Lunch", "Sides", "Soups and Stews", "Vegetarian"]
