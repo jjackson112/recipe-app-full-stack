@@ -6,11 +6,28 @@ from extensions import db
 from flask_cors import CORS 
 from models import Recipe  # Now importing db and Recipe from models.py
 from flask_migrate import Migrate
+from flask_socketio import SocketIO, emit
 
 load_dotenv()
 
 # create database object by calling SQL Alchemy class
 app = Flask(__name__)
+# websockets for real time sync
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app, cors_allowed_origins="*") # allow frontend from anywhere during dev
+
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
+
+@socketio.on('sync_event')
+def handle_sync(data):
+    print('Received sync event:', data)
+    emit('sync_event', data, broadcast=True)
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected')
 
 # have frontend and backend communicate
 CORS(app, resources={r"/api/*": {"origins": ["https://recipe-app-frontend-gr6b.onrender.com", "http://localhost:3000"]}}, 
@@ -151,4 +168,4 @@ def delete_recipe(recipe_id):
     return jsonify({'message': 'Recipe deleted successfully!'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, debug=True)
