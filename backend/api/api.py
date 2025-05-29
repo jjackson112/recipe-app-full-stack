@@ -220,5 +220,24 @@ def register():
 
     return jsonify({'message': 'User registered successfully'})
 
+# LOGIN ENDPOINT
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    user = User.query.filter_by(username=username).first()
+    if not user or not user.check_password(password):
+        return jsonify({'error', 'Invalid username or password'}), 401
+    
+    # Generate JWT token
+    token = jwt.encode({
+        'user_id': user.id,
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=2)},
+        os.getenv('SECRET_KEY'), algorithm='HS256')
+    
+    return jsonify({'token': token})
+
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), allow_unsafe_werkzeug=True)
