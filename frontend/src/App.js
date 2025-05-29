@@ -25,7 +25,9 @@ function App() {
 
   // websockets event listeners
   useEffect(() => {
-    socketRef.current = io('https://recipe-app-full-stack.onrender.com') // connect websocket server to mount
+    socketRef.current = io('https://recipe-app-full-stack.onrender.com', {
+      transports: ['websocket']
+    }) // connect websocket server to mount
 
     socketRef.current.on('connect', () => {
       console.log("connected to websocket server")
