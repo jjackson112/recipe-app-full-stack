@@ -21,28 +21,24 @@ function App() {
   const [favoriteRecipe, setFavoriteRecipe] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const scrollRef = useRef(0); // create a modifiable reference that persists across renders - save scroll position
+  const socketRef = useRef(null) // websockets
 
   // websockets event listeners
   useEffect(() => {
-    socketRef.current = io('http://localhost:5000') // connect websocket server to mount
+    socketRef.current = io('https://recipe-app-full-stack.onrender.com') // connect websocket server to mount
 
     socketRef.current.on('connect', () => {
-      console.log('connected to websocket server')
+      console.log("connected to websocket server")
     })
 
     socketRef.current.on('sync_event', (data) => {
-      setSocketMessageReceived(data.data) // update the state and listening the sync event
+      console.log("received sync event", data)
     })
 
     return () => {
       socketRef.current.disconnect() // disconnect the socket when component unmounts
     }
   }, [])
-
-  const handleSocketChange = (e) => {
-    setSocketMessage(e.target.value)
-    socketRef.current.emit('sync_event', { data: e.target.value })
-  }
 
   // categories - update state
   const categories = ["All", "Appetizer", "Bread", "Breakfast", "Dessert","Dinner", "Dips and Sauces", "Drinks", "Lunch", "Sides", "Soups and Stews", "Vegetarian"]

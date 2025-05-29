@@ -19,3 +19,16 @@ class Recipe(db.Model):
 
     def __repr__(self):
         return f"Recipe(id={self.id}, title='{self.title}', description='{self.description}', servings={self.servings})"
+    # for websockets - converts Recipe object into a dictionary so it can turn into JSON
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'category': self.category,
+            'cooking_time': self.cooking_time,
+            'ingredients': self.ingredients,
+            'instructions': self.instructions,
+            'servings': self.servings,
+            'description': self.description,
+            'image_url': self.image_url
+        }

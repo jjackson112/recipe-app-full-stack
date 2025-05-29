@@ -15,6 +15,7 @@ load_dotenv()
 
 # create database object by calling SQL Alchemy class
 app = Flask(__name__)
+
 # websockets for real time sync
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3000", "https://recipe-app-frontend-gr6b.onrender.com"]) # allow frontend from anywhere during dev
@@ -102,6 +103,11 @@ def add_recipe():
     )
     db.session.add(new_recipe)
     db.session.commit()
+    # Emit to all clients
+    socketio.emit('sync_event', {
+        'type': 'create',
+        'payload': new_recipe.to_dict()
+    })
 
 # present data in a dictionary so python can transform it back to JSON
 # serialization - new id attribute
@@ -159,6 +165,12 @@ def update_recipe(recipe_id):
         'description': recipe.description,
         'image_url': recipe.image_url
     }
+        
+    socketio.emit('sync_event', {
+    'type': 'update',
+    'payload': recipe.to_dict()
+    })
+
     return jsonify({'message': 'Recipe updated successfully', 'recipe': updated_recipe})
 
 # DELETE ENDPOINT - you just need the id of the specific recipe
@@ -169,7 +181,14 @@ def delete_recipe(recipe_id):
         return jsonify({'error': 'Recipe not found'}), 404
     db.session.delete(recipe)
     db.session.commit()
+
+    socketio.emit('sync_event', {
+    'type': 'delete',
+    'payload': {'id': recipe_id}
+    })
+
     return jsonify({'message': 'Recipe deleted successfully!'})
+
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), allow_unsafe_werkzeug=True)
