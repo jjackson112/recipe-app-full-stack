@@ -1,4 +1,4 @@
-from api import db
+from extensions import db # focuses on users only
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model):

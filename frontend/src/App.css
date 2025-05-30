@@ -193,7 +193,7 @@ header .new-recipe:hover, .header-auth-btns:hover {
   background-color: white;
   margin: 10% auto;
   padding: 20px;
-  width: 300px;
+  width: 275px;
   border-radius: 10px;
 }
 
@@ -212,6 +212,8 @@ header .new-recipe:hover, .header-auth-btns:hover {
 }
 
 #register-btn, #register-close-btn {
+  text-align: center;
+  width: 85px;
   margin: 10px 10px;
 }
 

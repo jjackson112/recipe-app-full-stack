@@ -12,10 +12,8 @@ from user_auth_model import User
 from flask_migrate import Migrate
 from flask_socketio import SocketIO, emit
 from flask_jwt_extended import JWTManager
-from werkzeug.security import generate_password_hash, check_password_hash
-import jwt
 import datetime
-from token import token_required
+from auth_utils import token_required
 
 load_dotenv()
 
