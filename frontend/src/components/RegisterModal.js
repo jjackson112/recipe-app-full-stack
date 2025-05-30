@@ -21,7 +21,9 @@ const RegisterModal = ({ onClose }) => {
         setIsRegistered(true);
         setUsername(""); // reset form field after registration
         setPassword(""); // reset form field after registration
-        onClose(); // optionally close modal after success
+        setTimeout(() => {
+            onClose(); // optionally close modal after success
+        }, 3000)
     } else {
         setMessage(data.error || "Registration failed. Please try again.");
     }
@@ -30,7 +32,7 @@ const RegisterModal = ({ onClose }) => {
     return (
         <div className="register-modal-overlay">
             <div className="register-modal-content">
-                <h4>Already have an account?</h4>
+                <h4>Create an account</h4>
                 {message && <p className="register-message">{message}</p>}
                 <form onSubmit={handleRegisterSubmit}>
                     <label htmlFor="username">Username</label>
