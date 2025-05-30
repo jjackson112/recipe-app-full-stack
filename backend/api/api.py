@@ -23,9 +23,9 @@ app = Flask(__name__)
 
 # have frontend and backend communicate
 CORS(app, resources={r"/api/*": {"origins": ["https://recipe-app-frontend-gr6b.onrender.com", "http://localhost:3000"]}}, 
-     supports_credentials=True,
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type"])
+    supports_credentials=True,
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type"])
 
 # websockets for real time sync
 app.config['SECRET_KEY'] = 'secret!'
