@@ -126,6 +126,7 @@ header h1 {
 header .logo-search {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding-bottom: 5rem;
 }
 
@@ -175,8 +176,43 @@ header .new-recipe {
   cursor: pointer;
 }
 
-header .new-recipe:hover {
+header .new-recipe:hover, .header-auth-btns:hover {
   background-color: var(--dark-gray);
+}
+
+.login-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.login-modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 20px;
+  width: 300px;
+  border-radius: 10px;
+}
+
+#username, #password {
+  height: 30px;
+  width: 200px;
+  border-radius: 5px;
+  margin: 10px 0px;
+}
+
+.header-auth-btns {
+  background-color: #000000;
+  color: #ffffff;
+  width: 100px;
+  border-radius: 30px;
+}
+
+#register-btn, #register-close-btn {
+  margin: 10px 10px;
 }
 
 .favorite-recipes-list {
@@ -600,7 +636,6 @@ header .new-recipe:hover {
     margin-bottom: 0; /* Avoid extra space after the last button */
   }
 }
-
 
 /* Media queries for larger viewports */
 

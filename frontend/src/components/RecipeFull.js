@@ -121,7 +121,7 @@ const handleMultiplierClick = (value) => {
 
   const handleMultiplierClick = (value) => setMultiplier(value)
 
-// make sure recipe opens to the top when full recipw view is clicked
+// make sure recipe opens to the top when full recipe view is clicked
     useEffect(() => {
         window.scrollTo(0, 0);
       }, []);

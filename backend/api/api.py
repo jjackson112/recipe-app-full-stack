@@ -15,6 +15,7 @@ from flask_jwt_extended import JWTManager
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
+from token import token_required
 
 load_dotenv()
 
@@ -98,6 +99,7 @@ def get_all_recipes():
 
 # the data object sent over to POST endpoint via front end form - new recipe entry to be saved from the database
 @app.route('/api/recipes', methods=['POST'])
+@token_required # now only authenticated users can add recipes
 def add_recipe():
     data = request.get_json()
     new_recipe = Recipe(
@@ -142,6 +144,7 @@ def add_recipe():
 
 # create a PUT endpoint - <int:recipe_id> is a placeholder for variable value, the id of the specific recipe you want to update
 @app.route('/api/recipes/<int:recipe_id>', methods=['PUT'])
+@token_required # now only authenticated users can edit recipes
 def update_recipe(recipe_id):
     recipe = Recipe.query.get(recipe_id)
     if not recipe:
@@ -184,6 +187,7 @@ def update_recipe(recipe_id):
 
 # DELETE ENDPOINT - you just need the id of the specific recipe
 @app.route('/api/recipes/<int:recipe_id>', methods=['DELETE'])
+@token_required # now only authenticated users can delete recipes
 def delete_recipe(recipe_id):
     recipe = Recipe.query.get(recipe_id)
     if not recipe:

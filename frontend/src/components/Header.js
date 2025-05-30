@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Search } from "react-feather";
 import { ReactComponent as Logo } from "../images/utensils.svg";
 import FavoriteRecipeExcerpt from "./FavoriteRecipeExcerpt";
+import LoginModal from "./LoginModal";
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
-const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves, recipes, handleSelectRecipe, removefromFavorites, categories, selectedCategory, handleCategoryChange, socketMessage, socketMessageReceived, handleSocketChange }) => {
+const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves, recipes, handleSelectRecipe, removefromFavorites, categories, selectedCategory, handleCategoryChange }) => {
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
   return (
     <header>
       <div className='logo-search'>
         <Logo onClick={displayAllRecipes} />
+        <div className="login">
+          <button id="login-btn" className="header-auth-btns" onClick={() => setShowLoginModal(true)}>Login</button>
+          {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
+        </div>
         <div className='search'>
           <label className='visually-hidden' htmlFor='search'>
             Search

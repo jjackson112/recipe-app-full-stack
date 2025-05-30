@@ -23,6 +23,9 @@ function App() {
   const scrollRef = useRef(0); // create a modifiable reference that persists across renders - save scroll position
   const socketRef = useRef(null) // websockets
 
+  // save token after the login
+  const token = localStorage.getItem('token')
+
   // websockets event listeners
   useEffect(() => {
     socketRef.current = io('https://recipe-app-full-stack.onrender.com', {
@@ -165,7 +168,8 @@ function App() {
       const response = await fetch("https://recipe-app-full-stack.onrender.com/api/recipes", {
         method: "POST",
         headers: {
-          "Content-type": "application/json"
+          "Content-type": "application/json",
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(newRecipe)
       });
@@ -210,7 +214,8 @@ function App() {
       const response = await fetch(`https://recipe-app-full-stack.onrender.com/api/recipes/${id}`, {
         method: "PUT",
         headers: {
-          "Content-type": "application/json"
+          "Content-type": "application/json",
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(selectedRecipe)
       });
@@ -242,7 +247,10 @@ function App() {
   const handleDeleteRecipe = async (recipeId) => {
     try {
       const response = await fetch(`https://recipe-app-full-stack.onrender.com/api/recipes/${recipeId}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
   
       if (response.ok) {
