@@ -12,6 +12,7 @@ from user_auth_model import User
 from flask_migrate import Migrate
 from flask_socketio import SocketIO, emit
 from flask_jwt_extended import JWTManager
+from flask_jwt_extended import create_access_token
 import datetime
 from auth_utils import token_required
 
@@ -20,9 +21,11 @@ load_dotenv()
 # create database object by calling SQL Alchemy class
 app = Flask(__name__)
 
-# user authentication 
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'super-secret-key')  # set in .env
-jwt = JWTManager(app)
+# have frontend and backend communicate
+CORS(app, resources={r"/api/*": {"origins": ["https://recipe-app-frontend-gr6b.onrender.com", "http://localhost:3000"]}}, 
+     supports_credentials=True,
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     allow_headers=["Content-Type"])
 
 # websockets for real time sync
 app.config['SECRET_KEY'] = 'secret!'
@@ -41,12 +44,6 @@ def handle_sync(data):
 def handle_disconnect():
     print('Client disconnected')
 
-# have frontend and backend communicate
-CORS(app, resources={r"/api/*": {"origins": ["https://recipe-app-frontend-gr6b.onrender.com", "http://localhost:3000"]}}, 
-     supports_credentials=True,
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type"])
-
 # set up SQL database - location configured to store the database
 # connect to PostgreSQL
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
@@ -54,6 +51,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 migrate = Migrate(app, db)
 #db = SQLAlchemy()
+
+# user authentication 
+jwt = JWTManager(app)
 
 # create a db model to organize database
 # class Recipe(db.Model):
@@ -98,8 +98,15 @@ def get_all_recipes():
 # the data object sent over to POST endpoint via front end form - new recipe entry to be saved from the database
 @app.route('/api/recipes', methods=['POST'])
 @token_required # now only authenticated users can add recipes
-def add_recipe():
+def add_recipe(current_user):
     data = request.get_json()
+
+    # while in add_recipe function, return a 400 status request if all required fields aren't completed
+    required_fields = ['title', 'category', 'cooking_time', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
+    for field in required_fields:
+        if field not in data or data[field] == "":
+            return jsonify({'error':f"Missing required field: '{field}'"}), 400
+        
     new_recipe = Recipe(
         title=data ['title'],
         category=data['category'],
@@ -132,18 +139,12 @@ def add_recipe():
         'image_url': new_recipe.image_url
     }
 
-# while in add_recipe function, return a 400 status request if all required fields aren't completed
-    required_fields = ['title', 'category', 'cooking_time', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
-    for field in required_fields:
-        if field not in data or data[field] == "":
-            return jsonify({'error':f"Missing required field: '{field}'"}), 400
-
     return jsonify({'message': 'Recipe added successfully', 'recipe': new_recipe_data})
 
 # create a PUT endpoint - <int:recipe_id> is a placeholder for variable value, the id of the specific recipe you want to update
 @app.route('/api/recipes/<int:recipe_id>', methods=['PUT'])
 @token_required # now only authenticated users can edit recipes
-def update_recipe(recipe_id):
+def update_recipe(recipe_id, current_user):
     recipe = Recipe.query.get(recipe_id)
     if not recipe:
         return jsonify({'error': 'Recipe not found'}), 404
@@ -186,7 +187,7 @@ def update_recipe(recipe_id):
 # DELETE ENDPOINT - you just need the id of the specific recipe
 @app.route('/api/recipes/<int:recipe_id>', methods=['DELETE'])
 @token_required # now only authenticated users can delete recipes
-def delete_recipe(recipe_id):
+def delete_recipe(recipe_id, current_user):
     recipe = Recipe.query.get(recipe_id)
     if not recipe:
         return jsonify({'error': 'Recipe not found'}), 404
@@ -212,7 +213,7 @@ def register():
     
     existing_user = User.query.filter_by(username=username).first()
     if existing_user:
-        return jsonify({'error', 'Username has already been taken'}), 400
+        return jsonify({'error': 'Username has already been taken'}), 400
 
     new_user = User(username=username)
     new_user.set_password(password)
@@ -231,13 +232,10 @@ def login():
 
     user = User.query.filter_by(username=username).first()
     if not user or not user.check_password(password):
-        return jsonify({'error', 'Invalid username or password'}), 401
+        return jsonify({'error': 'Invalid username or password'}), 401
     
     # Generate JWT token
-    token = jwt.encode({
-        'user_id': user.id,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=2)},
-        os.getenv('SECRET_KEY'), algorithm='HS256')
+    token = create_access_token(identity=user.id, expires_delta=datetime.timedelta(hours=2))
     
     return jsonify({'token': token})
 

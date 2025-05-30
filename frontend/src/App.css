@@ -180,7 +180,7 @@ header .new-recipe:hover, .header-auth-btns:hover {
   background-color: var(--dark-gray);
 }
 
-.login-modal-overlay {
+.login-modal-overlay, .register-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -189,7 +189,7 @@ header .new-recipe:hover, .header-auth-btns:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.login-modal-content {
+.login-modal-content, .register-modal-content {
   background-color: white;
   margin: 10% auto;
   padding: 20px;
@@ -197,7 +197,7 @@ header .new-recipe:hover, .header-auth-btns:hover {
   border-radius: 10px;
 }
 
-#username, #password {
+#username, #password, #register-username, #register-password {
   height: 30px;
   width: 200px;
   border-radius: 5px;
@@ -211,7 +211,7 @@ header .new-recipe:hover, .header-auth-btns:hover {
   border-radius: 30px;
 }
 
-#register-btn, #register-close-btn {
+#login-submit-btn, #login-close-btn, #register-submit-btn, #register-close-btn {
   text-align: center;
   width: 85px;
   margin: 10px 10px;
@@ -604,6 +604,19 @@ header .new-recipe:hover, .header-auth-btns:hover {
 
 .Toastify__progress-bar--error {
   background: var(--accent-color-hover);
+}
+
+/* Mobile edits for header */
+@media (max-width: 325px) {
+  #login-btn, #register-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 30px;
+    width: 70px;
+    margin: 0px 2px;
+  }
 }
 
 /* Mobile edits for a full recipe */

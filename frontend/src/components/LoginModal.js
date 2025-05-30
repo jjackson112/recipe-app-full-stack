@@ -24,7 +24,8 @@ const LoginModal = ({onClose}) => {
 
     return (
         <div className="login-modal-overlay">
-            <div className="login-modal-content" onSubmit={handleLoginSubmit}>
+            <div className="login-modal-content">
+            <p><strong>Do you have an account?<br/> When you have an account, you can add, edit or delete recipes to the database.</strong></p>
                 <form>
                     <label htmlFor="username">Username</label>
                     <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
@@ -32,8 +33,8 @@ const LoginModal = ({onClose}) => {
                     <label htmlFor="password">Password</label>
                     <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-                    <button id="register-btn" className="header-auth-btns" type="submit">Register</button>
-                    <button id="register-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Close</button>
+                    <button id="login-submit-btn" className="header-auth-btns" type="submit" onSubmit={handleLoginSubmit}>Submit</button>
+                    <button id="login-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Close</button>
                 </form>
             </div>
         </div>
