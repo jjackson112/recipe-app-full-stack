@@ -32,14 +32,14 @@ const RegisterModal = ({ onClose }) => {
             <div className="register-modal-content">
                 <h4>Already have an account?</h4>
                 {message && <p className="register-message">{message}</p>}
-                <form>
+                <form onSubmit={handleRegisterSubmit}>
                     <label htmlFor="username">Username</label>
                     <input type="text" id="register-username" value={username} onChange={(e) => setUsername(e.target.value)}/>
 
                     <label htmlFor="password">Password</label>
                     <input type="password" id="register-password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-                    <button id="register-submit-btn" className="header-auth-btns" type="submit" onClick={handleRegisterSubmit}>Submit</button>
+                    <button id="register-submit-btn" className="header-auth-btns" type="submit">Submit</button>
                     <button id="register-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Close</button>
                 </form>
             </div>
