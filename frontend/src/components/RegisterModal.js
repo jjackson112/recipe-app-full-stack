@@ -1,31 +1,42 @@
 import React, { useState } from "react";
+import { useAuth } from './AuthContext'; // <--- ADD THIS LINE (adjust path)
 
 const RegisterModal = ({ onClose }) => {
     const [isRegistered, setIsRegistered] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
+    
+    const { login } = useAuth(); // <--- Get the login function from context
 
     const handleRegisterSubmit = async (e) => {
         e.preventDefault();
-        
-    const response = await fetch("https://recipe-app-full-stack.onrender.com/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
-    })
+    
+    try {
+        const response = await fetch("https://recipe-app-full-stack.onrender.com/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        })
         const data = await response.json();
 
-    if (response.ok) {
-        setMessage("Registration successful! Please log in.");
-        setIsRegistered(true);
-        setUsername(""); // reset form field after registration
-        setPassword(""); // reset form field after registration
-        setTimeout(() => {
+        if (response.ok) {
+            setMessage("Registration successful! Please log in.");
+            // Assuming your backend returns a token in data.access_token upon success
+            localStorage.setItem('token', data.access_token); // <-- Store the token
+            localStorage.setItem('username', username); // Optional: Store username
+            setIsRegistered(true);
+            setUsername(""); // reset form field after registration
+            setPassword(""); // reset form field after registration
+            setTimeout(() => {
             onClose(); // optionally close modal after success
-        }, 3000)
-    } else {
-        setMessage(data.error || "Registration failed. Please try again.");
+            }, 3000)
+        } else {
+            setMessage(data.error || "Registration failed. Please try again.");
+        }
+    } catch (error) {
+        console.error("Error during registration:", error);
+        setMessage("Network error or server unreachable. Please try again.");
     }
 }
 

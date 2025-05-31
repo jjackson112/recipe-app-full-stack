@@ -8,6 +8,7 @@ import displayToast from "./helpers/toastHelper";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { io } from 'socket.io-client';
+import { AuthProvider } from './components/AuthContext'
 import "./App.css";
 
 /* async request to /api/recipes endpoint to grab all recipes and update state, handle errors, and make sure response is ok*/
@@ -157,6 +158,13 @@ function App() {
   const handleNewRecipe = async (e, newRecipe) => {
     e.preventDefault();
 
+    // Retrieve token here, just before making the fetch call
+    const token = localStorage.getItem('token');
+    if (!token) {
+        displayToast("You must be logged in to add a recipe.", "error");
+        return; // Stop if no token is found
+    }
+
   /* Duplicated recipes */
     const isDuplicate = recipes.some(r => r.title.toLowerCase() === newRecipe.title.toLowerCase())
     if (isDuplicate) {
@@ -238,7 +246,7 @@ function App() {
         displayToast("Oops! We cannot fetch the recipe!", "error")
       }
     } catch (error) {
-        displayToast("An error has errored - you cannot edit or update this recipe.", "error")
+        displayToast("An error has occurred - you cannot edit or update this recipe.", "error")
     }
     setSelectedRecipe(null); // Return to the excerpts view
   }
@@ -366,28 +374,30 @@ function App() {
   /* each recipe has an ID for the key and a prop for each recipe*/
   return (
     <div className='recipe-app'>
-      <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} recipes={recipes} recipeFaves={favoriteRecipe} handleSelectRecipe={handleSelectRecipe} removefromFavorites={removefromFavorites} categories={categories} selectedCategory={selectedCategory} handleCategoryChange={handleCategoryChange}/>
-      {showNewRecipeForm && (
-        <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe} categories={categories}/>
-      )}
-      {selectedRecipe && 
-        <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe} onUpdateForm={onUpdateForm} handleUpdateRecipe={handleUpdateRecipe} handleDeleteRecipe={handleDeleteRecipe} />
-      }
-      {!selectedRecipe && !showNewRecipeForm && (
-      <div className="recipe-list">
-        {displayedRecipes.map((recipe) => (
-          <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} favoriteRecipe={favoriteRecipe} setFavoriteRecipe={setFavoriteRecipe} recipeFaves={recipeFaves} removedfromFavorites={removefromFavorites} />
-        ))}
-      {showScrollTop && !selectedRecipe && !showNewRecipeForm && (
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="back-to-top" aria-label="Scroll to top">
-          ↑
-          </button>
-      )}
-      </div>
-      )}
-      < ToastContainer />
+      <AuthProvider>
+        <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} recipes={recipes} recipeFaves={favoriteRecipe} handleSelectRecipe={handleSelectRecipe} removefromFavorites={removefromFavorites} categories={categories} selectedCategory={selectedCategory} handleCategoryChange={handleCategoryChange}/>
+        {showNewRecipeForm && (
+          <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe} categories={categories}/>
+        )}
+        {selectedRecipe && 
+          <RecipeFull selectedRecipe={selectedRecipe} handleUnselectRecipe={handleUnselectRecipe} onUpdateForm={onUpdateForm} handleUpdateRecipe={handleUpdateRecipe} handleDeleteRecipe={handleDeleteRecipe} />
+        }
+        {!selectedRecipe && !showNewRecipeForm && (
+        <div className="recipe-list">
+          {displayedRecipes.map((recipe) => (
+            <RecipeExcerpt key={recipe.id} recipe={recipe} handleSelectRecipe={handleSelectRecipe} favoriteRecipe={favoriteRecipe} setFavoriteRecipe={setFavoriteRecipe} recipeFaves={recipeFaves} removefromFavorites={removefromFavorites} />
+          ))}
+        {showScrollTop && !selectedRecipe && !showNewRecipeForm && (
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="back-to-top" aria-label="Scroll to top">
+            ↑
+            </button>
+        )}
+        </div>
+        )}
+      </AuthProvider>
+      <ToastContainer />
     </div>
   );
 }

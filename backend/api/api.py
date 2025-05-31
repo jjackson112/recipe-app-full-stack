@@ -22,7 +22,7 @@ load_dotenv()
 app = Flask(__name__)
 
 # have frontend and backend communicate
-CORS(app, resources={r"/api/*": {"origins": ["https://recipe-app-frontend-gr6b.onrender.com", "http://localhost:3000"]}}, 
+CORS(app, resources={r"/*": {"origins": ["https://recipe-app-frontend-gr6b.onrender.com", "http://localhost:3000"]}}, 
     supports_credentials=True,
     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type"])
@@ -237,7 +237,7 @@ def login():
     # Generate JWT token
     token = create_access_token(identity=user.id, expires_delta=datetime.timedelta(hours=2))
     
-    return jsonify({'token': token})
+    return jsonify({'access_token': token})
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), allow_unsafe_werkzeug=True)
