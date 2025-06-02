@@ -217,6 +217,11 @@ header .new-recipe:hover, .header-auth-btns:hover {
   margin: 10px 10px;
 }
 
+.login {
+  display: flex;
+  flex-direction: column;
+}
+
 .favorite-recipes-list {
   display: flex;
   flex-wrap: wrap;

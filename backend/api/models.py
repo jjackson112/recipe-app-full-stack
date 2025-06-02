@@ -16,6 +16,7 @@ class Recipe(db.Model):
     description = db.Column(db.Text, nullable=True, default='Delicious. You need to try it!')
     image_url = db.Column(db.String(1000), nullable=True, default="https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
     servings = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return f"Recipe(id={self.id}, title='{self.title}', description='{self.description}', servings={self.servings})"
@@ -30,5 +31,6 @@ class Recipe(db.Model):
             'instructions': self.instructions,
             'servings': self.servings,
             'description': self.description,
-            'image_url': self.image_url
+            'image_url': self.image_url,
+            'user_id' : self.user_id
         }

@@ -5,6 +5,8 @@ import FavoriteRecipeExcerpt from "./FavoriteRecipeExcerpt";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import { useAuth } from "./AuthContext";
+import { Link } from "react-router-dom";
+
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
@@ -12,13 +14,7 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   
-  const { isLoggedIn, user, logout } = useAuth(); // Correctly using the hook
-
-  const openLoginModal = () => setShowLoginModal(true);
-  const closeLoginModal = () => setShowLoginModal(false);
-
-  const openRegisterModal = () => setShowRegisterModal(true);
-  const closeRegisterModal = () => setShowRegisterModal(false);
+  const { isLoggedIn, user } = useAuth(); // Correctly using the hook
 
   return (
     <header>
@@ -28,7 +24,11 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
           <button id="login-btn" className="header-auth-btns" onClick={() => setShowLoginModal(true)}>Login</button>
           {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
           {isLoggedIn && user && user.username && (
-          <span className="welcome-message">Hi, {user.username} you are logged in!</span>)}
+          <>
+          <span className="welcome-message">Hi, <strong>{user.username}</strong> you are logged in!</span>
+          <Link to="/logout">Logout</Link>
+          </>
+        )}
         </div>
         <div className="register">
           <button id="register-btn" className="header-auth-btns" onClick={() => setShowRegisterModal(true)}>Register</button>

@@ -14,6 +14,7 @@ from flask_socketio import SocketIO, emit
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import create_access_token
 import datetime
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from auth_utils import token_required
 
 load_dotenv()
@@ -25,7 +26,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["https://recipe-app-frontend-gr6b.onrender.com", "http://localhost:3000"]}}, 
     supports_credentials=True,
     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type"])
+    allow_headers=["Content-Type", "Authorization"])
 
 # websockets for real time sync
 app.config['SECRET_KEY'] = 'secret!'
@@ -115,7 +116,8 @@ def add_recipe(current_user):
         instructions=data ['instructions'],
         servings=data ['servings'],
         description=data ['description'],
-        image_url=data['image_url']
+        image_url=data['image_url'],
+        user_id=current_user.id # <== Associate the recipe with the user
     )
     db.session.add(new_recipe)
     db.session.commit()
@@ -144,7 +146,7 @@ def add_recipe(current_user):
 # create a PUT endpoint - <int:recipe_id> is a placeholder for variable value, the id of the specific recipe you want to update
 @app.route('/api/recipes/<int:recipe_id>', methods=['PUT'])
 @token_required # now only authenticated users can edit recipes
-def update_recipe(recipe_id, current_user):
+def update_recipe(current_user, recipe_id):
     recipe = Recipe.query.get(recipe_id)
     if not recipe:
         return jsonify({'error': 'Recipe not found'}), 404
@@ -187,7 +189,7 @@ def update_recipe(recipe_id, current_user):
 # DELETE ENDPOINT - you just need the id of the specific recipe
 @app.route('/api/recipes/<int:recipe_id>', methods=['DELETE'])
 @token_required # now only authenticated users can delete recipes
-def delete_recipe(recipe_id, current_user):
+def delete_recipe(current_user, recipe_id):
     recipe = Recipe.query.get(recipe_id)
     if not recipe:
         return jsonify({'error': 'Recipe not found'}), 404

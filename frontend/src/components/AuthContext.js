@@ -6,10 +6,11 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null); // e.g., { username: 'testuser' }
+    const [token, setToken] = useState(() => localStorage.getItem('token'));
+
 
     // On initial load, check if token exists
     useEffect(() => {
-        const token = localStorage.getItem('token');
         if (token) {
             // You might want to decode the token to get user info
             try {
@@ -20,15 +21,20 @@ export const AuthProvider = ({ children }) => {
                 console.error("Failed to decode token or token is invalid:", error);
                 // Clear invalid token
                 localStorage.removeItem('token');
+                setToken(null)
                 setIsLoggedIn(false);
-                setUser(null);
+                setUser(null); // Clear the user data
             }
+        } else {
+            setIsLoggedIn(false)
+            setUser(null)
         }
-    }, []);
+    }, [token]); // re-run when token changes
 
     // Login function: takes token and optional user data (e.g., if backend sends it separately)
     const login = (token, userDataFromBackend = null) => {
         localStorage.setItem('token', token);
+        setToken(token);
         setIsLoggedIn(true);
 
         if (userDataFromBackend) {
@@ -47,10 +53,9 @@ export const AuthProvider = ({ children }) => {
     };
 
     // <--- ADD THIS LOGOUT FUNCTION ---
-    const logout = () => {
+    const logout = () => {        
         localStorage.removeItem('token'); // Remove the token from local storage
-        setIsLoggedIn(false); // Set login status to false
-        setUser(null); // Clear the user data
+        setToken(null)
     };
 
     return (
