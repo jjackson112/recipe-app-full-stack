@@ -16,6 +16,7 @@ from flask_jwt_extended import create_access_token
 import datetime
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from auth_utils import token_required
+from werkzeug.security import generate_password_hash
 
 load_dotenv()
 
@@ -241,6 +242,38 @@ def login():
     
     return jsonify({'access_token': token})
 
+# VALIDATE USERNAME ENDPOINT
+@app.route('/api/validate-username', methods=['POST'])
+def validate_username():
+    data = request.get_json()
+    username = data.get('username')
+    if not username:
+        return jsonify({"message": "Username is required"}), 400
+
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return jsonify({"message": "Username exists"}), 200
+    else:
+        return jsonify({"message": "Username not found"}), 404
+    
+# RESET PASSWORD ENDPOINT
+@app.route('/api/reset-password', methods=['POST'])
+def reset_password():
+    data = request.get_json()
+    username = data.get('username')
+    new_password = data.get('new_password')
+
+    if not username or not new_password:
+        return jsonify({"message": "Username and new password are required"}), 400
+
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        return jsonify({"message": "Username not found"}), 404
+
+    user.password_hash = generate_password_hash(new_password)
+    db.session.commit()
+
+    return jsonify({"message": "Password reset successful"}), 200
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), allow_unsafe_werkzeug=True)
