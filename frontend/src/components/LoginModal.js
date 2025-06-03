@@ -63,6 +63,7 @@ const LoginModal = ({onClose}) => {
                     <input
                         type="text"
                         id="username"
+                        placeholder="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
@@ -72,6 +73,7 @@ const LoginModal = ({onClose}) => {
                     <input
                         type="password"
                         id="password"
+                        placeholder="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -81,6 +83,9 @@ const LoginModal = ({onClose}) => {
                     <button id="login-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Close</button>
                     <button id="reset-password-btn" className="header-auth-btns" type="button" onClick={() => setShowResetModal(true)}>Reset Password</button>
                 </form>
+                {showResetModal && (
+    <ResetPassword onClose={() => setShowResetModal(false)} />
+)}
             </div>
         </div>
     );

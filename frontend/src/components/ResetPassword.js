@@ -4,6 +4,9 @@ const ResetPassword = ({ onClose }) => {
     const [newPassword, setNewPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [message, setMessage] = useState("")
+    const [username, setUsername] = useState("")
+    const [isValidated, setIsValidated] = useState(false)
+    const [validateMessage, setValidateMessage] = useState("")
 
     const handleReset = async (e) => {
         e.preventDefault();
@@ -39,9 +42,18 @@ const ResetPassword = ({ onClose }) => {
         <div className="reset-password-content">
             <form onSubmit={handleReset}>
                 <h4>Reset Password</h4>
+                <label htmlFor="username">Username</label>
+                <input
+                    type="username"
+                    id="username-validate"
+                    placeholder="Validate username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
                 <label htmlFor="new password">New Password</label>
                 <input
                     type="password"
+                    id="new-password"
                     placeholder="New password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
@@ -49,13 +61,14 @@ const ResetPassword = ({ onClose }) => {
                 <label htmlFor="confirm password">Confirm Password</label>
                 <input
                     type="password"
+                    id="confirm-password"
                     placeholder="Confirm new password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Submit</button>
-                <button type="button" onClick={onClose}>Cancel</button>
+                <button id="reset-password-submit-btn" className="header-auth-btns" type="submit">Submit</button>
+                <button id="reset-password-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Cancel</button>
             </form>
         </div>
     )
