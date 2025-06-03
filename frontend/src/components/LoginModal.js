@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useAuth } from './AuthContext'; // ADJUST THIS PATH based on where your AuthContext.js is located
+import ResetPassword from "./ResetPassword";
 
 const LoginModal = ({onClose}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
+    const [showResetModal, setShowResetModal] = useState(false)
 
     const { login } = useAuth(); // <--- Get the login function from context
 
@@ -77,6 +79,7 @@ const LoginModal = ({onClose}) => {
 
                     <button id="login-submit-btn" className="header-auth-btns" type="submit">Submit</button>
                     <button id="login-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Close</button>
+                    <button id="reset-password-btn" className="header-auth-btns" type="button" onClick={() => setShowResetModal(true)}>Reset Password</button>
                 </form>
             </div>
         </div>

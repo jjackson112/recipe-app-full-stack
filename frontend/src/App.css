@@ -222,6 +222,11 @@ header .new-recipe:hover, .header-auth-btns:hover {
   flex-direction: column;
 }
 
+#reset-password-btn {
+  width: 150px;
+  height: 50px;
+}
+
 .favorite-recipes-list {
   display: flex;
   flex-wrap: wrap;
