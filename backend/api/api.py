@@ -16,6 +16,8 @@ from flask_jwt_extended import create_access_token
 import datetime
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from auth_utils import token_required
+import secrets 
+from flask_mail import Mail, Message # configure Flask-Mail
 
 load_dotenv()
 
@@ -240,6 +242,9 @@ def login():
     token = create_access_token(identity=user.id, expires_delta=datetime.timedelta(hours=2))
     
     return jsonify({'access_token': token})
+
+# RESET PASSWORD ENDPOINT
+
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), allow_unsafe_werkzeug=True)

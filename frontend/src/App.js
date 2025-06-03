@@ -8,7 +8,7 @@ import displayToast from "./helpers/toastHelper";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { io } from 'socket.io-client';
-import { AuthProvider } from './components/AuthContext'
+import { AuthProvider } from './components/AuthContext';
 import "./App.css";
 
 /* async request to /api/recipes endpoint to grab all recipes and update state, handle errors, and make sure response is ok*/
