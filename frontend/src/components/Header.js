@@ -7,14 +7,13 @@ import RegisterModal from "./RegisterModal";
 import { useAuth } from "./AuthContext";
 import { Link } from "react-router-dom";
 
-
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
 const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves, recipes, handleSelectRecipe, removefromFavorites, categories, selectedCategory, handleCategoryChange }) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   
-  const { isLoggedIn, user } = useAuth(); // Correctly using the hook
+  const { isLoggedIn, user, logout } = useAuth(); // Correctly using the hook
 
   return (
     <header>
@@ -24,11 +23,11 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
           <button id="login-btn" className="header-auth-btns" onClick={() => setShowLoginModal(true)}>Login</button>
           {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
           {isLoggedIn && user && user.username && (
-          <>
-          <span className="welcome-message">Hi, <strong>{user.username}</strong> you are logged in!</span>
-          <Link to="/logout">Logout</Link>
-          </>
-        )}
+            <>
+              <span className="welcome-message">Hi, <strong>{user.username}</strong> you are logged in!</span>
+              <Link onClick={logout}>Logout</Link>
+            </>
+          )}
         </div>
         <div className="register">
           <button id="register-btn" className="header-auth-btns" onClick={() => setShowRegisterModal(true)}>Register</button>

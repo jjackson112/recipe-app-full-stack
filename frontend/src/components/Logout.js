@@ -9,9 +9,8 @@ const Logout = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        localStorage.getItem('token')
-        logout()
-        navigate("/login")
+        logout() // clear the token and auth state
+        navigate("/")
     }, [logout, navigate]) // why not an empty dependency array to run only once - see note below
 
     return null // no need to render anything
@@ -23,3 +22,6 @@ export default Logout;
 inside a useEffect should be declared in the dependency array 
 — even if it's stable — because React wants to ensure correctness 
 if anything ever does change. */
+
+// remove localStorage.getItem('token') line since it was called in useEffect but did nothing - it was sychronous but it's not necessary since there is no state to update
+ 
