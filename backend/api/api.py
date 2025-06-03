@@ -243,7 +243,41 @@ def login():
     
     return jsonify({'access_token': token})
 
+# REQUEST TO RESET PASSWORD ENDPOINT
+@app.route("/api/request-password-reset", methods=['POST'])
+def request_password_reset():
+    data = request.get_json()
+    email = data.get("email")
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        token = secrets.token_urlsafe(32)
+        user.reset_token = token
+        db.session.commit()
+
+        reset_link = f"https://https://recipe-app-frontend-gr6b.onrender.com/{token}"
+        msg = Message("Password Reset", recipients=[user.email])
+        msg.body = f"Click this link to reset your password: {reset_link}"
+        mail.send(msg)
+
+    # Always return success to avoid user enumeration
+    return jsonify({"message": "If the email exists, a reset link has been sent."})
+
 # RESET PASSWORD ENDPOINT
+@app.route("/api/reset-password/<token>", methods=["POST"])
+def reset_password(token):
+    data = request.get_json()
+    new_password = data.get("new_password")
+    user = User.query.filter_by(reset_token=token).first()
+
+    if not user:
+        return jsonify({"message": "Invalid or expired token"}), 400
+
+    user.password = generate_password_hash(new_password)
+    user.reset_token = None  # invalidate token
+    db.session.commit()
+
+    return jsonify({"message": "Password reset successful"})
 
 
 if __name__ == '__main__':
