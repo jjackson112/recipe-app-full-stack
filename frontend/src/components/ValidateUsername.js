@@ -23,7 +23,6 @@ const ValidateUsername = ({onClose}) => {
             const data = await res.json();
 
             if (res.ok) {
-                setValidateMessage("Username validated. You can now reset your password.");
                 setShowResetPassword(true) // show ResetPassword module
             } else {
                 setValidateMessage(data.message || "Username not found.");
@@ -34,7 +33,7 @@ const ValidateUsername = ({onClose}) => {
     };
 
     if (showResetPassword) {
-        return <ResetPassword username={username} onClose={onClose} />
+        return  <ResetPassword username={username} onClose={onClose} />
     }
 
     return (

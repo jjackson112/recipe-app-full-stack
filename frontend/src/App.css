@@ -190,10 +190,15 @@ header .new-recipe:hover, .header-auth-btns:hover {
 }
 
 .login-modal-content, .register-modal-content {
+  position: absolute;
+  top: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: white;
   margin: 10% auto;
   padding: 20px;
-  width: 275px;
+  width: 300px;
   border-radius: 10px;
 }
 
@@ -211,13 +216,13 @@ header .new-recipe:hover, .header-auth-btns:hover {
   border-radius: 30px;
 }
 
-#login-submit-btn, #login-close-btn, #register-submit-btn, #register-close-btn, #reset-password-submit-btn, #reset-password-close-btn, #validate-submit-btn, #validate-close-btn {
+#login-submit-btn, #login-close-btn, #register-submit-btn, #register-close-btn, #reset-password-submit-btn, #reset-password-close-btn, #reset-submit-btn, #reset-close-btn {
   text-align: center;
   width: 85px;
   margin: 10px 10px;
 }
 
-.login, .reset-password-content {
+.reset-password-content  {
   display: flex;
   flex-direction: column;
 }

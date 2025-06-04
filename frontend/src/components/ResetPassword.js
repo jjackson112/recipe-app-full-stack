@@ -52,7 +52,7 @@ const ResetPassword = ({ username, onClose }) => {
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                         />
-                        
+                        <br/>
                     <label htmlFor="confirm-password">Confirm Password</label>
                         <input
                             type="password"
@@ -63,8 +63,8 @@ const ResetPassword = ({ username, onClose }) => {
                         />
                         {message && <p>{message}</p>}
 
-                <button id="validate-submit-btn" className="header-auth-btns" type="submit">Submit</button>
-                <button id="validate-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Cancel</button>
+                <button id="reset-submit-btn" className="header-auth-btns" type="submit">Submit</button>
+                <button id="reset-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Cancel</button>
             </form>
         </div>
     );
