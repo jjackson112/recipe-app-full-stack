@@ -24,13 +24,13 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
         <div className="login">
            {isLoggedIn && user?.username ? (
             <>
-              <button id="login-btn" className="header-auth-btns" onClick={() => setShowLoginModal(true)}>Login</button>
-              {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
+              <span className="welcome-message">Hi, <strong>{user?.username}</strong> you are logged in! </span>
+              <Link to="/logout">Logout</Link>
             </>
            ) : (
           <>
-            <span className="welcome-message">Hi, <strong>{user.username}</strong> you are logged in! </span>
-            <Link to="/logout">Logout</Link>
+            <button id="login-btn" className="header-auth-btns" onClick={() => setShowLoginModal(true)}>Login</button>
+            {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
           </>
         )}
         </div>
