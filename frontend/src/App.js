@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { io } from 'socket.io-client';
 import { AuthProvider } from './components/AuthContext';
+import { getAuthToken } from "./helpers/authHelpers";
 import "./App.css";
 
 /* async request to /api/recipes endpoint to grab all recipes and update state, handle errors, and make sure response is ok*/
@@ -23,8 +24,15 @@ function App() {
   const scrollRef = useRef(0); // create a modifiable reference that persists across renders - save scroll position
   const socketRef = useRef(null) // websockets
 
-  // save token after the login
-  const token = localStorage.getItem('token')
+  // save token after the login - static token - getAuthToken()
+  // ${getAuthToken()} is used when the token changes like after logging in
+  const token = getAuthToken()
+
+  if (!token) {
+    displayToast("You must be logged in to do that.", "error");
+    return;
+  }
+
 
   // websockets event listeners
   useEffect(() => {
@@ -37,7 +45,10 @@ function App() {
     })
 
     socketRef.current.on('sync_event', (data) => {
-      console.log("received sync event", data)
+      if (data.type === "new_recipe") {
+        setRecipes(prev => [...prev, data.recipe]);
+        console.log("received sync event", data)
+      }
     })
 
     return () => {
@@ -98,7 +109,7 @@ function App() {
     }, [favoriteRecipe]);
     
     // delete a favorite recipe - pass it a recipe.id to know the specific one to delete
-    // remember favoriteRecipe is an array of ids, not objects so recipe.id is undefined
+    // remember favoriteRecipe is an array of objects, not objects so recipe.id is undefined
     const removefromFavorites = (recipeToRemove) => {
       setFavoriteRecipe(prev => prev.filter(r => r.id !== recipeToRemove.id))
     }
