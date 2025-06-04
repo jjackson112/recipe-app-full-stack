@@ -33,7 +33,7 @@ const LoginModal = ({onClose}) => {
                 if (data.access_token) { // Check if the backend actually sent a token
                     setMessage("Login successful!");
                     // CRITICAL: Use the login function from AuthContext to update global state
-                    login(data.token, { username: username }); // Pass token and the username
+                    login(data.access_token, { username }); // Pass token and the username
 
                     setUsername(""); // Reset form fields
                     setPassword("");
@@ -83,9 +83,8 @@ const LoginModal = ({onClose}) => {
                     <button id="login-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Close</button>
                     <button id="reset-password-btn" className="header-auth-btns" type="button" onClick={() => setShowResetModal(true)}>Reset Password</button>
                 </form>
-                {showResetModal && (
-    <ResetPassword onClose={() => setShowResetModal(false)} />
-)}
+                {showResetModal && (<ResetPassword onClose={() => setShowResetModal(false)} />
+                )}
             </div>
         </div>
     );

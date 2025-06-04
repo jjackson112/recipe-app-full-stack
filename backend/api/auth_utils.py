@@ -9,11 +9,11 @@ def token_required(f):
     def decorated(*args, **kwargs):
         try:
             verify_jwt_in_request()
-            user_id = get_jwt_identity()
-            current_user = db.session.get(User, user_id)
-            if not current_user:
+            current_user_id = get_jwt_identity()
+            user = User.query.get(current_user_id)
+            if not user:
               return jsonify({'error':'User not found!'}), 404
+            return f(user, *args, **kwargs)
         except Exception as e:
            return jsonify({'error': 'Invalid or missing token'}), 401 # For debugging, you can log the exception server-side
-        return f(current_user, *args, **kwargs)
     return decorated

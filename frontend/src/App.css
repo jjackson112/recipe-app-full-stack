@@ -211,7 +211,7 @@ header .new-recipe:hover, .header-auth-btns:hover {
   border-radius: 30px;
 }
 
-#login-submit-btn, #login-close-btn, #register-submit-btn, #register-close-btn, #reset-password-submit-btn, #reset-password-close-btn {
+#login-submit-btn, #login-close-btn, #register-submit-btn, #register-close-btn, #reset-password-submit-btn, #reset-password-close-btn, #validate-submit-btn, #validate-close-btn {
   text-align: center;
   width: 85px;
   margin: 10px 10px;
@@ -222,7 +222,7 @@ header .new-recipe:hover, .header-auth-btns:hover {
   flex-direction: column;
 }
 
-#reset-password-btn {
+#reset-password-btn, #validate-username-btn {
   width: 150px;
   height: 50px;
 }

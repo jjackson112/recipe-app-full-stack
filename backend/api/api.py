@@ -246,6 +246,8 @@ def login():
 @app.route('/api/validate-username', methods=['POST'])
 def validate_username():
     data = request.get_json()
+    print("Received data", data)
+
     username = data.get('username')
     if not username:
         return jsonify({"message": "Username is required"}), 400
@@ -260,6 +262,7 @@ def validate_username():
 @app.route('/api/reset-password', methods=['POST'])
 def reset_password():
     data = request.get_json()
+
     username = data.get('username')
     new_password = data.get('new_password')
 
