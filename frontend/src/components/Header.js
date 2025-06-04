@@ -25,7 +25,7 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
           {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
           {isLoggedIn && user && user.username && (
           <>
-          <span className="welcome-message">Hi, <strong>{user.username}</strong> you are logged in!</span>
+          <span className="welcome-message">Hi, <strong>{user.username}</strong> you are logged in! </span>
           <Link to="/logout">Logout</Link>
           </>
         )}

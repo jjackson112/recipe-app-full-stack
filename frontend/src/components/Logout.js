@@ -11,7 +11,7 @@ const Logout = () => {
     useEffect(() => {
         localStorage.getItem('token')
         logout()
-        navigate("/login")
+        navigate("/")
     }, [logout, navigate]) // why not an empty dependency array to run only once - see note below
 
     return null // no need to render anything

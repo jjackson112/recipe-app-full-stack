@@ -4,7 +4,7 @@ import { jwtDecode } from 'jwt-decode'; // Import jwtDecode from jwt-decode
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
     const [user, setUser] = useState(null); // e.g., { username: 'testuser' }
     const [token, setToken] = useState(() => localStorage.getItem('token'));
 
@@ -15,7 +15,8 @@ export const AuthProvider = ({ children }) => {
             // You might want to decode the token to get user info
             try {
                 const decodedToken = jwtDecode(token); // requires jwt-decode library
-                setUser({ username: decodedToken.username }) //set user data from token
+                const username = decodedToken.username || decodedToken.name || decodedToken.sub  //set user data from token
+                setUser({ username: username })
                 setIsLoggedIn(true);
             } catch (error) {
                 console.error("Failed to decode token or token is invalid:", error);
@@ -44,7 +45,8 @@ export const AuthProvider = ({ children }) => {
             // Otherwise, decode from the token (ensure 'username' claim exists in your JWT)
             try {
                 const decodedToken = jwtDecode(token);
-                setUser({ username: decodedToken.username });
+                const username = decodedToken.username || decodedToken.name || decodedToken.sub
+                setUser({ username: username })
             } catch (error) {
                 console.error("Failed to decode token on login:", error);
                 setUser(null); // Or set a default like { username: 'User' }
@@ -56,10 +58,11 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {        
         localStorage.removeItem('token'); // Remove the token from local storage
         setToken(null)
+        setIsLoggedIn(false)
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, user, login, logout, token }}>
             {children}
         </AuthContext.Provider>
     );
