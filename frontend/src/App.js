@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Header from "./components/Header";
 import RecipeExcerpt from "./components/RecipeExcerpt";
 import RecipeFull from "./components/RecipeFull"
@@ -157,13 +156,6 @@ function App() {
   /* data.recipe is our recipe  */
   const handleNewRecipe = async (e, newRecipe) => {
     e.preventDefault();
-
-    // Retrieve token here, just before making the fetch call
-    const token = localStorage.getItem('token');
-    if (!token) {
-        displayToast("You must be logged in to add a recipe.", "error");
-        return; // Stop if no token is found
-    }
 
   /* Duplicated recipes */
     const isDuplicate = recipes.some(r => r.title.toLowerCase() === newRecipe.title.toLowerCase())
