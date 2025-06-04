@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useAuth } from './AuthContext'; // ADJUST THIS PATH based on where your AuthContext.js is located
+import ValidateUsername from "./ValidateUsername";
 import ResetPassword from "./ResetPassword";
 
 const LoginModal = ({onClose}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
-    const [showResetModal, setShowResetModal] = useState(false)
+    const [showValidateUsername, setShowValidateUsername] = useState(false)
 
     const { login } = useAuth(); // <--- Get the login function from context
 
@@ -57,7 +58,7 @@ const LoginModal = ({onClose}) => {
         <div className="login-modal-overlay">
             <div className="login-modal-content">
                 <p><strong>Do you have an account?<br/> When you have an account, you can add, edit or delete recipes to the database.</strong></p>
-                {message && <p style={{ color: 'red' }}>{message}</p>}
+                {message && <p className="error-message">{message}</p>}
                 <form onSubmit={handleLoginSubmit}>
                     <label htmlFor="username">Username</label>
                     <input
@@ -81,9 +82,12 @@ const LoginModal = ({onClose}) => {
 
                     <button id="login-submit-btn" className="header-auth-btns" type="submit">Submit</button>
                     <button id="login-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Close</button>
-                    <button id="reset-password-btn" className="header-auth-btns" type="button" onClick={() => setShowResetModal(true)}>Reset Password</button>
+                    <button id="reset-password-btn" className="header-auth-btns" type="button" onClick={() => setShowValidateUsername(true)}>Reset Password</button>
                 </form>
-                {showResetModal && (<ResetPassword onClose={() => setShowResetModal(false)} />
+                {showValidateUsername && (
+                    <div className="nested-modal">
+                        <ValidateUsername onClose={() => {setShowValidateUsername(false)}} />
+                    </div>
                 )}
             </div>
         </div>

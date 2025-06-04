@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import ResetPassword from "./ResetPassword";
 
-const ValidateUsername = () => {
+const ValidateUsername = ({onClose}) => {
     const [username, setUsername] = useState("");
-    const [isValidated, setIsValidated] = useState(false);
     const [validateMessage, setValidateMessage] = useState("");
+    const [showResetPassword, setShowResetPassword] = useState(false)
 
 // .trim() removes spaces
     const handleValidateUsername = async () => {
@@ -22,8 +23,8 @@ const ValidateUsername = () => {
             const data = await res.json();
 
             if (res.ok) {
-                setIsValidated(username);
                 setValidateMessage("Username validated. You can now reset your password.");
+                setShowResetPassword(true) // show ResetPassword module
             } else {
                 setValidateMessage(data.message || "Username not found.");
             }
@@ -32,8 +33,12 @@ const ValidateUsername = () => {
         }
     };
 
+    if (showResetPassword) {
+        return <ResetPassword username={username} onClose={onClose} />
+    }
+
     return (
-        <div className="validate-username"> 
+        <div className="validate-username-content"> 
             <label htmlFor="username">Username</label>
                 <input
                     type="text"

@@ -225,6 +225,7 @@ header .new-recipe:hover, .header-auth-btns:hover {
 #reset-password-btn, #validate-username-btn {
   width: 150px;
   height: 50px;
+  margin: 10px 10px;
 }
 
 .favorite-recipes-list {

@@ -52,6 +52,7 @@ const ResetPassword = ({ username, onClose }) => {
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                         />
+                        
                     <label htmlFor="confirm-password">Confirm Password</label>
                         <input
                             type="password"
