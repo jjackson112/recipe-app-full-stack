@@ -9,7 +9,7 @@ const Logout = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        localStorage.getItem('token')
+        // localStorage.getItem('token') - removed since nothing is being done with the token
         logout()
         navigate("/")
     }, [logout, navigate]) // why not an empty dependency array to run only once - see note below

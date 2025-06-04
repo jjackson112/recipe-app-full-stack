@@ -5,8 +5,7 @@ import FavoriteRecipeExcerpt from "./FavoriteRecipeExcerpt";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import { useAuth } from "./AuthContext";
-import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
@@ -14,18 +13,24 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   
-  const { isLoggedIn, user } = useAuth(); // Correctly using the hook
+  const { isLoggedIn, user, logout } = useAuth(); // Correctly using the hook
+
+  const navigate = useNavigate(); // logout
 
   return (
     <header>
-
       <div className='logo-search'>
         <Logo onClick={displayAllRecipes} />
         <div className="login">
            {isLoggedIn && user?.username ? (
             <>
               <span className="welcome-message">Hi, <strong>{user?.username}</strong> you are logged in! </span>
-              <Link to="/logout">Logout</Link>
+              <a href="/" onClick={(e) => {
+                e.preventDefault();  // Prevent default navigation
+                logout();            // Clear token and auth state
+                navigate("/");       // Programmatic navigation
+              }}
+              >Logout</a>
             </>
            ) : (
           <>
