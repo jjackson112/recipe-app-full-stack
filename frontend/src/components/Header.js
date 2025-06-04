@@ -18,22 +18,32 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
 
   return (
     <header>
+
       <div className='logo-search'>
         <Logo onClick={displayAllRecipes} />
         <div className="login">
-          <button id="login-btn" className="header-auth-btns" onClick={() => setShowLoginModal(true)}>Login</button>
-          {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
-          {isLoggedIn && user && user.username && (
+           {isLoggedIn && user?.username ? (
+            <>
+              <button id="login-btn" className="header-auth-btns" onClick={() => setShowLoginModal(true)}>Login</button>
+              {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
+            </>
+           ) : (
           <>
-          <span className="welcome-message">Hi, <strong>{user.username}</strong> you are logged in! </span>
-          <Link to="/logout">Logout</Link>
+            <span className="welcome-message">Hi, <strong>{user.username}</strong> you are logged in! </span>
+            <Link to="/logout">Logout</Link>
           </>
         )}
         </div>
+
         <div className="register">
-          <button id="register-btn" className="header-auth-btns" onClick={() => setShowRegisterModal(true)}>Register</button>
-          {showRegisterModal && <RegisterModal onClose={() => setShowRegisterModal(false)} />}
+          {!isLoggedIn && (
+            <>
+              <button id="register-btn" className="header-auth-btns" onClick={() => setShowRegisterModal(true)}>Register</button>
+              {showRegisterModal && <RegisterModal onClose={() => setShowRegisterModal(false)} />}
+            </>
+          )}
         </div>
+
         <div className='search'>
           <label className='visually-hidden' htmlFor='search'>
             Search
@@ -48,6 +58,7 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
           <Search aria-label="Search icon"/>
         </div>
       </div>
+
       <h1>My Favorite Recipes</h1>
       <button className='new-recipe' onClick={showRecipeForm}>
         Add New Recipe
@@ -66,6 +77,7 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
           ))
         )}
       </div>
+
       <div className="category-filter">
         <label htmlFor="category"><strong>Filter by category </strong></label>
         <select id="category" value={selectedCategory} onChange={(e) => handleCategoryChange(e.target.value)}>
@@ -74,6 +86,7 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
           ))}
         </select>
       </div>
+
     </header>
   );
 };
