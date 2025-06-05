@@ -31,7 +31,7 @@ CORS(app, resources={r"/*": {"origins": ["https://recipe-app-frontend-gr6b.onren
 
 # websockets for real time sync
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3000", "https://recipe-app-frontend-gr6b.onrender.com"]) # allow frontend from anywhere during dev
+socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3000", "https://recipe-app-frontend-gr6b.onrender.com"], async_mode='eventlet') # allow frontend from anywhere during dev
 
 @socketio.on('connect')
 def handle_connect():
@@ -173,7 +173,7 @@ def update_recipe(recipe_id):
         return jsonify({'error': 'Recipe not found'}), 404
     
     data = request.get_json()
-    
+
 # validate the incoming JSON data for required fields
     required_fields = ['title', 'cooking_time', 'category', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
     for field in required_fields:
