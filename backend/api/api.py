@@ -104,7 +104,7 @@ def get_all_recipes():
 
 # the data object sent over to POST endpoint via front end form - new recipe entry to be saved from the database
 @app.route('/api/recipes', methods=['POST'])
-@jwt_required # now only authenticated users can add recipes
+@jwt_required() # now only authenticated users can add recipes
 def add_recipe():
     identity = get_jwt_identity()
     current_user = User.query.get(identity["id"])
@@ -160,7 +160,7 @@ def add_recipe():
 
 # create a PUT endpoint - <int:recipe_id> is a placeholder for variable value, the id of the specific recipe you want to update
 @app.route('/api/recipes/<int:recipe_id>', methods=['PUT'])
-@jwt_required # now only authenticated users can edit recipes
+@jwt_required() # now only authenticated users can edit recipes
 def update_recipe(recipe_id):
     identity = get_jwt_identity()
     current_user = User.query.get(identity["id"])
@@ -211,7 +211,7 @@ def update_recipe(recipe_id):
 
 # DELETE ENDPOINT - you just need the id of the specific recipe
 @app.route('/api/recipes/<int:recipe_id>', methods=['DELETE'])
-@jwt_required # now only authenticated users can delete recipes
+@jwt_required() # now only authenticated users can delete recipes
 def delete_recipe(recipe_id):
     identity = get_jwt_identity()
     current_user = User.query.get(identity["id"])
