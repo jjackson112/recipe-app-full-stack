@@ -8,7 +8,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { io } from 'socket.io-client';
 import { AuthProvider } from './components/AuthContext';
-import { getAuthToken } from "./helpers/authHelpers";
+import getAuthToken from "./helpers/authHelpers";
 import "./App.css";
 
 /* async request to /api/recipes endpoint to grab all recipes and update state, handle errors, and make sure response is ok*/
@@ -31,10 +31,10 @@ function App() {
   // before useEffect it would render nothing on screen - now it's a more robust approach
   useEffect(() => {
     if (!token) {
-    displayToast("You must be logged in to do that.", "error");
-    return;
+      displayToast("You must be logged in to do add/edit/delete a recipe.", "error");
+      return;
     }
-  })
+  }, [token]) // runs only when the token changes
 
   // websockets event listeners
   useEffect(() => {
@@ -47,7 +47,7 @@ function App() {
     })
 
     socketRef.current.on('sync_event', (data) => {
-      if (data.type === "new_recipe") {
+      if (data.type === "new_recipe" && data.recipe) {
         setRecipes(prev => [...prev, data.recipe]);
         console.log("received sync event", data)
       }
@@ -182,7 +182,7 @@ function App() {
         method: "POST",
         headers: {
           "Content-type": "application/json",
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${getAuthToken()}`
         },
         body: JSON.stringify(newRecipe)
       });
@@ -228,7 +228,7 @@ function App() {
         method: "PUT",
         headers: {
           "Content-type": "application/json",
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${getAuthToken()}`
         },
         body: JSON.stringify(selectedRecipe)
       });
@@ -262,7 +262,7 @@ function App() {
       const response = await fetch(`https://recipe-app-full-stack.onrender.com/api/recipes/${recipeId}`, {
         method: "DELETE",
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${getAuthToken()}`
         }
       });
   

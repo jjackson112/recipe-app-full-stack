@@ -623,14 +623,14 @@ header .new-recipe:hover, .header-auth-btns:hover {
 }
 
 /* Mobile edits for header */
-@media (max-width: 325px) {
+@media (max-width: 525px) {
   #login-btn, #register-btn {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     height: 30px;
-    width: 70px;
+    width: 60px;
     margin: 0px 2px;
   }
 }
