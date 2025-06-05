@@ -4,9 +4,9 @@ import { jwtDecode } from 'jwt-decode'; // Import jwtDecode from jwt-decode
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(!!token);
-    const [user, setUser] = useState(null); // e.g., { username: 'testuser' }
     const [token, setToken] = useState(() => localStorage.getItem('token'));
+    const [user, setUser] = useState(null); // e.g., { username: 'testuser' }
+    const [isLoggedIn, setIsLoggedIn] = useState(!!token);
 
     // decodedToken.sub is not a string, it's actually an object
     // pay attention to how the JWT token's payload looks and gengerates on the backend
@@ -69,6 +69,6 @@ export const AuthProvider = ({ children }) => {
             {children}
         </AuthContext.Provider>
     );
-}
+};
 
 export const useAuth = () => useContext(AuthContext);

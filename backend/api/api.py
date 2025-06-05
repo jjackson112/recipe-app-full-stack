@@ -54,6 +54,11 @@ db.init_app(app)
 migrate = Migrate(app, db)
 #db = SQLAlchemy()
 
+# JWT
+app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+app.config["JWT_HEADER_NAME"] = "Authorization"
+app.config["JWT_HEADER_TYPE"] = "Bearer"
+
 # user authentication 
 jwt = JWTManager(app)
 
@@ -99,8 +104,17 @@ def get_all_recipes():
 
 # the data object sent over to POST endpoint via front end form - new recipe entry to be saved from the database
 @app.route('/api/recipes', methods=['POST'])
-@token_required # now only authenticated users can add recipes
-def add_recipe(current_user):
+@jwt_required # now only authenticated users can add recipes
+def add_recipe():
+    identity = get_jwt_identity()
+    current_user = User.query.get(identity["id"])
+
+    if not current_user:
+        return jsonify({"error": "User not found"}), 404
+    current_user = User.query.get(identity["id"])
+
+    if not current_user:
+        return jsonify({"error": "User not found"}), 404
     data = request.get_json()
 
     # while in add_recipe function, return a 400 status request if all required fields aren't completed
@@ -146,12 +160,20 @@ def add_recipe(current_user):
 
 # create a PUT endpoint - <int:recipe_id> is a placeholder for variable value, the id of the specific recipe you want to update
 @app.route('/api/recipes/<int:recipe_id>', methods=['PUT'])
-@token_required # now only authenticated users can edit recipes
-def update_recipe(current_user, recipe_id):
+@jwt_required # now only authenticated users can edit recipes
+def update_recipe(recipe_id):
+    identity = get_jwt_identity()
+    current_user = User.query.get(identity["id"])
+
+    if not current_user:
+        return jsonify({"error": "User not found"}), 404
+    
     recipe = Recipe.query.get(recipe_id)
     if not recipe:
         return jsonify({'error': 'Recipe not found'}), 404
+    
     data = request.get_json()
+    
 # validate the incoming JSON data for required fields
     required_fields = ['title', 'cooking_time', 'category', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
     for field in required_fields:
@@ -189,8 +211,14 @@ def update_recipe(current_user, recipe_id):
 
 # DELETE ENDPOINT - you just need the id of the specific recipe
 @app.route('/api/recipes/<int:recipe_id>', methods=['DELETE'])
-@token_required # now only authenticated users can delete recipes
-def delete_recipe(current_user, recipe_id):
+@jwt_required # now only authenticated users can delete recipes
+def delete_recipe(recipe_id):
+    identity = get_jwt_identity()
+    current_user = User.query.get(identity["id"])
+
+    if not current_user:
+        return jsonify({"error": "User not found"}), 404
+    
     recipe = Recipe.query.get(recipe_id)
     if not recipe:
         return jsonify({'error': 'Recipe not found'}), 404

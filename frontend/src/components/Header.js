@@ -6,6 +6,7 @@ import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import getAuthToken from "../helpers/authHelpers";
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
@@ -29,8 +30,7 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
                 e.preventDefault();  // Prevent default navigation
                 logout();            // Clear token and auth state
                 navigate("/");       // Programmatic navigation
-              }}
-              >Logout</a>
+              }}>Logout</a>
             </>
            ) : (
           <>
@@ -65,9 +65,9 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
       </div>
 
       <h1>My Favorite Recipes</h1>
-      <button className='new-recipe' onClick={showRecipeForm}>
+      {getAuthToken() && (<button className='new-recipe' onClick={showRecipeForm}> 
         Add New Recipe
-      </button>
+      </button>)} 
       <div className="favorite-recipes-list">
         {recipeFaves.length === 0 ? (
           <p>No favorites yet?</p>

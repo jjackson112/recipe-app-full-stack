@@ -130,7 +130,7 @@ function App() {
       try {
         const response = await fetch("https://recipe-app-full-stack.onrender.com/api/recipes", {
           headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${getAuthToken()}`
         }
         });
         if (response.ok) {
@@ -178,7 +178,9 @@ function App() {
       return
     }
 
-    if (!getAuthToken()) {
+  /* Check for token and send it to the authorization header */
+
+    if (!token) {
       displayToast("You must be logged in to perform this action.", "error")
       return
     }
@@ -229,12 +231,13 @@ function App() {
   // you need the id to make sure the POST request reaches the correct endpoint
     const {id} = selectedRecipe;
 
-    if (!getAuthToken()) {
+    if (!token) {
       displayToast("You must be logged in to perform this action.", "error")
       return
     }
 
     try {
+      console.log("Token used for update:", getAuthToken());
       const response = await fetch(`https://recipe-app-full-stack.onrender.com/api/recipes/${id}`, {
         method: "PUT",
         headers: {
@@ -270,7 +273,7 @@ function App() {
   // Delete a recipe - no need for headers or body
   const handleDeleteRecipe = async (recipeId) => {
 
-    if (!getAuthToken()) {
+    if (!token) {
       displayToast("You must be logged in to perform this action.", "error")
       return
     }
