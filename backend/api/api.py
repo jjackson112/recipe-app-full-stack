@@ -106,6 +106,7 @@ def get_all_recipes():
 @app.route('/api/recipes', methods=['POST'])
 @jwt_required() # now only authenticated users can add recipes
 def add_recipe():
+    print("Reached add_recipe route")
     identity = get_jwt_identity()
     current_user = User.query.get(identity["id"])
 
@@ -114,6 +115,7 @@ def add_recipe():
     current_user = User.query.get(identity["id"])
 
     data = request.get_json()
+    print("Incoming data:", data)
 
     # while in add_recipe function, return a 400 status request if all required fields aren't completed
     required_fields = ['title', 'category', 'cooking_time', 'ingredients', 'instructions', 'servings', 'description', 'image_url']
