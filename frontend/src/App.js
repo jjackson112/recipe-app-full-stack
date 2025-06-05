@@ -24,17 +24,9 @@ function App() {
   const scrollRef = useRef(0); // create a modifiable reference that persists across renders - save scroll position
   const socketRef = useRef(null) // websockets
 
-  // save token after the login - static token - getAuthToken()
+  // save token after the login - static token - (getAuthToken())
   // ${getAuthToken()} is used when the token changes like after logging in
   const token = getAuthToken()
-
-  // before useEffect it would render nothing on screen - now it's a more robust approach
-  useEffect(() => {
-    if (!token) {
-      displayToast("You must be logged in to do add/edit/delete a recipe.", "error");
-      return;
-    }
-  }, [token]) // runs only when the token changes
 
   // websockets event listeners
   useEffect(() => {
@@ -127,11 +119,20 @@ function App() {
       description: "",
       image_url: "https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" //default
     });
-
+  
+  // before useEffect it would render nothing on screen - now it's a more robust approach
   useEffect(() => {
     const fetchAllRecipes = async () => {
+      if (!token) {
+        return; // data fetching so it can silently fail
+      }
+    
       try {
-        const response = await fetch("https://recipe-app-full-stack.onrender.com/api/recipes");
+        const response = await fetch("https://recipe-app-full-stack.onrender.com/api/recipes", {
+          headers: {
+          'Authorization': `Bearer ${token}`
+        }
+        });
         if (response.ok) {
           const data = await response.json();
           setRecipes(data);
@@ -143,7 +144,7 @@ function App() {
       }
     };
     fetchAllRecipes();
-  }, []);
+  }, [token]); // runs only when the token changes
 
   useEffect(() => {
     const handleScroll = () => {
@@ -174,6 +175,11 @@ function App() {
     const isDuplicate = recipes.some(r => r.title.toLowerCase() === newRecipe.title.toLowerCase())
     if (isDuplicate) {
       displayToast("That recipe already exists!")
+      return
+    }
+
+    if (!getAuthToken()) {
+      displayToast("You must be logged in to perform this action.", "error")
       return
     }
 
@@ -223,6 +229,11 @@ function App() {
   // you need the id to make sure the POST request reaches the correct endpoint
     const {id} = selectedRecipe;
 
+    if (!getAuthToken()) {
+      displayToast("You must be logged in to perform this action.", "error")
+      return
+    }
+
     try {
       const response = await fetch(`https://recipe-app-full-stack.onrender.com/api/recipes/${id}`, {
         method: "PUT",
@@ -258,6 +269,12 @@ function App() {
 
   // Delete a recipe - no need for headers or body
   const handleDeleteRecipe = async (recipeId) => {
+
+    if (!getAuthToken()) {
+      displayToast("You must be logged in to perform this action.", "error")
+      return
+    }
+
     try {
       const response = await fetch(`https://recipe-app-full-stack.onrender.com/api/recipes/${recipeId}`, {
         method: "DELETE",
@@ -280,7 +297,7 @@ function App() {
   
 
   /* Update the status of the selectedRecipe state */
-  const handleSelectRecipe = (recipe) => {
+  const handleSelectRecipe = async (recipe) => {
     scrollRef.current = window.scrollY; // stores scroll position after adding recipe
     setSelectedRecipe(recipe);
   };
@@ -347,16 +364,13 @@ function App() {
     const titleMatches = recipes.filter((recipe => {
       return recipe.title.toLowerCase().includes(titleSearch)
     }))
-    if (titleMatches.length > 0) return titleMatches;
-
+    if (titleMatches.length > 0) return titleMatches
     // if no title matches search for other fields
-    return recipes.filter((recipe) => {
-      const valuesToSearch=[recipe.ingredients, recipe.description];
-      return valuesToSearch.some(value => value.toLowerCase().includes(searchTerm.toLowerCase()));
+      return recipes.filter((recipe) => {
+        const valuesToSearch=[recipe.ingredients, recipe.description];
+        return valuesToSearch.some(value => value.toLowerCase().includes(searchTerm.toLowerCase()));
     });
   }
-
-  
 
     /* make the logo clickable - clear the search results,
    newRecipeForm cannot show and no recipes can be selected */
@@ -370,7 +384,7 @@ function App() {
   /* How to display recipes on search results page - is there a search term? */
   /* Alphabetize recipes - Use slice to copy arrays so recipes state isn't mutated 
   and sort to reorder elements - localeCompare handles case sensitivity and non English characters */
-  
+  // consider useMemo if performance becomes an issue with too many recipes
   const displayedRecipes = (searchTerm ? handleSearch() : filteredRecipes)
     .slice()
     .sort((a,b) => a.title.localeCompare(b.title));

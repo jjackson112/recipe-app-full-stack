@@ -4,7 +4,7 @@ import { jwtDecode } from 'jwt-decode'; // Import jwtDecode from jwt-decode
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+    const [isLoggedIn, setIsLoggedIn] = useState(!!token);
     const [user, setUser] = useState(null); // e.g., { username: 'testuser' }
     const [token, setToken] = useState(() => localStorage.getItem('token'));
 
@@ -57,17 +57,18 @@ export const AuthProvider = ({ children }) => {
     };
 
     // <--- ADD THIS LOGOUT FUNCTION ---
-    const logout = () => {        
+    const logout = () => {
         localStorage.removeItem('token'); // Remove the token from local storage
         setToken(null)
+        setUser(null)
         setIsLoggedIn(false)
-    };
+    }
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, user, login, logout, token }}>
             {children}
         </AuthContext.Provider>
     );
-};
+}
 
 export const useAuth = () => useContext(AuthContext);
