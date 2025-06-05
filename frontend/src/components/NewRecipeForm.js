@@ -54,7 +54,8 @@ const NewRecipeForm = ({newRecipe, hideRecipeForm, onUpdateForm, handleNewRecipe
                 type='number'
                 name='servings'
                 value={newRecipe.servings}
-                onChange={(e) => onUpdateForm(e, "new")}
+                onChange={(e) => onUpdateForm(
+                    { target: { name: "servings", value: parseInt(e.target.value, 10) || 0} }, "new")}
                 required
             />
             <button type="submit">Save Recipe</button>
