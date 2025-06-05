@@ -75,7 +75,8 @@ const EditRecipeForm = ({selectedRecipe, handleCancel, onUpdateForm, handleUpdat
                     type="number"
                     name="servings"
                     value={selectedRecipe.servings}
-                    onChange={(e) => onUpdateForm(e, "update")}
+                    onChange={(e) => onUpdateForm(
+                        { target: { name: "servings", value: parseInt(e.target.value, 10) || 0} }, "update")}
                     required
                 />
                 <button id ="edit-cancel-button" type="submit">Update Recipe</button>

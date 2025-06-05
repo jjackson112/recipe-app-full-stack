@@ -113,8 +113,6 @@ def add_recipe():
         return jsonify({"error": "User not found"}), 404
     current_user = User.query.get(identity["id"])
 
-    if not current_user:
-        return jsonify({"error": "User not found"}), 404
     data = request.get_json()
 
     # while in add_recipe function, return a 400 status request if all required fields aren't completed
@@ -122,14 +120,14 @@ def add_recipe():
     for field in required_fields:
         if field not in data or data[field] == "":
             return jsonify({'error':f"Missing required field: '{field}'"}), 400
-        
+    # servings edit - ensure that a valid integer is stored - 422 Request payload, etc    
     new_recipe = Recipe(
         title=data ['title'],
         category=data['category'],
         cooking_time=data['cooking_time'],
         ingredients=data ['ingredients'],
         instructions=data ['instructions'],
-        servings=data ['servings'],
+        servings=int(data['servings']),
         description=data ['description'],
         image_url=data['image_url'],
         user_id=current_user.id # <== Associate the recipe with the user
