@@ -17,6 +17,7 @@ load_dotenv()
 
 # create database object by calling SQL Alchemy class
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key')
 
 # have frontend and backend communicate
 CORS(app, resources={r"/*": {"origins": ["https://recipe-app-frontend-gr6b.onrender.com", "http://localhost:3000"]}}, 
@@ -34,8 +35,9 @@ def handle_connect():
 
 @socketio.on('sync_event')
 def handle_sync(data):
+    if not current_user.is_authenticated:
+        return emit('sync_event', data, broadcast=True) # Or emit an error event
     print('Received sync event:', data)
-    emit('sync_event', data, broadcast=True)
 
 @socketio.on('disconnect')
 def handle_disconnect():
@@ -53,6 +55,13 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True  # Secure must be True for SameSite=None
 
 # create a db model to organize database
 # class Recipe(db.Model):
@@ -225,20 +234,33 @@ def register():
     return jsonify({'message': 'User registered successfully'})
 
 # LOGIN ENDPOINT
-@app.route('/api/login', methods=['POST'])
+@app.route('/api/current_user', methods=['GET'])
 @login_required
+def get_current_user():
+    print(f"Current user: {current_user.username}")
+    return jsonify({
+        'id': current_user.id,
+        'username': current_user.username
+    })
+
+@app.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json()
+    if not data:
+        return jsonify({"error": "Missing JSON body"}), 400
+    
     username = data.get('username')
     password = data.get('password')
+
+    if not user or not user.check_password(password):
+        return jsonify({'error': 'Invalid username or password'}), 400
 
     user = User.query.filter_by(username=username).first()
     if user and user.check_password(password):
         login_user(user)
-        return jsonify({"message": "Logged in successfully."})
-    
-    if not user or not user.check_password(password):
-        return jsonify({'error': 'Invalid username or password'}), 401
+        return jsonify({"message": "Logged in successfully."}), 200
+    return jsonify({'error': 'Invalid username or password'}), 401
+
     
 # LOGOUT ENDPOINT
 @app.route('/api/logout', methods=['POST'])

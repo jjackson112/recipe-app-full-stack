@@ -190,14 +190,19 @@ header .new-recipe:hover, .header-auth-btns:hover {
 }
 
 .login-modal-content, .register-modal-content {
+  position: absolute;
+  top: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: white;
   margin: 10% auto;
   padding: 20px;
-  width: 275px;
+  width: 300px;
   border-radius: 10px;
 }
 
-#username, #password, #register-username, #register-password {
+#username, #password, #register-username, #register-password, #username-validate, #new-password, #confirm-password {
   height: 30px;
   width: 200px;
   border-radius: 5px;
@@ -211,15 +216,21 @@ header .new-recipe:hover, .header-auth-btns:hover {
   border-radius: 30px;
 }
 
-#login-submit-btn, #login-close-btn, #register-submit-btn, #register-close-btn {
+#login-submit-btn, #login-close-btn, #register-submit-btn, #register-close-btn, #reset-password-submit-btn, #reset-password-close-btn, #reset-submit-btn, #reset-close-btn {
   text-align: center;
   width: 85px;
   margin: 10px 10px;
 }
 
-.login {
+.reset-password-content  {
   display: flex;
   flex-direction: column;
+}
+
+#reset-password-btn, #validate-username-btn {
+  width: 150px;
+  height: 50px;
+  margin: 10px 10px;
 }
 
 .favorite-recipes-list {
@@ -612,14 +623,14 @@ header .new-recipe:hover, .header-auth-btns:hover {
 }
 
 /* Mobile edits for header */
-@media (max-width: 325px) {
+@media (max-width: 525px) {
   #login-btn, #register-btn {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     height: 30px;
-    width: 70px;
+    width: 60px;
     margin: 0px 2px;
   }
 }

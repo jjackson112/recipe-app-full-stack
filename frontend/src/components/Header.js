@@ -5,7 +5,6 @@ import FavoriteRecipeExcerpt from "./FavoriteRecipeExcerpt";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import { useAuth } from "./AuthContext";
-import { Link } from "react-router-dom";
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
@@ -20,19 +19,32 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
       <div className='logo-search'>
         <Logo onClick={displayAllRecipes} />
         <div className="login">
-          <button id="login-btn" className="header-auth-btns" onClick={() => setShowLoginModal(true)}>Login</button>
-          {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
-          {isLoggedIn && user && user.username && (
+           {isLoggedIn && user?.username ? (
             <>
-              <span className="welcome-message">Hi, <strong>{user.username}</strong> you are logged in!</span>
-              <Link onClick={logout}>Logout</Link>
+              <span className="welcome-message">Hi, <strong>{user?.username}</strong> you are logged in! </span>
+              <a href="/" onClick={(e) => {
+                e.preventDefault();  // Prevent default navigation
+                logout();            // Clear token and auth state
+                navigate("/");       // Programmatic navigation
+              }}>Logout</a>
+            </>
+           ) : (
+          <>
+            <button id="login-btn" className="header-auth-btns" onClick={() => setShowLoginModal(true)}>Login</button>
+            {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
+          </>
+        )}
+        </div>
+
+        <div className="register">
+          {!isLoggedIn && (
+            <>
+              <button id="register-btn" className="header-auth-btns" onClick={() => setShowRegisterModal(true)}>Register</button>
+              {showRegisterModal && <RegisterModal onClose={() => setShowRegisterModal(false)} />}
             </>
           )}
         </div>
-        <div className="register">
-          <button id="register-btn" className="header-auth-btns" onClick={() => setShowRegisterModal(true)}>Register</button>
-          {showRegisterModal && <RegisterModal onClose={() => setShowRegisterModal(false)} />}
-        </div>
+
         <div className='search'>
           <label className='visually-hidden' htmlFor='search'>
             Search
@@ -47,10 +59,11 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
           <Search aria-label="Search icon"/>
         </div>
       </div>
+
       <h1>My Favorite Recipes</h1>
-      <button className='new-recipe' onClick={showRecipeForm}>
+      {getAuthToken() && (<button className='new-recipe' onClick={showRecipeForm}> 
         Add New Recipe
-      </button>
+      </button>)} 
       <div className="favorite-recipes-list">
         {recipeFaves.length === 0 ? (
           <p>No favorites yet?</p>
@@ -65,6 +78,7 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
           ))
         )}
       </div>
+
       <div className="category-filter">
         <label htmlFor="category"><strong>Filter by category </strong></label>
         <select id="category" value={selectedCategory} onChange={(e) => handleCategoryChange(e.target.value)}>
@@ -73,6 +87,7 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
           ))}
         </select>
       </div>
+
     </header>
   );
 };
