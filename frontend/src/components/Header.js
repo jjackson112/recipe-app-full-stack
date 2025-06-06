@@ -34,7 +34,7 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
            {isLoggedIn ? (
             <>
               <span className="welcome-message">Hi, <strong>{user.username}</strong> you are logged in! </span>
-              <button className="header-auth-btns" onClick={handleLogout}>Logout</button>
+              <button id="logout-btn" className="header-auth-btns" onClick={handleLogout}>Logout</button>
             </>
            ) : (
           <>

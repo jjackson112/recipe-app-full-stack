@@ -237,7 +237,6 @@ def register():
 @app.route('/api/current_user', methods=['GET'])
 @login_required
 def get_current_user():
-    print(f"Current user: {current_user.username}")
     return jsonify({
         'id': current_user.id,
         'username': current_user.username
