@@ -11,11 +11,7 @@ from models import Recipe  # Now importing db and Recipe from models.py
 from user_auth_model import User
 from flask_migrate import Migrate
 from flask_socketio import SocketIO, emit
-from flask_jwt_extended import JWTManager
-from flask_jwt_extended import create_access_token
-import datetime
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from auth_utils import token_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 load_dotenv()
 
@@ -53,8 +49,10 @@ db.init_app(app)
 migrate = Migrate(app, db)
 #db = SQLAlchemy()
 
-# user authentication 
-jwt = JWTManager(app)
+# Initialize database and login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
 
 # create a db model to organize database
 # class Recipe(db.Model):
@@ -98,8 +96,9 @@ def get_all_recipes():
 
 # the data object sent over to POST endpoint via front end form - new recipe entry to be saved from the database
 @app.route('/api/recipes', methods=['POST'])
-@token_required # now only authenticated users can add recipes
-def add_recipe(current_user):
+@login_required # now only authenticated users can add recipes
+def add_recipe():
+
     data = request.get_json()
 
     # while in add_recipe function, return a 400 status request if all required fields aren't completed
@@ -145,8 +144,8 @@ def add_recipe(current_user):
 
 # create a PUT endpoint - <int:recipe_id> is a placeholder for variable value, the id of the specific recipe you want to update
 @app.route('/api/recipes/<int:recipe_id>', methods=['PUT'])
-@token_required # now only authenticated users can edit recipes
-def update_recipe(current_user, recipe_id):
+@login_required # now only authenticated users can edit recipes
+def update_recipe(recipe_id):
     recipe = Recipe.query.get(recipe_id)
     if not recipe:
         return jsonify({'error': 'Recipe not found'}), 404
@@ -188,8 +187,8 @@ def update_recipe(current_user, recipe_id):
 
 # DELETE ENDPOINT - you just need the id of the specific recipe
 @app.route('/api/recipes/<int:recipe_id>', methods=['DELETE'])
-@token_required # now only authenticated users can delete recipes
-def delete_recipe(current_user, recipe_id):
+@login_required # now only authenticated users can delete recipes
+def delete_recipe(recipe_id):
     recipe = Recipe.query.get(recipe_id)
     if not recipe:
         return jsonify({'error': 'Recipe not found'}), 404
@@ -227,19 +226,26 @@ def register():
 
 # LOGIN ENDPOINT
 @app.route('/api/login', methods=['POST'])
+@login_required
 def login():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
 
     user = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
+        login_user(user)
+        return jsonify({"message": "Logged in successfully."})
+    
     if not user or not user.check_password(password):
         return jsonify({'error': 'Invalid username or password'}), 401
     
-    # Generate JWT token
-    token = create_access_token(identity={"id": user.id, "username": user.username})
-    
-    return jsonify({'access_token': token})
+# LOGOUT ENDPOINT
+@app.route('/api/logout', methods=['POST'])
+@login_required
+def logout():
+    logout_user()
+    return jsonify({'message' : 'Logged out successfully'})
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), allow_unsafe_werkzeug=True)

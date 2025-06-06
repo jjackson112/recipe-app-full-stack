@@ -175,6 +175,7 @@ function App() {
     try {
       const response = await fetch("https://recipe-app-full-stack.onrender.com/api/recipes", {
         method: "POST",
+        credentials: 'include',
         headers: {
           "Content-type": "application/json",
           'Authorization': `Bearer ${token}`
@@ -221,6 +222,7 @@ function App() {
     try {
       const response = await fetch(`https://recipe-app-full-stack.onrender.com/api/recipes/${id}`, {
         method: "PUT",
+        credentials: 'include',
         headers: {
           "Content-type": "application/json",
           'Authorization': `Bearer ${token}`
@@ -256,6 +258,7 @@ function App() {
     try {
       const response = await fetch(`https://recipe-app-full-stack.onrender.com/api/recipes/${recipeId}`, {
         method: "DELETE",
+        credentials: 'include',
         headers: {
           'Authorization': `Bearer ${token}`
         }
