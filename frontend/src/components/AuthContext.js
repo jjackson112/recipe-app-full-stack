@@ -1,68 +1,64 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { jwtDecode } from 'jwt-decode'; // Import jwtDecode from jwt-decode
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null); // e.g., { username: 'testuser' }
-    const [token, setToken] = useState(() => localStorage.getItem('token'));
 
-    // On initial load, check if token exists
+// On initial load, check session via backend
     useEffect(() => {
-        if (token && token.split('.').length === 3) {
-            // You might want to decode the token to get user info
+        const fetchCurrentUser = async () => {
             try {
-                const decodedToken = jwtDecode(token); // requires jwt-decode library
-                console.log("Decoded JWT:", decodedToken)
-                setUser({ username: decodedToken.username }) //set user data from token
-                setIsLoggedIn(true);
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/current_user`, {
+                    method: 'GET',
+                    credentials: 'include', // important for cookies
+                })
+
+                if (res.ok) {
+                    const data = await res.json()
+                    setUser(data)
+                    setIsLoggedIn(true)
+                } else {
+                    setUser(null)
+                    setIsLoggedIn(false)
+                }
             } catch (error) {
-                console.error("Failed to decode token or token is invalid:", error);
-                // Clear invalid token
-                localStorage.removeItem('token');
-                setToken(null)
-                setIsLoggedIn(false);
-                setUser(null); // Clear the user data
+                console.error('Error checking current user', error)
+                setUser(null)
+                setIsLoggedIn(false)
             }
-        } else {
-            setIsLoggedIn(false)
-            setUser(null)
         }
-    }, [token]); // re-run when token changes
+        fetchCurrentUser()
+    }, [])
 
-    // Login function: takes token and optional user data (e.g., if backend sends it separately)
-    const login = (token, userDataFromBackend = null) => {
-        localStorage.setItem('token', token);
-        setToken(token);
-        setIsLoggedIn(true);
-
-        if (userDataFromBackend) {
-            // If backend provides user data directly (e.g., {id: 1, username: 'testuser'})
-            setUser(userDataFromBackend);
-        } else {
-            // Otherwise, decode from the token (ensure 'username' claim exists in your JWT)
-            try {
-                const decodedToken = jwtDecode(token);
-                setUser({ username: decodedToken.username });
-                console.log("Decoded JWT", decodedToken)
-            } catch (error) {
-                console.error("Failed to decode token on login:", error);
-                setUser(null); // Or set a default like { username: 'User' }
-            }
+    // Login after successful login request and recheck user
+    const login = async () => {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/current_user`, {
+            method: 'GET',
+            credentials: 'include',
+        })
+        
+        if (res.ok) {
+            const data = await res.json()
+            setUser(data)
+            setIsLoggedIn(true)
         }
     };
 
     // <--- ADD THIS LOGOUT FUNCTION ---
-    const logout = () => {        
-        localStorage.removeItem('token'); // Remove dthe token from local storage
-        setToken(null)
+    const logout = async () => {        
+        await fetch(`{import.meta.env.VITE_API_URL}/logout`, {
+            method: 'POST',
+            credentials: 'include',
+        })
+
         setIsLoggedIn(false)
         setUser(null)
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, user, login, logout, token }}>
+        <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
