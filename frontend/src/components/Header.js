@@ -5,6 +5,7 @@ import FavoriteRecipeExcerpt from "./FavoriteRecipeExcerpt";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import { useAuth } from "./AuthContext";
+import { toast } from "react-toastify";
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
@@ -13,20 +14,27 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   
   const { isLoggedIn, user, logout } = useAuth(); // Correctly using the hook
+  
+  const handleLogout = async () => {
+    try {
+        await logout(); // AuthContext handles clearing session + state
+        toast.success("You've been logged out successfully!")
+        console.log("Logout successful");
+    } catch (error) {
+        console.error("Logout error:", error);
+        toast.error("Error logging out.")
+    }
+};
 
   return (
     <header>
       <div className='logo-search'>
         <Logo onClick={displayAllRecipes} />
         <div className="login">
-           {isLoggedIn && user?.username ? (
+           {isLoggedIn ? (
             <>
-              <span className="welcome-message">Hi, <strong>{user?.username}</strong> you are logged in! </span>
-              <a href="/" onClick={(e) => {
-                e.preventDefault();  // Prevent default navigation
-                logout();            // Clear token and auth state
-                navigate("/");       // Programmatic navigation
-              }}>Logout</a>
+              <span className="welcome-message">Hi, <strong>{user.username}</strong> you are logged in! </span>
+              <button className="header-auth-btns" onClick={handleLogout}>Logout</button>
             </>
            ) : (
           <>
@@ -61,7 +69,7 @@ const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipe
       </div>
 
       <h1>My Favorite Recipes</h1>
-      {getAuthToken() && (<button className='new-recipe' onClick={showRecipeForm}> 
+      {isLoggedIn && (<button className='new-recipe' onClick={showRecipeForm}> 
         Add New Recipe
       </button>)} 
       <div className="favorite-recipes-list">

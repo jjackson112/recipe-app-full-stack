@@ -245,21 +245,23 @@ def get_current_user():
 
 @app.route('/api/login', methods=['POST'])
 def login():
-    data = request.get_json()
-    if not data:
-        return jsonify({"error": "Missing JSON body"}), 400
+    try:
+        data = request.get_json()
     
-    username = data.get('username')
-    password = data.get('password')
+        username = data.get('username')
+        password = data.get('password')
 
-    if not user or not user.check_password(password):
-        return jsonify({'error': 'Invalid username or password'}), 400
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(password):
+            login_user(user)
+            return jsonify({"message": "Logged in successfully."})
 
-    user = User.query.filter_by(username=username).first()
-    if user and user.check_password(password):
-        login_user(user)
-        return jsonify({"message": "Logged in successfully."}), 200
-    return jsonify({'error': 'Invalid username or password'}), 401
+        return jsonify({'error': 'Invalid username or password'}), 401
+
+    except Exception as e:
+        import traceback
+        print("Login error:", traceback.format_exc())
+        return jsonify({'error': 'Server error occurred'}), 500
 
     
 # LOGOUT ENDPOINT
