@@ -62,8 +62,12 @@ login_manager.login_view = "login"
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-app.config['SESSION_COOKIE_SECURE'] = True # Secure must be True for SameSite=None
+if os.environ.get("FLASK_ENV") == "development":
+    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+    app.config['SESSION_COOKIE_SECURE'] = False
+else:
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+    app.config['SESSION_COOKIE_SECURE'] = True # Secure must be True for SameSite=None
 
 # session timeouts
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)

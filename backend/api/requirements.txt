@@ -5,6 +5,7 @@ eventlet
 Flask==2.3.3
 Flask-Cors
 Flask-JWT-Extended
+Flask-Login>=0.6
 flask_Migrate
 Flask-SocketIO
 Flask-SQLAlchemy==3.0.5

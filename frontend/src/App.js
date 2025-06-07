@@ -24,9 +24,6 @@ function App() {
   const scrollRef = useRef(0); // create a modifiable reference that persists across renders - save scroll position
   const socketRef = useRef(null) // websockets
 
-  // save token after the login
-  const token = localStorage.getItem('token')
-
   // websockets event listeners
   useEffect(() => {
     socketRef.current = io('https://recipe-app-full-stack.onrender.com', {
