@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useAuth } from './AuthContext'; // ADJUST THIS PATH based on where your AuthContext.js is located
 import ValidateUsername from "./ValidateUsername";
+import ChangeUsername from "./ChangeUsername";
 
 const LoginModal = ({onClose}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const [showValidateUsername, setShowValidateUsername] = useState(false);
-    const [changeUsername, setChangeUsername] = useState("");
+    const [showChangeUsername, setShowChangeUsername] = useState(false)
 
     const { login, loading } = useAuth(); // <--- Get the login function from context
 
@@ -29,7 +30,7 @@ const LoginModal = ({onClose}) => {
             console.error("Login failed:", err);
             setMessage("Login failed: " + err.message);
         }
-};
+    };
 
     return (
         <div className="login-modal-overlay">
@@ -61,12 +62,17 @@ const LoginModal = ({onClose}) => {
                     <button id="login-submit-btn" className="header-auth-btns" type="submit" disabled={loading}> {loading ? "Logging in..." : "Submit"} </button>
                     <button id="login-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Close</button>
                     <button id="reset-password-btn" className="header-auth-btns" type="button" onClick={() => setShowValidateUsername(true)}>Reset Password</button>
-                    <button id="reset-username-btn" className="header-auth-btns" type="button">Change Username</button>
+                    <button id="reset-username-btn" className="header-auth-btns" type="button" onClick={() => setShowChangeUsername(true)}>Change Username</button>
                 </form>
 
                 {showValidateUsername && (
                     <div className="nested-modal">
                         <ValidateUsername onClose={() => {setShowValidateUsername(false)}} />
+                    </div>
+                )}
+                {showChangeUsername && (
+                    <div className="change-password">
+                        <ChangeUsername onClose={() => {setShowChangeUsername(false)}} />
                     </div>
                 )}
             </div>
