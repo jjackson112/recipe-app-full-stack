@@ -219,7 +219,6 @@ function App() {
         credentials: 'include',
         headers: {
           "Content-type": "application/json",
-          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(selectedRecipe)
       });
@@ -254,7 +253,7 @@ function App() {
         method: "DELETE",
         credentials: 'include',
         headers: {
-          'Authorization': `Bearer ${token}`
+          "Content-type": "application/json",
         }
       });
   

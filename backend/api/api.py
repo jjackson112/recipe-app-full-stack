@@ -12,6 +12,8 @@ from user_auth_model import User
 from flask_migrate import Migrate
 from flask_socketio import SocketIO, emit
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from datetime import timedelta
+from flask import session
 
 load_dotenv()
 
@@ -20,8 +22,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key')
 
 # have frontend and backend communicate
-CORS(app, resources={r"/*": {"origins": ["https://recipe-app-frontend-gr6b.onrender.com", "http://localhost:3000"]}}, 
-    supports_credentials=True,
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": ["https://recipe-app-frontend-gr6b.onrender.com", "http://localhost:3000"]}}, 
     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization"])
 
@@ -36,7 +37,8 @@ def handle_connect():
 @socketio.on('sync_event')
 def handle_sync(data):
     if not current_user.is_authenticated:
-        return emit('sync_event', data, broadcast=True) # Or emit an error event
+        emit('error', {'message': 'Authentication required'}) # Or emit an error event
+        return
     print('Received sync event:', data)
 
 @socketio.on('disconnect')
@@ -61,7 +63,11 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-app.config['SESSION_COOKIE_SECURE'] = True  # Secure must be True for SameSite=None
+app.config['SESSION_COOKIE_SECURE'] = True # Secure must be True for SameSite=None
+
+# session timeouts
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
+
 
 # create a db model to organize database
 # class Recipe(db.Model):
@@ -107,7 +113,7 @@ def get_all_recipes():
 @app.route('/api/recipes', methods=['POST'])
 @login_required # now only authenticated users can add recipes
 def add_recipe():
-
+    print("Current user:", current_user.is_authenticated, current_user)
     data = request.get_json()
 
     # while in add_recipe function, return a 400 status request if all required fields aren't completed
@@ -253,6 +259,7 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             login_user(user)
+            session.permanent = True # marked after login otherwise it's ignored
             return jsonify({"message": "Logged in successfully."})
 
         return jsonify({'error': 'Invalid username or password'}), 401
