@@ -8,7 +8,8 @@ const LoginModal = ({onClose}) => {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const [showValidateUsername, setShowValidateUsername] = useState(false);
-    const [showChangeUsername, setShowChangeUsername] = useState(false)
+    const [showChangeUsername, setShowChangeUsername] = useState(false);
+    const [validatedUsername, setValidatedUsername] = useState(null); 
 
     const { login, loading } = useAuth(); // <--- Get the login function from context
 
@@ -48,7 +49,6 @@ const LoginModal = ({onClose}) => {
                         onChange={(e) => {setUsername(e.target.value); setMessage("");}}
                         required
                     />
-
                     <label htmlFor="password">Password</label>
                     <input
                         type="password"
@@ -67,12 +67,20 @@ const LoginModal = ({onClose}) => {
 
                 {showValidateUsername && (
                     <div className="nested-modal">
-                        <ValidateUsername onClose={() => {setShowValidateUsername(false)}} />
+                        <ValidateUsername 
+                            onClose={() => {setShowValidateUsername(false)}}
+                            onValidated={(validatedUsername) => { //store validated username
+                                // decide based on context
+                                setShowValidateUsername(false)
+                                setShowChangeUsername(true)
+                            }}
+                        
+                        />
                     </div>
                 )}
                 {showChangeUsername && (
                     <div className="change-password">
-                        <ChangeUsername onClose={() => {setShowChangeUsername(false)}} />
+                        <ChangeUsername username={validatedUsername} onClose={() => {setShowChangeUsername(false); setValidatedUsername(null)}} />
                     </div>
                 )}
             </div>
