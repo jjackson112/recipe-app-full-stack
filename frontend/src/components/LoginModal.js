@@ -6,7 +6,8 @@ const LoginModal = ({onClose}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
-    const [showValidateUsername, setShowValidateUsername] = useState(false)
+    const [showValidateUsername, setShowValidateUsername] = useState(false);
+    const [changeUsername, setChangeUsername] = useState("");
 
     const { login, loading } = useAuth(); // <--- Get the login function from context
 
@@ -60,6 +61,7 @@ const LoginModal = ({onClose}) => {
                     <button id="login-submit-btn" className="header-auth-btns" type="submit" disabled={loading}> {loading ? "Logging in..." : "Submit"} </button>
                     <button id="login-close-btn" className="header-auth-btns" type="button" onClick={onClose}>Close</button>
                     <button id="reset-password-btn" className="header-auth-btns" type="button" onClick={() => setShowValidateUsername(true)}>Reset Password</button>
+                    <button id="reset-username-btn" className="header-auth-btns" type="button">Change Username</button>
                 </form>
 
                 {showValidateUsername && (

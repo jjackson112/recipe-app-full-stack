@@ -227,7 +227,7 @@ header .new-recipe:hover, .header-auth-btns:hover {
   flex-direction: column;
 }
 
-#reset-password-btn, #validate-username-btn {
+#reset-password-btn, #reset-username-btn, #validate-username-btn {
   width: 150px;
   height: 50px;
   margin: 10px 10px;

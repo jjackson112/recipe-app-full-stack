@@ -281,5 +281,23 @@ def logout():
     logout_user()
     return jsonify({'message' : 'Logged out successfully'})
 
+# UPDATE USERNAME
+@app.route('api/update_username', methods=['POST'])
+@login_required
+def update_username():
+    data = request.get_json()
+
+    new_username = data.get('new_username')
+    
+    if not new_username:
+        return jsonify({'error': "Username is required"}), 400
+    
+    if User.query.filter_by(username=new_username).first():
+        return jsonify({'error': "Username already taken"}), 409
+    
+    current_user.username = new_username
+    db.session.commit()
+    return jsonify({'message': "Username updated successfully", "username": new_username}), 200
+
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), allow_unsafe_werkzeug=True)
