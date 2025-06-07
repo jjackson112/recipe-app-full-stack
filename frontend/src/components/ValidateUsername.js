@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import ResetPassword from "./ResetPassword";
 
-const ValidateUsername = ({onClose}) => {
+const ValidateUsername = ({ onClose, onValidated }) => {
     const [username, setUsername] = useState("");
     const [validateMessage, setValidateMessage] = useState("");
-    const [showResetPassword, setShowResetPassword] = useState(false)
 
 // .trim() removes spaces
     const handleValidateUsername = async () => {
@@ -23,7 +22,12 @@ const ValidateUsername = ({onClose}) => {
             const data = await res.json();
 
             if (res.ok) {
-                setShowResetPassword(true) // show ResetPassword module
+                setValidateMessage(""); // Clear any error
+
+                // Notify parent that username is validated
+                if (onValidated) {
+                    onValidated(username);
+                }
             } else {
                 setValidateMessage(data.message || "Username not found.");
             }
@@ -31,10 +35,6 @@ const ValidateUsername = ({onClose}) => {
             setValidateMessage("Server error during validation.");
         }
     };
-
-    if (showResetPassword) {
-        return  <ResetPassword username={username} onClose={onClose} />
-    }
 
     return (
         <div className="validate-username-content"> 
@@ -52,6 +52,10 @@ const ValidateUsername = ({onClose}) => {
             <button id="validate-username-btn" className="header-auth-btns" type="button" onClick={handleValidateUsername}>
                     Validate Username</button>
             {validateMessage && <p>{validateMessage}</p>}
+            <button
+                className="header-auth-btns"
+                type="button"
+                onClick={onClose}>Cancel</button>
         </div>
     )
 }

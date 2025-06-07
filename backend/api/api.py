@@ -282,7 +282,7 @@ def logout():
     return jsonify({'message' : 'Logged out successfully'})
 
 # UPDATE USERNAME
-@app.route('api/update_username', methods=['POST'])
+@app.route('/api/update_username', methods=['POST'])
 @login_required
 def update_username():
     data = request.get_json()

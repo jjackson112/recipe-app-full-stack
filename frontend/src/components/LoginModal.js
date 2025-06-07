@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from './AuthContext'; // ADJUST THIS PATH based on where your AuthContext.js is located
 import ValidateUsername from "./ValidateUsername";
+import ResetPassword from "./ResetPassword";
 import ChangeUsername from "./ChangeUsername";
 
 const LoginModal = ({onClose}) => {
@@ -8,6 +9,7 @@ const LoginModal = ({onClose}) => {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const [showValidateUsername, setShowValidateUsername] = useState(false);
+    const [showResetPassword, setShowResetPassword] = useState(false);
     const [showChangeUsername, setShowChangeUsername] = useState(false);
     const [validatedUsername, setValidatedUsername] = useState(null); 
 
@@ -30,6 +32,14 @@ const LoginModal = ({onClose}) => {
         } catch (err) {
             console.error("Login failed:", err);
             setMessage("Login failed: " + err.message);
+        }
+
+        const handleUsernameValidated = (uname) => {
+            setValidatedUsername(uname);
+            setShowValidateUsername(false);
+            // Choose the next action:
+            // setShowResetPassword(true); // OR:
+            setShowChangeUsername(true);
         }
     };
 
@@ -65,22 +75,21 @@ const LoginModal = ({onClose}) => {
                     <button id="reset-username-btn" className="header-auth-btns" type="button" onClick={() => setShowChangeUsername(true)}>Change Username</button>
                 </form>
 
-                {showValidateUsername && (
+                {showResetPassword && validatedUsername && (
                     <div className="nested-modal">
-                        <ValidateUsername 
-                            onClose={() => {setShowValidateUsername(false)}}
-                            onValidated={(validatedUsername) => { //store validated username
-                                // decide based on context
-                                setShowValidateUsername(false)
-                                setShowChangeUsername(true)
-                            }}
-                        
+                        <ResetPassword
+                            username={validatedUsername}
+                            onClose={() => setShowResetPassword(false)}
                         />
                     </div>
                 )}
-                {showChangeUsername && (
-                    <div className="change-password">
-                        <ChangeUsername username={validatedUsername} onClose={() => {setShowChangeUsername(false); setValidatedUsername(null)}} />
+
+                {showChangeUsername && validatedUsername && (
+                    <div className="nested-modal">
+                        <ChangeUsername
+                            username={validatedUsername}
+                            onClose={() => setShowChangeUsername(false)}
+                        />
                     </div>
                 )}
             </div>

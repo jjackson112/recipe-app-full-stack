@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import ValidateUsername from "./ValidateUsername";
 
-const ChangeUsername = ({ onClose }) => {
+const ChangeUsername = ({ onClose, username }) => {
     const [newUsername, setNewUsername] = useState("");
     
     const handleUsernameChangeSubmit = async (e) => {
@@ -34,15 +35,16 @@ const ChangeUsername = ({ onClose }) => {
     return (
         <form onSubmit={handleUsernameChangeSubmit}>
             <div className="change-username-content">
+                <label htmlFor="update-username">New Username</label>
                 <input
                     type="username"
                     id="update-username"
                     placeholder="New Username"
                     value={newUsername}
-                    onChange={(e) => {setNewUsername(e.target.value)}}
+                    onChange={(e) => setNewUsername(e.target.value)}
                     required
                 />
-                <button id="update-username-btn" className="header-auth-btns" type="submit">Submit</button>
+                <button id="update-username-btn" className="header-auth-btns" type="submit" disabled={!newUsername.trim()}>Submit</button>
                 <button className="header-auth-btns" type="button" onClick={onClose}>Cancel</button>
             </div>
         </form>
