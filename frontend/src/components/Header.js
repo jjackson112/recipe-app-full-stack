@@ -9,15 +9,16 @@ import { toast } from "react-toastify";
 
 /* add value property to search input field and onChange to call updateSearchTerm to what was the user input */
 
-const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves, recipes, handleSelectRecipe, removefromFavorites, categories, selectedCategory, handleCategoryChange }) => {
+const Header = ({ showRecipeForm, searchTerm, updateSearchTerm, displayAllRecipes, recipeFaves, recipes, handleSelectRecipe, removefromFavorites, categories, selectedCategory, handleCategoryChange, onLogoutCategoryReset }) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-  
+
   const { isLoggedIn, user, logout } = useAuth(); // Correctly using the hook
   
   const handleLogout = async () => {
     try {
         await logout(); // AuthContext handles clearing session + state
+        onLogoutCategoryReset()
         toast.success("You've been logged out successfully!")
         console.log("Logout successful");
     } catch (error) {

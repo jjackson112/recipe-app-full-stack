@@ -91,6 +91,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null)
     };
 
+    // handleCategoryChange passed as a prop
     return (
         <AuthContext.Provider value={{ isLoggedIn, user, login, logout, loading }}>
             {children}

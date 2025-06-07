@@ -158,13 +158,6 @@ function App() {
   const handleNewRecipe = async (e, newRecipe) => {
     e.preventDefault();
 
-    // Retrieve token here, just before making the fetch call
-    const token = localStorage.getItem('token');
-    if (!token) {
-        displayToast("You must be logged in to add a recipe.", "error");
-        return; // Stop if no token is found
-    }
-
   /* Duplicated recipes */
     const isDuplicate = recipes.some(r => r.title.toLowerCase() === newRecipe.title.toLowerCase())
     if (isDuplicate) {
@@ -178,7 +171,6 @@ function App() {
         credentials: 'include',
         headers: {
           "Content-type": "application/json",
-          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(newRecipe)
       });
@@ -202,6 +194,8 @@ function App() {
           description: "",
           image_url: "https://images.pexels.com/photos/9986228/pexels-photo-9986228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" //default
         });
+      } else if (response.status === 401) {
+        displayToast("You must be logged in to add a recipe.", "error")
       } else {
         displayToast("Oops could not add recipe. Check to see if you're missing any information.", "error");
       }
@@ -356,8 +350,8 @@ function App() {
 
   
 
-    /* make the logo clickable - clear the search results,
-   newRecipeForm cannot show and no recipes can be selected */
+  /* make the logo clickable - clear the search results,
+  newRecipeForm cannot show and no recipes can be selected */
    const displayAllRecipes = () => {
     hideRecipeForm();
     handleUnselectRecipe();
@@ -378,7 +372,7 @@ function App() {
   return (
     <div className='recipe-app'>
       <AuthProvider>
-        <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} recipes={recipes} recipeFaves={favoriteRecipe} handleSelectRecipe={handleSelectRecipe} removefromFavorites={removefromFavorites} categories={categories} selectedCategory={selectedCategory} handleCategoryChange={handleCategoryChange}/>
+        <Header showRecipeForm={showRecipeForm} searchTerm={searchTerm} updateSearchTerm={updateSearchTerm} displayAllRecipes={displayAllRecipes} recipes={recipes} recipeFaves={favoriteRecipe} handleSelectRecipe={handleSelectRecipe} removefromFavorites={removefromFavorites} categories={categories} selectedCategory={selectedCategory} handleCategoryChange={handleCategoryChange} onLogoutCategoryReset={() => setSelectedCategory("All")}/>
         {showNewRecipeForm && (
           <NewRecipeForm newRecipe={newRecipe} hideRecipeForm={hideRecipeForm} onUpdateForm={onUpdateForm} handleNewRecipe={handleNewRecipe} categories={categories}/>
         )}
